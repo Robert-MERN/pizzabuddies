@@ -147,15 +147,15 @@ const Update_section = ({
         <>
             {/* Page Heading */}
             <div className='w-full'>
-                <h1 className='text-[15px] md:text-[17px] text-slate-500 mb-3 tracking-wider uppercase' >
+                <h1 className='text-[15px] md:text-[17px] text-slate-500 mb-3  uppercase' >
                     Create/Update Section
                 </h1>
             </div>
 
 
             {/* Inputs for Section */}
-            <div className='w-full shadow-md px-[15px] pb-[30px] py-[10px] flex flex-col gap-6 rounded-md tracking-wider'>
-                <h1 className='text-[18px] md:text-[20px] font-bold text-stone-700 pl-1 mb-3 tracking-wider' >MANAGE SECTION*</h1>
+            <div className='w-full shadow-md px-[15px] pb-[30px] py-[10px] flex flex-col gap-6 rounded-md '>
+                <h1 className='text-[18px] md:text-[20px] font-medium text-stone-700 pl-1 mb-3 ' >MANAGE SECTION*</h1>
 
                 <div className='w-full flex flex-col sm:flex-row items-center justify-center sm:gap-0 select-none' >
                     <button
@@ -344,13 +344,13 @@ const Update_section = ({
             <div className={`w-full flex mb-[30px] ${section === "update-section" && section_id ? "justify-between" : "justify-end"}`}>
                 {(section === "update-section" && section_id) &&
 
-                    <button onClick={() => toggle_modal("delete_section_modal")} className='px-[28px] py-[8px] bg-red-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded tracking-wider'>
+                    <button onClick={() => toggle_modal("delete_section_modal")} className='px-[28px] py-[8px] bg-red-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded '>
                         DELETE
                     </button>
                 }
                 {((section === "update-section" && section_id) || section === "create-section") &&
 
-                    <button onClick={() => handle_submit(set_data)} className='px-[28px] py-[8px] bg-emerald-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded tracking-wider'>
+                    <button onClick={() => handle_submit(set_data)} className='px-[28px] py-[8px] bg-emerald-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded '>
                         {section === "update-section" ? "UPDATE" : "SAVE"}
                     </button>
                 }

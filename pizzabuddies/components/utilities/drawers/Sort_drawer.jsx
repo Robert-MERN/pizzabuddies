@@ -49,7 +49,7 @@ const Sort_drawer = ({ drawer_state, toggle_drawer }) => {
             onClose={() => toggle_drawer("sort_drawer")}
             anchor='bottom'
         >
-            <div className='w-full tracking-wider text-stone-950 transition-all duration-300'>
+            <div className='w-full  text-stone-950 transition-all duration-300'>
                 <div className='flex justify-between w-full items-center py-[15px] px-[20px] border-b border-stone-200' >
                     <p className='text-[20px] font-bold select-none' >SORT BY:</p>
                     <button onClick={() => toggle_drawer("sort_drawer")} className='active:opacity-75' >

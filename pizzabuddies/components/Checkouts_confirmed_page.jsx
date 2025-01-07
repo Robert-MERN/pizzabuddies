@@ -87,7 +87,7 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
                     {(!confirmed_order || is_loading) ?
                         <>
                             {/* Skeleton */}
-                            <div className="flex-[1] lg:h-[calc(100vh-80px)] md:px-[40px] py-[40px] flex flex-col gap-4 lg:border-r  border-stone-200 tracking-wider">
+                            <div className="flex-[1] lg:h-[calc(100vh-80px)] md:px-[40px] py-[40px] flex flex-col gap-4 lg:border-r  border-stone-200 ">
 
                                 <div className='flex items-center gap-4 mb-6' >
                                     <Skeleton
@@ -223,7 +223,7 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
                                     {/* Product price */}
 
                                     <div
-                                        className="w-full border-stone-300 flex items-center justify-between tracking-wider my-1"
+                                        className="w-full border-stone-300 flex items-center justify-between  my-1"
                                     >
                                         <div className="flex gap-4">
 
@@ -266,7 +266,7 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
 
 
                                     {/* Subtotal of Order */}
-                                    <div className="w-full mt-6 border-stone-300 flex items-center justify-between tracking-wider">
+                                    <div className="w-full mt-6 border-stone-300 flex items-center justify-between ">
                                         <p className="text-[14px] md:text-[16px] font-semibold text-black">
                                             <Skeleton
                                                 variant='text'
@@ -286,7 +286,7 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
                                     </div>
 
                                     {/* Shipping Cost */}
-                                    <div className="w-full border-stone-300 flex items-center justify-between tracking-wider">
+                                    <div className="w-full border-stone-300 flex items-center justify-between ">
                                         <Skeleton
                                             variant='text'
                                             animation="wave"
@@ -327,7 +327,7 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
 
                         :
                         <>
-                            <div className="flex-[1] lg:h-[calc(100vh-80px)] md:px-[40px] py-[40px] flex flex-col gap-4 lg:border-r border-stone-200 tracking-wider">
+                            <div className="flex-[1] lg:h-[calc(100vh-80px)] md:px-[40px] py-[40px] flex flex-col gap-4 lg:border-r border-stone-200 ">
 
                                 <div className='flex items-center gap-4 mb-6' >
                                     <div className='w-[50px] h-[50px] flex items-center justify-center rounded-full border-2 border-stone-600'>
@@ -335,58 +335,58 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
                                     </div>
                                     <div>
                                         <p className='text-[14px] text-gray-500'>Confirmation: {confirmed_order._id}</p>
-                                        <p className='text-[20px] font-black text-stone-900'>Thank you, {confirmed_order.firstName}!</p>
+                                        <p className='text-[20px] font-semibold text-stone-900'>Thank you, {confirmed_order.firstName}!</p>
                                     </div>
                                 </div>
 
-                                <div className='p-4 border border-stone-200 rounded-md flex flex-col gap-4'>
-                                    <p className='text-[18px] font-black text-stone-900'>Your order is confirmed</p>
-                                    <p className='text-[16px] text-stone-700'>You'll receive a confirmation email with your order number shortly.</p>
+                                <div className='p-4 border border-stone-200 rounded-md flex flex-col gap-1'>
+                                    <p className='text-[18px] font-semibold text-stone-900'>Your order is confirmed</p>
+                                    <p className='text-[15px] text-stone-700'>You'll receive a confirmation email with your order number shortly.</p>
                                 </div>
 
                                 <div className='p-4 border border-stone-200 rounded-md'>
-                                    <p className='text-[18px] font-black text-stone-900 w-full mb-5'>Order details</p>
+                                    <p className='text-[18px] font-bold text-stone-900 w-full mb-5'>Order details</p>
 
 
-                                    <p className='text-[16px] font-black text-stone-900 mt-3'>Contact information</p>
-                                    <p className='text-[16px] text-stone-700'>{confirmed_order.email}</p>
+                                    <p className='text-[15px] font-semibold text-stone-900 mt-4'>Contact information</p>
+                                    <p className='text-[14px] text-stone-700'>{confirmed_order.email}</p>
                                     {confirmed_order.order_method === "pickup" &&
-                                        <p className='text-[16px] text-stone-700'>{confirmed_order.phone}</p>
+                                        <p className='text-[14px] text-stone-700'>{confirmed_order.phone}</p>
                                     }
 
 
 
                                     {confirmed_order.order_method === "delivery" ?
                                         <>
-                                            <p className='text-[16px] font-black text-stone-900 mt-3'>Delivery address</p>
-                                            <p className='text-[16px] text-stone-700'>{confirmed_order.address}</p>
-                                            <p className='text-[16px] text-stone-700'>Karachi</p>
-                                            <p className='text-[16px] text-stone-700'>Pakistan</p>
-                                            <p className='text-[16px] text-stone-700'>{confirmed_order.phone}</p>
+                                            <p className='text-[15px] font-semibold text-stone-900 mt-4'>Delivery address</p>
+                                            <p className='text-[14px] text-stone-700'>{confirmed_order.address}</p>
+                                            <p className='text-[14px] text-stone-700'>Karachi</p>
+                                            <p className='text-[14px] text-stone-700'>Pakistan</p>
+                                            <p className='text-[14px] text-stone-700'>{confirmed_order.phone}</p>
                                         </>
                                         :
                                         <>
-                                            <p className='text-[16px] font-black text-stone-900 mt-3'>Pickup address</p>
-                                            <p className='text-[16px] text-stone-700'>{confirmed_order.branch}</p>
-                                            <p className='text-[16px] text-stone-700'>Karachi</p>
-                                            <p className='text-[16px] text-stone-700'>Pakistan</p>
+                                            <p className='text-[15px] font-semibold text-stone-900 mt-4'>Pickup address</p>
+                                            <p className='text-[14px] text-stone-700'>{confirmed_order.branch}</p>
+                                            <p className='text-[14px] text-stone-700'>Karachi</p>
+                                            <p className='text-[14px] text-stone-700'>Pakistan</p>
                                         </>
 
                                     }
 
-                                    <p className='text-[16px] font-black text-stone-900 mt-3'>Delivery method</p>
+                                    <p className='text-[15px] font-semibold text-stone-900 mt-4'>Delivery method</p>
                                     {confirmed_order.order_method === "delivery" ?
-                                        <p className='text-[16px] text-stone-700'>Delivery Charges</p>
+                                        <p className='text-[14px] text-stone-700'>Delivery Charges</p>
                                         :
-                                        <p className='text-[16px] text-stone-700'>Pickup</p>
+                                        <p className='text-[14px] text-stone-700'>Pickup</p>
                                     }
 
 
-                                    <p className='text-[16px] font-black text-stone-900 mt-3'>Payment method</p>
+                                    <p className='text-[15px] font-semibold text-stone-900 mt-4'>Payment method</p>
                                     {confirmed_order.order_method === "delivery" ?
-                                        <p className='text-[16px] text-stone-700'>Cash on Delivery (COD) • Rs. {calc_gross_total_amount(confirmed_order).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                        <p className='text-[14px] text-stone-700'>Cash on Delivery (COD) • Rs. {calc_gross_total_amount(confirmed_order).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                         :
-                                        <p className='text-[16px] text-stone-700'>Pay at Pickup (PAP) • Rs. {calc_gross_total_amount(confirmed_order).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                        <p className='text-[14px] text-stone-700'>Pay at Pickup (PAP) • Rs. {calc_gross_total_amount(confirmed_order).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
 
                                     }
                                 </div>
@@ -399,7 +399,7 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
                                     {confirmed_order.purchase.map((item) => (
                                         <div
                                             key={item._id}
-                                            className="w-full border-stone-300 flex items-center justify-between tracking-wider my-1"
+                                            className="w-full border-stone-300 flex items-center justify-between  my-1"
                                         >
                                             <div className="flex gap-4">
                                                 <div className='mt-2'>
@@ -426,7 +426,7 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
                                                     ))}
                                                 </div>
                                             </div>
-                                            <p className="text-[15px] md:text-[17px] font-semibold text-stone-950">
+                                            <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
                                                 Rs. {item.price.toLocaleString("en-US")}
                                             </p>
                                         </div>
@@ -434,31 +434,31 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
 
 
                                     {/* Subtotal of Order */}
-                                    <div className="w-full mt-6 border-stone-300 flex items-center justify-between tracking-wider">
-                                        <p className="text-[14px] md:text-[16px] font-semibold text-black">
+                                    <div className="w-full mt-6 border-stone-300 flex items-center justify-between ">
+                                        <p className="text-[14px] md:text-[16px] font-medium text-black">
                                             Subtotal {(confirmed_order.purchase.length > 1) && `• ${calc_total_items(confirmed_order.purchase)}  items`}
                                         </p>
-                                        <p className="text-[15px] md:text-[17px] font-semibold text-stone-950">
+                                        <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
                                             Rs. {calc_total_amount(confirmed_order.purchase).toLocaleString("en-US")}
                                         </p>
                                     </div>
 
                                     {/* Shipping Cost */}
                                     {confirmed_order.order_method === "delivery" &&
-                                        <div className="w-full border-stone-300 flex items-center justify-between tracking-wider">
-                                            <p className="text-[14px] md:text-[16px] font-semibold text-black">
+                                        <div className="w-full border-stone-300 flex items-center justify-between ">
+                                            <p className="text-[14px] md:text-[16px] font-medium text-black">
                                                 Delivery Charges
                                             </p>
-                                            <p className="text-[15px] md:text-[17px] font-semibold text-stone-950">
+                                            <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
                                                 Rs. {(confirmed_order.delivery_charges.toLocaleString("en-US"))}
                                             </p>
                                         </div>
                                     }
 
                                     {/* Total */}
-                                    <div className="w-full border-stone-300 flex items-center justify-between tracking-wider mt-6">
-                                        <p className="text-[18px] md:text-[20px] font-black text-black">TOTAL:</p>
-                                        <p className="text-[18px] md:text-[20px] font-black text-stone-950">
+                                    <div className="w-full border-stone-300 flex items-center justify-between  mt-6">
+                                        <p className="text-[18px] md:text-[20px] font-semibold text-black">TOTAL:</p>
+                                        <p className="text-[18px] md:text-[20px] font-semibold text-stone-950">
                                             <span className='text-[13px] md:text-[14px] text-gray-600 font-normal pr-[6px]'>PKR</span>
                                             Rs. {calc_gross_total_amount(confirmed_order).toLocaleString("en-US")}
                                         </p>
@@ -471,13 +471,13 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
                 </>
                 :
                 <div className="w-full h-[70vh] flex flex-col justify-center items-center">
-                    <h1 className='text-[16px] md:text-[18px] text-stone-500 tracking-wider uppercase text-center'>
+                    <h1 className='text-[16px] md:text-[18px] text-stone-500  uppercase text-center'>
                         THE ORDER ID IS INVALID
                     </h1>
 
                     <div className='my-[30px] w-full flex justify-center items-center'>
                         <Link href="/" >
-                            <button className='w-full py-[12px] text-white bg-rose-600 font-semibold text-[14px] md:text-[15px] tracking-widest transition-all duration-300 rounded-md hover:opacity-70 active:scale-[.97] px-[50px] flex gap-3 items-center'>
+                            <button className='w-full py-[12px] text-white bg-rose-600 font-semibold text-[14px] md:text-[15px]  transition-all duration-300 rounded-md hover:opacity-70 active:scale-[.97] px-[50px] flex gap-3 items-center'>
                                 <ShoppingCartCheckoutIcon className='text-[19px]' />  CONTINUE ORDERING
                             </button>
                         </Link>

@@ -113,7 +113,7 @@ const Layout = ({ children }) => {
                 reset_states={reset_states}
             />
 
-            {(router.pathname !== "/admin" && router.pathname !== "/checkouts/[order_id]") &&
+            {(router.pathname !== "/admin" && router.pathname !== "/checkouts/[order_id]") ?
 
                 <Location_modal
                     modals_state={modals_state}
@@ -122,6 +122,8 @@ const Layout = ({ children }) => {
                     order_method={order_method}
                     set_order_method={set_order_method}
                 />
+                :
+                <></>
             }
 
             {/* Drawers Component */}

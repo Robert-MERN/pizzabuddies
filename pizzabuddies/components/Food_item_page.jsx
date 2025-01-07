@@ -109,7 +109,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
 
 
     return (
-        <div className='w-full px-[20px] pt-[15px] md:pt-[30px] pb-[80px] tracking-wider'>
+        <div className='w-full px-[20px] pt-[15px] md:pt-[30px] pb-[80px]'>
             {/* Breadcrumbs */}
             <Breadcrumbs
                 className='text-gray-400 text-[13px] md:text-[15px]'
@@ -149,13 +149,13 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                         {/*Product Order Section  */}
                         <div className='flex flex-[1] flex-col' >
 
-                            <div className='w-full text-stone-950'>
+                            <div className='w-full text-stone-700'>
                                 {/* Menu Title */}
-                                <p className='text-[15px] xl:text-[18px] font-bold overflow-hidden text-ellipsis line-clamp-1'>
+                                <p className='text-[15px] xl:text-[18px] font-semibold overflow-hidden text-ellipsis line-clamp-1'>
                                     {item.menu_title}
                                 </p>
                                 {/* Menu Price */}
-                                <p className='text-[15px] xl:text-[18px] text-rose-600 font-bold flex items-center   gap-2 lg:gap-4 overflow-hidden text-ellipsis line-clamp-1'>
+                                <p className='text-[15px] xl:text-[18px] text-rose-600 font-medium flex items-center   gap-2 lg:gap-4 overflow-hidden text-ellipsis line-clamp-1'>
 
                                     {/* Actual Price */}
                                     {(decide_text_FROM(item.options)) && "from"} Rs. {Number(total_price(local) || item.price).toLocaleString("en-US")}
@@ -298,7 +298,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                                 <button
                                     disabled={!validate_options(item.options)}
                                     onClick={() => child_add_to_cart()}
-                                    className={`w-full py-[12px] flex justify-center items-center text-white font-black text-[13px] xl:text-[15px]  tracking-widest transition-all active:scale-[.97] duration-300 rounded-md ${validate_options(item.options) ? "bg-rose-600 hover:opacity-80" : "bg-stone-300"}`}
+                                    className={`w-full py-[12px] flex justify-center items-center text-white font-semibold text-[13px] xl:text-[14px] transition-all active:scale-[.97] duration-300 rounded-md ${validate_options(item.options) ? "bg-rose-600 hover:opacity-80" : "bg-stone-300"}`}
                                 >
                                     ADD TO CART
                                 </button>

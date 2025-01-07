@@ -168,16 +168,16 @@ const Update_menu = ({
         <>
             {/* Page Heading */}
             <div className='w-full'>
-                <h1 className='text-[15px] md:text-[17px] text-slate-500 mb-3 tracking-wider uppercase' >
+                <h1 className='text-[15px] md:text-[17px] text-slate-500 mb-3  uppercase' >
                     Update Menu
                 </h1>
             </div>
 
             {/* Inputs for Section */}
-            <div className='w-full shadow-md px-[15px] pb-[30px] py-[10px] flex flex-col gap-6 rounded-md tracking-wider'>
+            <div className='w-full shadow-md px-[15px] pb-[30px] py-[10px] flex flex-col gap-6 rounded-md '>
 
 
-                <h1 className='text-[18px] md:text-[20px] font-bold text-stone-700 pl-1 mt-3 tracking-wider' >SELECT SECTION*</h1>
+                <h1 className='text-[18px] md:text-[20px] font-medium text-stone-700 pl-1 mt-3 ' >SELECT SECTION*</h1>
 
 
 
@@ -208,7 +208,7 @@ const Update_menu = ({
                 {/* Menu Selection */}
                 {(section_id) &&
                     <>
-                        <h1 className='text-[18px] md:text-[20px] font-bold text-stone-700 pl-1 mt-3 tracking-wider' >SELECT MENU*</h1>
+                        <h1 className='text-[18px] md:text-[20px] font-medium text-stone-700 pl-1 mt-3 ' >SELECT MENU*</h1>
 
                         <div className='w-full' >
                             <Autocomplete
@@ -241,7 +241,7 @@ const Update_menu = ({
                     {/* Inputs for Menu */}
                     <div className='w-full mt-[30px] shadow-md px-[15px] pb-[30px] pt-[10px] flex flex-col gap-6 rounded-md'>
 
-                        <h1 className='text-[18px] md:text-[20px] font-bold text-stone-700 pl-1 mb-3' >MENU*</h1>
+                        <h1 className='text-[18px] md:text-[20px] font-medium text-stone-700 pl-1 mb-3' >MENU*</h1>
 
                         <FormControl
                             className="w-full flex flex-col items-start"
@@ -551,11 +551,11 @@ const Update_menu = ({
 
 
                     <div className="w-full flex justify-between mb-[30px]">
-                        <button onClick={() => toggle_modal("delete_menu_modal")} className='px-[28px] py-[8px] bg-red-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded tracking-wider'>
+                        <button onClick={() => toggle_modal("delete_menu_modal")} className='px-[28px] py-[8px] bg-red-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded '>
                             DELETE
                         </button>
 
-                        <button onClick={() => handle_submit(set_data)} className='px-[28px] py-[8px] bg-emerald-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded tracking-wider'>
+                        <button onClick={() => handle_submit(set_data)} className='px-[28px] py-[8px] bg-emerald-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded '>
                             UPDATE
                         </button>
                     </div>

@@ -228,8 +228,8 @@ const Checkouts_page = ({ axios }) => {
             {/* Main Content Section */}
             {Boolean(order_details.purchase.length) ?
                 <>
-                    <form onSubmit={handle_submit} className="flex-[1] md:px-[40px] py-[40px] flex flex-col gap-4 lg:border-r border-stone-200 tracking-wider">
-                        <h1 className='text-[20px] font-bold'>Contact</h1>
+                    <form onSubmit={handle_submit} className="flex-[1] md:px-[40px] py-[40px] flex flex-col gap-4 lg:border-r border-stone-200">
+                        <h1 className='text-[17px] font-bold'>Contact</h1>
 
                         <TextField
                             label="Email"
@@ -242,7 +242,7 @@ const Checkouts_page = ({ axios }) => {
                             sx={style_textfield}
                         />
 
-                        <h1 className='text-[20px] font-bold pt-4'>Delivery</h1>
+                        <h1 className='text-[17px] font-bold pt-4'>Delivery</h1>
 
                         <div className='flex flex-col md:flex-row gap-4 md:gap-3'>
                             <TextField
@@ -325,7 +325,7 @@ const Checkouts_page = ({ axios }) => {
                             <p>Save this information for next time</p>
                         </div>
 
-                        <h1 className='text-[16px] font-bold'>Delivery method</h1>
+                        <h1 className='text-[17px] font-bold'>Delivery method</h1>
                         <TextField
                             value={order_method.order_method === "delivery" ? "Delivery Charges" : "Pickup"}
                             variant="outlined"
@@ -339,7 +339,7 @@ const Checkouts_page = ({ axios }) => {
                             }}
                         />
 
-                        <h1 className='text-[20px] font-bold pt-4'>Payment</h1>
+                        <h1 className='text-[17px] font-bold pt-4'>Payment</h1>
                         <TextField
                             value={order_method.order_method === "delivery" ? "Cash on Delivery (COD)" : "Pay at Pickup (PAP)"}
                             variant="outlined"
@@ -353,7 +353,7 @@ const Checkouts_page = ({ axios }) => {
                         />
 
                         {/* Complete Order Button */}
-                        <button type='submit' className='w-full py-[16px] flex justify-center items-center text-white bg-stone-950 font-black text-[14px] md:text-[15px] hover:bg-white hover:text-stone-950 border border-stone-500 tracking-widest transition-all duration-300 rounded mt-6 lg:mb-20 active:scale-[.98]'>
+                        <button type='submit' className='w-full py-[16px] flex justify-center items-center text-white bg-stone-950 font-semibold text-[14px] md:text-[15px] hover:bg-white hover:text-stone-950 border border-stone-500 transition-all duration-300 rounded mt-6 lg:mb-20 active:scale-[.98]'>
                             COMPLETE ORDER
                         </button>
                     </form>
@@ -365,7 +365,7 @@ const Checkouts_page = ({ axios }) => {
                             {order_details.purchase.map((item) => (
                                 <div
                                     key={item._id}
-                                    className="w-full border-stone-300 flex items-center justify-between tracking-wider my-1"
+                                    className="w-full border-stone-300 flex items-center justify-between my-1"
                                 >
                                     <div className="flex gap-4">
                                         <div className='mt-2'>
@@ -392,7 +392,7 @@ const Checkouts_page = ({ axios }) => {
                                             ))}
                                         </div>
                                     </div>
-                                    <p className="text-[15px] md:text-[17px] font-semibold text-stone-950">
+                                    <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
                                         Rs. {item.price.toLocaleString("en-US")}
                                     </p>
                                 </div>
@@ -400,22 +400,22 @@ const Checkouts_page = ({ axios }) => {
 
 
                             {/* Subtotal of Order */}
-                            <div className="w-full mt-6 border-stone-300 flex items-center justify-between tracking-wider">
-                                <p className="text-[14px] md:text-[16px] font-semibold text-black">
+                            <div className="w-full mt-6 border-stone-300 flex items-center justify-between ">
+                                <p className="text-[14px] md:text-[16px] font-medium text-black">
                                     Subtotal {(order_details.purchase.length > 1) && `• ${calc_total_items(order_details.purchase)}  items`}
                                 </p>
-                                <p className="text-[15px] md:text-[17px] font-semibold text-stone-950">
+                                <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
                                     Rs. {calc_total_amount(order_details.purchase).toLocaleString("en-US")}
                                 </p>
                             </div>
 
                             {/* Shipping Cost */}
                             {order_method.order_method === "delivery" &&
-                                <div className="w-full border-stone-300 flex items-center justify-between tracking-wider">
-                                    <p className="text-[14px] md:text-[16px] font-semibold text-black">
+                                <div className="w-full border-stone-300 flex items-center justify-between">
+                                    <p className="text-[14px] md:text-[16px] font-medium text-black">
                                         Delivery Charges
                                     </p>
-                                    <p className="text-[15px] md:text-[17px] font-semibold text-stone-950">
+                                    <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
                                         Rs. {(order_details.delivery_charges.toLocaleString("en-US"))}
                                     </p>
                                 </div>
@@ -423,9 +423,9 @@ const Checkouts_page = ({ axios }) => {
 
 
                             {/* Total */}
-                            <div className="w-full border-stone-300 flex items-center justify-between tracking-wider mt-6">
-                                <p className="text-[18px] md:text-[20px] font-black text-black">TOTAL:</p>
-                                <p className="text-[18px] md:text-[20px] font-black text-stone-950">
+                            <div className="w-full border-stone-300 flex items-center justify-between mt-6">
+                                <p className="text-[18px] md:text-[20px] font-bold text-black">TOTAL:</p>
+                                <p className="text-[18px] md:text-[20px] font-bold text-stone-950">
                                     <span className='text-[13px] md:text-[14px] text-gray-600 font-normal pr-[6px]'>PKR</span>
                                     Rs. {calc_gross_total_amount(order_details.purchase).toLocaleString("en-US")}
                                 </p>
@@ -437,13 +437,13 @@ const Checkouts_page = ({ axios }) => {
                 :
                 <div className="w-full h-[70vh] flex flex-col justify-center items-center">
 
-                    <h1 className='text-[16px] md:text-[18px] text-stone-500 tracking-wider uppercase text-center'>
+                    <h1 className='text-[16px] md:text-[18px] text-stone-500 uppercase text-center'>
                         YOU HAVE NOT SELECTED ANY ITEM TO CHECKOUT
                     </h1>
 
                     <div className='my-[30px] w-full flex justify-center items-center'>
                         <Link href="/" >
-                            <button className='w-full py-[12px] text-white bg-rose-600 font-semibold text-[14px] md:text-[15px] tracking-widest transition-all duration-300 rounded-md hover:opacity-70 active:scale-[.97] px-[50px] flex gap-3 items-center'>
+                            <button className='w-full py-[12px] text-white bg-rose-600 font-semibold text-[14px] md:text-[15px] transition-all duration-300 rounded-md hover:opacity-70 active:scale-[.97] px-[50px] flex gap-3 items-center'>
                                 <ShoppingCartCheckoutIcon className='text-[19px]' />  CONTINUE ORDERING
                             </button>
                         </Link>

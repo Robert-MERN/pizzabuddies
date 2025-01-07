@@ -84,16 +84,16 @@ const Location_modal = ({ modals_state, toggle_modal, default_order_method,
                     </div>
 
                     {order_method.order_method === "delivery" ?
-                        <h1 className='text-[18px] md:text-[20px] font-bold tracking-widest text-center text-stone-900 mt-[30px] md:mt-[50px]'>SELECT YOUR LOCATION</h1>
+                        <h1 className='text-[18px] md:text-[20px] font-semibold  text-center text-stone-800 mt-[30px] md:mt-[50px]'>SELECT YOUR LOCATION</h1>
                         :
-                        <h1 className='text-[18px] md:text-[20px] font-bold tracking-widest text-center text-stone-900 mt-[30px] md:mt-[50px]'>PLEASE SELECT BRANCH</h1>
+                        <h1 className='text-[18px] md:text-[20px] font-semibold  text-center text-stone-800 mt-[30px] md:mt-[50px]'>PLEASE SELECT BRANCH</h1>
                     }
 
                     <div className='flex w-full' >
-                        <button onClick={() => handle_order_method("delivery")} className={`w-full py-[12px] text-white  font-semibold text-[12px] md:text-[14px] tracking-widest transition-all duration-300 rounded-l-md  active:scale-[.97] flex gap-3 items-center justify-center ${order_method.order_method === "delivery" ? "bg-rose-600" : "bg-stone-400"}`}>
+                        <button onClick={() => handle_order_method("delivery")} className={`w-full py-[12px] text-white  font-medium text-[12px] md:text-[14px]  transition-all duration-300 rounded-l-md  active:scale-[.97] flex gap-3 items-center justify-center ${order_method.order_method === "delivery" ? "bg-rose-600" : "bg-stone-400"}`}>
                             DELIVERY
                         </button>
-                        <button onClick={() => handle_order_method("pickup")} className={`w-full py-[12px] text-white font-semibold text-[12px] md:text-[14px] tracking-widest transition-all duration-300 rounded-r-md active:scale-[.97]  flex gap-3 items-center justify-center ${order_method.order_method === "pickup" ? "bg-rose-600" : "bg-stone-400"}`}>
+                        <button onClick={() => handle_order_method("pickup")} className={`w-full py-[12px] text-white font-medium text-[12px] md:text-[14px]  transition-all duration-300 rounded-r-md active:scale-[.97]  flex gap-3 items-center justify-center ${order_method.order_method === "pickup" ? "bg-rose-600" : "bg-stone-400"}`}>
                             PICKUP
                         </button>
                     </div>
@@ -141,7 +141,7 @@ const Location_modal = ({ modals_state, toggle_modal, default_order_method,
                         />
 
                     }
-                    <button onClick={handle_confirm} className='w-full mt-4 py-[12px] text-white bg-rose-600 font-semibold text-[13px] md:text-[14px] tracking-widest transition-all duration-300 rounded-md hover:opacity-70 active:scale-[.97] px-[50px] flex gap-3 items-center justify-center'>
+                    <button onClick={handle_confirm} className='w-full mt-4 py-[12px] text-white bg-rose-600 font-medium text-[13px] md:text-[14px]  transition-all duration-300 rounded-md hover:opacity-70 active:scale-[.97] px-[50px] flex gap-3 items-center justify-center'>
                         <FmdGoodIcon className='text-[17px]' />  SELECT
                     </button>
 

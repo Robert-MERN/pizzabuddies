@@ -189,15 +189,15 @@ const Create_menu = ({
         <>
             {/* Page Heading */}
             <div className='w-full'>
-                <h1 className='text-[15px] md:text-[17px] text-slate-500 mb-3 tracking-wider uppercase' >
+                <h1 className='text-[15px] md:text-[17px] text-slate-500 mb-3  uppercase' >
                     Create Menu
                 </h1>
             </div>
 
 
             {/* Inputs for Section */}
-            <div className='w-full shadow-md px-[15px] pb-[30px] py-[10px] flex flex-col gap-6 rounded-md tracking-wider'>
-                <h1 className='text-[18px] md:text-[20px] font-bold text-stone-700 pl-1 mb-3 tracking-wider' >SECTION*</h1>
+            <div className='w-full shadow-md px-[15px] pb-[30px] py-[10px] flex flex-col gap-6 rounded-md '>
+                <h1 className='text-[18px] md:text-[20px] font-medium text-stone-700 pl-1 mb-3 ' >SECTION*</h1>
 
                 <div className='w-full flex flex-col sm:flex-row items-center justify-center sm:gap-0 select-none' >
                     <button
@@ -308,7 +308,7 @@ const Create_menu = ({
                     {/* Inputs for Menu */}
                     <div className='w-full mt-[30px] shadow-md px-[15px] pb-[30px] pt-[10px] flex flex-col gap-6 rounded-md'>
 
-                        <h1 className='text-[18px] md:text-[20px] font-bold text-stone-700 pl-1 mb-3' >MENU*</h1>
+                        <h1 className='text-[18px] md:text-[20px] font-medium text-stone-700 pl-1 mb-3' >MENU*</h1>
 
                         <FormControl
                             className="w-full flex flex-col items-start"
@@ -616,7 +616,7 @@ const Create_menu = ({
 
 
                     <div onClick={() => handle_submit(set_data, data)} className="w-full flex justify-end mb-[30px]">
-                        <button className='w-full lg:w-fit lg:px-[28px] py-[8px] bg-emerald-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded tracking-wider'>
+                        <button className='w-full lg:w-fit lg:px-[28px] py-[8px] bg-emerald-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded '>
                             SAVE
                         </button>
                     </div>

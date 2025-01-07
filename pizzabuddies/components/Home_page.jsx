@@ -58,7 +58,7 @@ const Resturant_page = ({ catalog, is_loading }) => {
     };
 
     return (
-        <div className='w-full pt-[15px] md:pt-[30px] pb-[60px] tracking-wider'>
+        <div className='w-full pt-[15px] md:pt-[30px] pb-[60px]'>
             {/* Navigation Bar */}
             {(Boolean(catalog.length) && !is_loading) ?
                 <nav
@@ -75,7 +75,7 @@ const Resturant_page = ({ catalog, is_loading }) => {
                             duration={200}
                             onSetActive={(id) => handleNavScroll(id)}
                             data-section={section._id}
-                            className={`h-[50px] md:h-[60px] flex items-center px-4 uppercase text-nowrap font-semibold border-y-4 border-t-transparent active:bg-stone-100 ${active_section === section._id ? "border-b-stone-900 text-stone-700 " : "border-b-transparent text-gray-400 "
+                            className={`h-[50px] md:h-[60px] flex items-center px-4 uppercase text-nowrap font-medium border-y-4 border-t-transparent active:bg-stone-100 ${active_section === section._id ? "border-b-stone-900 text-stone-700 " : "border-b-transparent text-gray-400 "
                                 } text-[13px] md:text-[16px] transition-all duration-200 cursor-pointer`}
                         >
                             {section.section_title}
@@ -97,7 +97,7 @@ const Resturant_page = ({ catalog, is_loading }) => {
                         className='w-full px-[20px] mt-[40px] mb-[100px] flex flex-col items-center'
                     >
                         {/* Section Title */}
-                        <h1 className='w-full text-center uppercase text-[22px] md:text-[24px] lg:text-[26px] font-semibold text-stone-800'>
+                        <h1 className='w-full text-center uppercase text-[22px] md:text-[24px] lg:text-[26px] font-semibold text-stone-700'>
                             {section.section_title}
                         </h1>
 
@@ -119,7 +119,7 @@ const Resturant_page = ({ catalog, is_loading }) => {
                                     {/* Menu Info */}
                                     <div className='w-full py-[20px] flex flex-col gap-6 lg:gap-8'>
                                         <div className='flex flex-col lg:gap-2'>
-                                            <p className='line-clamp-1 text-ellipsis overflow-hidden text-[15px] md:text-[16px] lg:text-[18px] font-semibold text-stone-800'>
+                                            <p className='line-clamp-1 text-ellipsis overflow-hidden text-[15px] md:text-[16px] lg:text-[18px] font-medium text-stone-800'>
                                                 {menu.menu_title}
                                             </p>
                                             <p className='line-clamp-1 md:line-clamp-2 text-ellipsis overflow-hidden text-[15px] text-stone-500'>
@@ -127,7 +127,7 @@ const Resturant_page = ({ catalog, is_loading }) => {
                                             </p>
                                         </div>
                                         {/* Price */}
-                                        <div className='flex gap-2 sm:gap-4 font-semibold text-[13px] md:text-[14px] flex-wrap'>
+                                        <div className='flex gap-2 sm:gap-4 font-semibold text-[13px] md:text-[15px] flex-wrap'>
                                             <p className='text-rose-600'>{decide_text_FROM(menu.options) && "from"} Rs. {Number(menu.price).toLocaleString("en-US")}</p>
 
                                             {menu.compare_price &&

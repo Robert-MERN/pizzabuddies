@@ -49,7 +49,7 @@ const Cart_page = () => {
 
 
     return (
-        <div className='w-full px-[20px] pt-[15px] md:pt-[30px] mb-[150px] tracking-wider'>
+        <div className='w-full px-[20px] pt-[15px] md:pt-[30px] mb-[150px]'>
 
             {/* Breadcrumbs */}
             <Breadcrumbs className='text-gray-400 text-[13px] md:text-[15px]' separator={<NavigateNextIcon fontSize="small" />} >
@@ -77,7 +77,7 @@ const Cart_page = () => {
                         <div className='flex flex-col flex-[3]' >
 
                             {/* Headings */}
-                            <div className='bg-[#F7F7F7] w-full h-[40px] md:h-[50px] px-[20px] flex items-center justify-between text-[15px] md:text-[17px] font-semibold text-stone-700 rounded-md tracking-wider' >
+                            <div className='bg-[#F7F7F7] w-full h-[40px] md:h-[50px] px-[20px] flex items-center justify-between text-[15px] md:text-[17px] font-medium text-stone-700 rounded-md ' >
                                 <div className='flex w-full items-center'>
                                     <p>ITEM</p>
                                 </div>
@@ -180,7 +180,7 @@ const Cart_page = () => {
 
                             {/* Special Insdtructions from Customers */}
                             <div className='w-full mt-[20px] flex flex-col gap-2'>
-                                <p className='text-[15px] md:text-[17px] font-semibold text-stone-700'>
+                                <p className='text-[15px] md:text-[17px] font-medium text-stone-700'>
                                     Special instructions
                                 </p>
                                 <textarea
@@ -229,8 +229,8 @@ const Cart_page = () => {
 
                                 {/* Total */}
                                 <div className='w-full border-b border-stone-300 flex items-center justify-between py-[15px] md:py-[20px]' >
-                                    <p className='text-[16px] md:text-[19px] font-semibold tracking-wider'>TOTAL:</p>
-                                    <p className='text-[19px] md:text-[22px] font-black overflow-hidden text-ellipsis w-[250px] text-nowrap text-right'>Rs. {sum_of_cart().toLocaleString("en-US")}</p>
+                                    <p className='text-[16px] md:text-[19px] font-semibold'>TOTAL:</p>
+                                    <p className='text-[19px] md:text-[22px] font-bold overflow-hidden text-ellipsis w-[250px] text-nowrap text-right'>Rs. {sum_of_cart().toLocaleString("en-US")}</p>
                                 </div>
                             </div>
 
@@ -239,7 +239,7 @@ const Cart_page = () => {
 
                                 {/* Checkout Button */}
 
-                                <button onClick={() => navigate_to_checkout()} className='w-full py-[12px] text-white bg-rose-600 font-semibold text-[14px] md:text-[15px] tracking-widest transition-all duration-300 rounded-md hover:opacity-70 active:scale-[.97]'>
+                                <button onClick={() => navigate_to_checkout()} className='w-full py-[12px] text-white bg-rose-600 font-semibold text-[13px] md:text-[14px] transition-all duration-300 rounded-md hover:opacity-70 active:scale-[.97]'>
                                     CONFIRM PAYMENT & ADDRESS
                                 </button>
 
@@ -247,7 +247,7 @@ const Cart_page = () => {
 
                                 {/* Continue Shopping Button */}
                                 <Link href="/" >
-                                    <button className='w-full py-[12px] flex justify-center items-center hover:text-white hover:bg-stone-950 font-black text-[14px] md:text-[15px] bg-white text-stone-950 border border-stone-500 tracking-widest transition-all duration-300 mt-[12px] rounded-md active:scale-[.97] gap-2'>
+                                    <button className='w-full py-[12px] flex justify-center items-center hover:text-white hover:bg-stone-950 font-semibold text-[13px] md:text-[14px] bg-white text-stone-950 border border-stone-500 transition-all duration-300 mt-[12px] rounded-md active:scale-[.97] gap-2'>
                                         <ShoppingCartCheckoutIcon className='text-[19px]' />
                                         CONTINUE ORDERING
                                     </button>
@@ -261,13 +261,13 @@ const Cart_page = () => {
                 :
                 <div className="w-full h-[70vh] flex flex-col justify-center items-center">
 
-                    <h1 className='text-[16px] md:text-[18px] text-stone-500 tracking-wider uppercase text-center'>
+                    <h1 className='text-[16px] md:text-[18px] text-stone-500  uppercase text-center'>
                         YOUR CART IS EMPTY
                     </h1>
 
                     <div className='my-[30px] w-full flex justify-center items-center'>
                         <Link href="/" >
-                            <button className='w-full py-[12px] text-white bg-rose-600 font-semibold text-[14px] md:text-[15px] tracking-widest transition-all duration-300 rounded-md hover:opacity-70 active:scale-[.97] px-[50px] flex gap-3 items-center'>
+                            <button className='w-full py-[12px] text-white bg-rose-600 font-semibold text-[14px] md:text-[15px]  transition-all duration-300 rounded-md hover:opacity-70 active:scale-[.97] px-[50px] flex gap-3 items-center'>
                                 <ShoppingCartCheckoutIcon className='text-[19px]' />  CONTINUE ORDERING
                             </button>
                         </Link>
