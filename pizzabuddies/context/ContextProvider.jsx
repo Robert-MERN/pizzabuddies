@@ -22,6 +22,7 @@ export const ContextProvider = ({ children }) => {
     const default_modals_state = {
         delete_menu_modal: false,
         delete_section_modal: false,
+        location_modal: false,
     };
     const [modals_state, set_modals_state] = useState(default_modals_state);
 
@@ -29,7 +30,9 @@ export const ContextProvider = ({ children }) => {
         set_modals_state(prev => ({ ...default_modals_state, [modal]: !prev[modal] }));
     };
 
-
+    // Modal First Pop up logic on Screen
+    const default_order_method = { location: "", branch: "", order_method: "delivery" }
+    const [order_method, set_order_method] = useState(default_order_method);
 
 
     // Drawer Logic
@@ -607,8 +610,9 @@ export const ContextProvider = ({ children }) => {
 
             localStorage.removeItem("cart");
             localStorage.removeItem("info");
+            set_cart([])
 
-            router.push(`/checkouts?order_id=${res.data._id}`)
+            router.push(`/checkouts/${res.data._id}`)
 
         } catch (err) {
             set_snackbar_alert({
@@ -646,12 +650,11 @@ export const ContextProvider = ({ children }) => {
 
 
     // Get Order API
-    const get_order_api = async (axios, order_id, set_state, set_confirm_state, set_is_loading) => {
+    const get_order_api = async (axios, order_id, set_state, set_is_loading) => {
         set_is_loading(true);
         try {
             const res = await axios.get(`/api/get_order?order_id=${order_id}`);
             set_state(res.data);
-            set_confirm_state(res.data);
         } catch (err) {
             set_snackbar_alert({
                 open: true,
@@ -690,6 +693,8 @@ export const ContextProvider = ({ children }) => {
                 snackbar_alert, set_snackbar_alert, close_snackbar,
 
                 toggle_modal, modals_state,
+
+                default_order_method, order_method, set_order_method,
 
                 toggle_drawer, drawer_state,
 

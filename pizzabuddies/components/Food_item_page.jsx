@@ -2,14 +2,11 @@ import React, { useState, useEffect } from 'react'
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Link from "next/link";
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
 import Radio from '@mui/material/Radio';
 import useStateContext from '@/context/ContextProvider';
 import { useRouter } from 'next/router';
 import CircleIcon from '@mui/icons-material/Circle';
 import Chip from "@mui/material/Chip";
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { Skeleton } from '@mui/material';
 
 
@@ -38,7 +35,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
     };
 
 
-    const [local, set_local] = useState([{ price: 0, compare_price: 0, option_value: "", value_id: "", option_name: "", option_id: "", success: false, }]);
+    const [local, set_local] = useState([{ price: 0, compare_price: 0, option_value: "", value_id: "", option_name: "", option_id: "", section_id: "", success: false, }]);
 
     const total_price = (arr) => {
         const total = arr.reduce((prev, next) => prev + next.price, 0);
@@ -94,6 +91,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                     compare_price: total_compare_price(local),
                     price: total_price(local),
                     quantity: 1,
+                    section_id,
                     value_id: local.map(e => e.value_id),
                 };
                 return add_item_to_cart(object);

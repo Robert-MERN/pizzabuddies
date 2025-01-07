@@ -1,5 +1,6 @@
 import Orders from '@/models/order_model';
 import connect_mongo from '@/utils/functions/connect_mongo';
+import mongoose from 'mongoose';
 
 /**
  * 
@@ -17,6 +18,11 @@ export default async function handler(req, res) {
         console.log("Successfuly conneted with DB");
 
         const { order_id } = req.query;
+
+        if (!new mongoose.Types.ObjectId(order_id)) {
+            return res.status(500).json({ success: false, message: "Order Id is invalid!" });
+        };
+
         const order = await Orders.findById(order_id);
 
         if (!order) {

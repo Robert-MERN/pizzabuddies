@@ -3,6 +3,7 @@ import Checkouts_navbar from '@/components/utilities/Checkouts_navbar'
 import Head from 'next/head'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import Checkouts_confirmed_page from '@/components/Checkouts_confirmed_page'
 
 
 export default function Checkouts() {
@@ -23,7 +24,7 @@ export default function Checkouts() {
                     </div>
                 </div>
                 <div className='w-full min-h-[calc(100vh-70px)] 2xl:w-[1650px] xl:w-[1400px] lg:w-[1100px] lg:px-[40px]' >
-                    <Checkouts_page axios={axios} order_id={order_id} />
+                    <Checkouts_confirmed_page axios={axios} order_id={order_id} />
                 </div>
             </div>
         </>

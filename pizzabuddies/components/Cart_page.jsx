@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Link from 'next/link';
 import { IoClose } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
 import { FaMinus } from "react-icons/fa6";
-import Checkbox from '@mui/material/Checkbox';
 import { MdVerifiedUser } from "react-icons/md";
 import useStateContext from '@/context/ContextProvider';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
@@ -27,11 +26,6 @@ const Cart_page = () => {
         special_instructions: "",
         coupon_code: "",
     });
-
-    useEffect(() => {
-        if (cart.length) document.querySelector(".MuiCheckbox-root").style = "color: #292524"
-    }, [cart.length]);
-
 
 
     const neccessary_obj = (obj) => {
@@ -104,9 +98,11 @@ const Cart_page = () => {
 
                                     {/* Product info */}
                                     <div className='flex w-full h-full gap-4' >
-                                        <div className='w-[80px] sm:w-[120px] h-full object-contain rounded-md overflow-hidden'>
-                                            <img src={item.menu_image} alt="product" className='w-[80px] sm:w-[120px] h-full object-cover rounded-md' />
-                                        </div>
+                                        <Link href={`/food-item?section_id=${item.section_id}&menu_id=${item._id}`}>
+                                            <div className='w-[80px] sm:w-[120px] h-full object-contain rounded-md overflow-hidden'>
+                                                <img src={item.menu_image} alt="product" className='w-[80px] sm:w-[120px] h-full object-cover rounded-md' />
+                                            </div>
+                                        </Link>
                                         <div className='flex flex-col gap-1 text-[12px] sm:text-[14px] md:text-[17px]' >
                                             <p className='capitalize text-wrap overflow-hidden text-ellipsis line-clamp-1'>{item.menu_title}</p>
 
@@ -240,12 +236,6 @@ const Cart_page = () => {
 
 
                             <div className='w-full flex flex-col md:pt-8 xl:pt-0'>
-                                {/* Terms & Conditionsss */}
-                                <div className='w-full py-[12px] flex items-center text-[14px] md:text-[15px]'>
-                                    <Checkbox size='small' />
-                                    <p>I agree with</p>
-                                    <p className='cursor-pointer select-none ml-1 border-b border-b-stone-600  leading-[1.2]'>Terms & Conditions</p>
-                                </div>
 
                                 {/* Checkout Button */}
 

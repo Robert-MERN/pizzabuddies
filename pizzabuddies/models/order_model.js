@@ -19,18 +19,10 @@ const ordersSchema = new Schema(
         },
         address: {
             type: String,
-            required: [true, "Please type your complete address"]
-        },
-        city: {
-            type: String,
-            required: [true, "Please enter your City name"]
         },
         phone: {
             type: String,
             required: [true, "Please type your Phone no."]
-        },
-        postalCode: {
-            type: String,
         },
         delivery_charges: {
             type: Number,
@@ -52,6 +44,13 @@ const ordersSchema = new Schema(
         },
         location: {
             type: String,
+        },
+        branch: {
+            type: String,
+        },
+        order_method: {
+            type: String,
+            default: "delivery"
         }
     },
     { timestamps: true }

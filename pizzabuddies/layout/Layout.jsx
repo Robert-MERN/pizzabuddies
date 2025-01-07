@@ -10,8 +10,7 @@ import Delete_section_modal from '@/utils/modals/Delete_section_modal';
 import axios from 'axios';
 import Delete_menu_modal from '@/utils/modals/Delete_menu_modal';
 import { useRouter } from 'next/router';
-
-
+import Location_modal from '@/utils/modals/Location_modal';
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -44,7 +43,10 @@ const Layout = ({ children }) => {
         reset_states,
         API_loading,
         set_API_loading,
-        cart
+        cart,
+        default_order_method,
+        order_method,
+        set_order_method,
     } = useStateContext();
 
     // lock scroll when drawer opens
@@ -111,6 +113,17 @@ const Layout = ({ children }) => {
                 reset_states={reset_states}
             />
 
+            {(router.pathname !== "/admin" && router.pathname !== "/checkouts/[order_id]") &&
+
+                <Location_modal
+                    modals_state={modals_state}
+                    toggle_modal={toggle_modal}
+                    default_order_method={default_order_method}
+                    order_method={order_method}
+                    set_order_method={set_order_method}
+                />
+            }
+
             {/* Drawers Component */}
             <Food_menu_drawer
                 drawer_state={drawer_state}
@@ -119,8 +132,9 @@ const Layout = ({ children }) => {
                 handle_sidebar={handle_sidebar}
                 set_data={set_data}
             />
+
             {children}
-            {router.pathname !== "/admin" &&
+            {(router.pathname !== "/admin" && router.pathname !== "/cart" && router.pathname !== "/checkouts" && router.pathname !== "/checkouts/[order_id]" && !cart.length) &&
                 <a
                     target='_blank'
                     href="https://wa.me/923102223511"
@@ -131,6 +145,8 @@ const Layout = ({ children }) => {
 
                 </a>
             }
+
+
 
             <div className={` fixed right-0 left-0 z-[9999] w-[100vw]  flex justify-center ${((cart.length && ignore_except.some(e => e === router.pathname)) && router.pathname.includes("")) ? "bottom-0" : "bottom-[-200px]"} transition-all duration-500`}>
                 <div className=' 2xl:w-[1650px] xl:w-[1400px] lg:w-[1100px] lg:px-[40px] w-full' >
