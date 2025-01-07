@@ -105,11 +105,11 @@ const Update_section = ({
                 let updated_body;
                 if (banner_image) {
                     // Uploading Banner Image
-                    const banner_image_url = await upload_image_api(axios, banner_image, set_API_loading);
+                    const banner_image_url = await upload_image_api(axios, banner_image, set_API_loading, "banner");
                     // Adding Banner Image to Body
-                    updated_body = { section_title, banner_image: banner_image_url, menu_catalog: [other] };
+                    updated_body = { section_title, banner_image: banner_image_url, menu_catalog: [] };
                 } else {
-                    updated_body = { section_title, banner_image, menu_catalog: [other] };
+                    updated_body = { section_title, banner_image, menu_catalog: [] };
                 }
 
                 // Creating Section
@@ -124,7 +124,7 @@ const Update_section = ({
                 let updated_body;
 
                 if (banner_image && !banner_image.includes("res.cloudinary.com")) {
-                    const banner_image_url = await upload_image_api(axios, banner_image, set_API_loading);
+                    const banner_image_url = await upload_image_api(axios, banner_image, set_API_loading, "banner");
                     // Adding Banner Image to Body
                     updated_body = { section_title, banner_image: banner_image_url };
                 } else {

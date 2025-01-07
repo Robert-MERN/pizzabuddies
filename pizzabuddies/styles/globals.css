@@ -49,3 +49,8 @@ body::-webkit-scrollbar-thumb:hover {
   transition: all 250ms;
 }
 
+button {
+  outline: none;
+  user-select: none;
+}
+

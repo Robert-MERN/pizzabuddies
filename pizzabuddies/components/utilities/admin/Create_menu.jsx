@@ -15,7 +15,7 @@ import {
 } from '@/utils/functions/multiple_options_logic';
 import { IoClose } from "react-icons/io5";
 import Autocomplete from '@mui/material/Autocomplete';
-
+import Switch from '@mui/material/Switch';
 
 
 
@@ -105,18 +105,7 @@ const Create_menu = ({
     }
 
     const handle_submit = async (set_options) => {
-        set_options(prev_options => {
-            const copy_options = [...prev_options.options];
-            if (copy_options.length) {
-                for (let i = 0; i < copy_options.length; i++) {
-                    if (!copy_options.at(i).is_added) {
-                        copy_options.splice(i, 1);
-                    }
-                }
-            }
-            return { ...prev_options, options: copy_options };
-        });
-
+        // Validate Form Fields
         const errors = {};
         Object.keys(data).forEach((field_name) => {
             const error = validate_form(field_name, data[field_name]);
@@ -125,62 +114,76 @@ const Create_menu = ({
             }
         });
 
-        set_options((prev_options) => ({
-            ...prev_options,
-            errors,
-        }));
+        // Update Errors in State
+        let realtime_data = await new Promise((resolve) => {
+            set_options((prev_options) => {
+                const updated = { ...prev_options, errors };
+                resolve(updated);
+                return updated;
+            });
+        });
 
-        if (Object.values(errors).every((error) => !error)) {
-            // Form is valid, submit it
-            const { errors, section_title, banner_image, menu_image, ...other } = data;
-            if (section === "create-new") {
+        // Remove Unadded Options
+        realtime_data = await new Promise((resolve) => {
+            set_options((prev_options) => {
+                const filtered_options = prev_options.options.filter((option) => option.is_added);
+                const updated = { ...prev_options, options: filtered_options };
+                resolve(updated);
+                return updated;
+            });
+        });
 
-                // Uploading Banner Image
-                let banner_image_url = ""
-                if (banner_image) {
-                    banner_image_url = await upload_image_api(axios, banner_image, set_API_loading);
-                }
-                // Uploading Menu Image
-                let menu_image_url = "";
-                if (menu_image) {
-                    menu_image_url = await upload_image_api(axios, menu_image, set_API_loading);
-                }
-                // Adding Banner & Menu Images to Body
-                const updated_body = {
-                    ...other,
-                    section_title,
-                    banner_image: banner_image_url,
-                    menu_image: menu_image_url
-                }
-                // Creating Catalog
-                const response = await create_catalog_api(axios, updated_body, set_API_loading, reset_states);
+        // Check if Errors Exist
+        if (!Object.values(errors).every((error) => !error)) return;
 
-                if (response === "success") {
-                    banner_input_ref.current.value = ""
-                    image_input_ref.current.value = ""
-                }
+        // Extract Data for Submission
+        const { errors: _, section_title, banner_image, menu_image, ...other } = realtime_data;
 
-            } else if (section === "use-existing") {
-                // Uploading Menu Image
-                let menu_image_url_2 = "";
-                if (menu_image) {
-                    menu_image_url_2 = await upload_image_api(axios, menu_image, set_API_loading);
-                }
-                // Adding Menu Image to Body
-                const updated_body = {
-                    ...other,
-                    menu_image: menu_image_url_2
-                }
-                // Creating Menu
-                const response = await create_menu_api(axios, section_id, updated_body, set_API_loading, reset_states);
+        if (section === "create-new") {
+            // Handle "Create New" Section
+            let banner_image_url = "";
+            if (banner_image) {
+                banner_image_url = await upload_image_api(axios, banner_image, set_API_loading, "banner");
+            }
 
-                if (response === "success") {
-                    image_input_ref.current.value = ""
-                }
+            let menu_image_url = "";
+            if (menu_image) {
+                menu_image_url = await upload_image_api(axios, menu_image, set_API_loading);
+            }
 
+            const updated_body = {
+                ...other,
+                section_title,
+                banner_image: banner_image_url,
+                menu_image: menu_image_url,
+            };
+
+            const response = await create_catalog_api(axios, updated_body, set_API_loading, reset_states);
+
+            if (response === "success") {
+                banner_input_ref.current.value = "";
+                image_input_ref.current.value = "";
+            }
+        } else if (section === "use-existing") {
+            // Handle "Use Existing" Section
+            let menu_image_url_2 = "";
+            if (menu_image) {
+                menu_image_url_2 = await upload_image_api(axios, menu_image, set_API_loading);
+            }
+
+            const updated_body = {
+                ...other,
+                menu_image: menu_image_url_2,
+            };
+
+            const response = await create_menu_api(axios, section_id, updated_body, set_API_loading, reset_states);
+
+            if (response === "success") {
+                image_input_ref.current.value = "";
             }
         }
     };
+
 
     return (
         <>
@@ -377,6 +380,11 @@ const Create_menu = ({
                                 variant="outlined"
                                 type="number"
                                 name="price"
+                                slotProps={{
+                                    inputLabel: {
+                                        shrink: true,
+                                    },
+                                }}
                                 value={data.price}
                                 onChange={(e) => handle_change_options(e, set_data)}
                                 error={Boolean(data.errors.price)}
@@ -393,6 +401,11 @@ const Create_menu = ({
                                 variant="outlined"
                                 type='number'
                                 name="compare_price"
+                                slotProps={{
+                                    inputLabel: {
+                                        shrink: true,
+                                    },
+                                }}
                                 value={data.compare_price}
                                 onChange={(e) => handle_change_options(e, set_data)}
                                 error={Boolean(data.errors.compare_price)}
@@ -455,7 +468,24 @@ const Create_menu = ({
 
                                         <p className='text-[15px] text-stone-400  leading-[18px]'>Even when you're editng option, click on the "DONE" button after you make changes, otherwise hitting "SAVE" button directly will remove that option.</p>
 
-                                        <div className="w-full flex gap-2">
+                                        <div className='w-full flex items-center gap-2 lg:justify-end mb-3' >
+                                            <p className='text-[15px] text-stone-500 font-semibold  leading-[18px]'>Options Selectable</p>
+                                            <Switch
+                                                checked={option.options_selectable}
+                                                onChange={(e) => handle_change_options(
+                                                    {
+                                                        target: {
+                                                            value: e.target.checked,
+                                                            name: "options_selectable"
+                                                        }
+                                                    },
+                                                    set_data,
+                                                    index
+                                                )}
+                                            />
+                                        </div>
+
+                                        <div className="w-full flex gap-2 mb-4">
                                             <TextField
                                                 className='w-full'
                                                 placeholder='Enter Option Name'
@@ -485,6 +515,7 @@ const Create_menu = ({
                                                             label="Option Value"
                                                             variant="outlined"
                                                             name="option_value"
+                                                            size="small"
                                                             value={each.option_value}
                                                             onChange={(e) => handle_change_options(e, set_data, index, index_2)}
                                                             error={Boolean(each.values_error)}
@@ -498,7 +529,30 @@ const Create_menu = ({
                                                             label="Price"
                                                             variant="outlined"
                                                             name="option_price"
+                                                            size="small"
+                                                            slotProps={{
+                                                                inputLabel: {
+                                                                    shrink: true,
+                                                                },
+                                                            }}
                                                             value={each.option_price}
+                                                            onChange={(e) => handle_change_options(e, set_data, index, index_2)}
+                                                        />
+                                                        <TextField
+                                                            className='w-fit'
+                                                            type="number"
+                                                            placeholder='00'
+                                                            id="outlined-basic"
+                                                            label="Compare Price"
+                                                            variant="outlined"
+                                                            name="option_compare_price"
+                                                            size="small"
+                                                            slotProps={{
+                                                                inputLabel: {
+                                                                    shrink: true,
+                                                                },
+                                                            }}
+                                                            value={each.option_compare_price}
                                                             onChange={(e) => handle_change_options(e, set_data, index, index_2)}
                                                         />
                                                     </div>
@@ -561,7 +615,7 @@ const Create_menu = ({
 
 
 
-                    <div onClick={() => handle_submit(set_data)} className="w-full flex justify-end mb-[30px]">
+                    <div onClick={() => handle_submit(set_data, data)} className="w-full flex justify-end mb-[30px]">
                         <button className='w-full lg:w-fit lg:px-[28px] py-[8px] bg-emerald-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded tracking-wider'>
                             SAVE
                         </button>

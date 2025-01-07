@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import { useRouter } from 'next/router';
 import imageCompression from 'browser-image-compression';
 
@@ -47,14 +47,38 @@ export const ContextProvider = ({ children }) => {
     // Cart Logic
     const [cart, set_cart] = useState([]);
 
+    useEffect(() => {
+        const saved_cart = JSON.parse(localStorage.getItem("cart"));
+        if (saved_cart) {
+            set_cart(saved_cart); // Assuming `set_cart` updates your cart state
+        }
+    }, []);
+
+    const save_cart = (cart) => {
+        localStorage.setItem("cart", JSON.stringify(cart));
+    };
+
+
     const sum_of_cart = () => cart.reduce((prev, next) => prev + (next.price * next.quantity), 0);
 
     const delete_item_from_cart = (item) => {
         set_cart((prev_cart) => {
             const updated_cart = [...prev_cart];
-            const index = updated_cart.findIndex((each) => each._id === item._id)
-            updated_cart.splice(index, 1);
-            return updated_cart;
+            const index = updated_cart.findIndex((each) => each._id === item._id);
+
+            if (index !== -1) {
+                if (item.value_id.length) {
+                    const index_again = updated_cart.findIndex(e => e.value_id.every(v => item.value_id.includes(v)));
+                    if (index_again !== -1) {
+                        updated_cart.splice(index_again, 1);
+                        save_cart(updated_cart);
+                        return updated_cart;
+                    }
+                }
+                updated_cart.splice(index, 1);
+                save_cart(updated_cart);
+                return updated_cart;
+            }
         });
     }
 
@@ -65,37 +89,77 @@ export const ContextProvider = ({ children }) => {
             const index = updated_cart.findIndex((each) => each._id === item._id);
 
             if (index !== -1) {
-                const new_item = { ...item, quantity: item.quantity + 1 }
-                updated_cart.splice(index, 1, new_item);
-                set_snackbar_alert({
-                    open: true,
-                    message: "Item added to you cart",
-                    severity: "primary"
-                });
-                return updated_cart;
+
+                if (item.value_id.length) {
+                    const index_again = updated_cart.findIndex(e => e.value_id.every(v => item.value_id.includes(v)));
+                    if (index_again !== -1) {
+                        const new_item = { ...item, quantity: updated_cart.at(index_again).quantity + 1 }
+                        updated_cart.splice(index_again, 1, new_item);
+                        set_snackbar_alert({
+                            open: true,
+                            message: "Item added to you cart",
+                            severity: "success"
+                        });
+                        save_cart(updated_cart);
+                        return updated_cart;
+                    }
+                } else {
+                    const new_item = { ...item, quantity: updated_cart.at(index).quantity + 1 }
+                    updated_cart.splice(index, 1, new_item);
+                    set_snackbar_alert({
+                        open: true,
+                        message: "Item added to you cart",
+                        severity: "success"
+                    });
+                    save_cart(updated_cart);
+                    return updated_cart;
+                }
             }
 
             set_snackbar_alert({
                 open: true,
                 message: "Item added to you cart",
-                severity: "primary"
+                severity: "success"
             });
+            save_cart([...updated_cart, { ...item, quantity: 1 }]);
             return [...updated_cart, { ...item, quantity: 1 }];
         });
-    }
+    };
 
     const substract_item_from_cart = (item) => {
         set_cart((prev_cart) => {
             const updated_cart = [...prev_cart];
-            const index = updated_cart.findIndex((each) => each._id === item._id)
+            const index = updated_cart.findIndex((each) => each._id === item._id);
 
-            if (Number(item.quantity - 1) < 1) {
-                updated_cart.splice(index, 1);
-                return updated_cart;
+            if (index !== -1) {
+                if (item.value_id.length) {
+                    const index_again = updated_cart.findIndex(e => e.value_id.every(v => item.value_id.includes(v)));
+                    if (index_again !== -1) {
+                        if (Number(item.quantity - 1) < 1) {
+                            updated_cart.splice(index_again, 1);
+                            save_cart(updated_cart);
+                            return updated_cart;
+                        }
+                        const new_item = { ...item, quantity: item.quantity - 1 }
+                        updated_cart.splice(index_again, 1, new_item);
+                        save_cart(updated_cart);
+                        return updated_cart;
+                    }
+
+                } else {
+
+                    if (Number(item.quantity - 1) < 1) {
+                        updated_cart.splice(index, 1);
+                        save_cart(updated_cart);
+                        return updated_cart;
+                    }
+                    const new_item = { ...item, quantity: item.quantity - 1 }
+                    updated_cart.splice(index, 1, new_item);
+                    save_cart(updated_cart);
+                    return updated_cart;
+                }
             }
-            const new_item = { ...item, quantity: item.quantity - 1 }
-            updated_cart.splice(index, 1, new_item);
-            return updated_cart;
+
         });
     }
 
@@ -106,8 +170,8 @@ export const ContextProvider = ({ children }) => {
         banner_image: "",
         menu_title: "",
         menu_image: "",
-        price: "",
-        compare_price: "",
+        price: 0,
+        compare_price: 0,
         description: "",
         options: [],
         errors: {
@@ -200,8 +264,7 @@ export const ContextProvider = ({ children }) => {
         set_is_loading(true);
         try {
             const res = await axios.get(`/api/get_menu?section_id=${section_id}&menu_id=${menu_id}`);
-            const { _id, ...other } = res.data;
-            set_state((prev_state) => ({ ...prev_state, ...other }));
+            set_state((prev_state) => ({ ...prev_state, ...res.data }));
         } catch (err) {
             set_snackbar_alert({
                 open: true,
@@ -320,6 +383,7 @@ export const ContextProvider = ({ children }) => {
         // start loading
         set_is_loading(true);
         try {
+
             const res = await axios.post(`/api/create_section`, data);
             set_snackbar_alert({
                 open: true,
@@ -484,7 +548,7 @@ export const ContextProvider = ({ children }) => {
 
 
     // Upload Image API 
-    const upload_image_api = async (axios, objectURL, set_is_loading) => {
+    const upload_image_api = async (axios, objectURL, set_is_loading, banner) => {
         set_is_loading(true);
         const formData = new FormData();
         const options = {
@@ -501,7 +565,11 @@ export const ContextProvider = ({ children }) => {
                 const file = await FILE.blob();
                 const compressedFile = await imageCompression(file, options);
                 formData.append('file', compressedFile); // The image file
-                formData.append('upload_preset', 'myCloud');
+                if (banner === "banner") {
+                    formData.append('upload_preset', 'myUpload');
+                } else {
+                    formData.append('upload_preset', 'myCloud');
+                }
 
                 const res = await axios.post(`https://api.cloudinary.com/v1_1/dceqyrfhu/image/upload`, formData);
 
@@ -522,8 +590,98 @@ export const ContextProvider = ({ children }) => {
         } finally {
             set_is_loading(false);
         }
+    };
+
+
+    // Confirm Order API
+    const confirm_order_api = async (axios, data, set_is_loading) => {
+        set_is_loading(true);
+        try {
+            const res = await axios.post("/api/confirm_order", data);
+
+            set_snackbar_alert({
+                open: true,
+                message: "Your order has been confirmed!",
+                severity: "success",
+            });
+
+            localStorage.removeItem("cart");
+            localStorage.removeItem("info");
+
+            router.push(`/checkouts?order_id=${res.data._id}`)
+
+        } catch (err) {
+            set_snackbar_alert({
+                open: true,
+                message: err.response.data.message,
+                severity: "error",
+            })
+        } finally {
+            set_is_loading(false);
+        }
     }
 
+
+    // Cancel Order API
+    const cancel_order_api = async (axios, order_id, set_is_loading) => {
+        set_is_loading(true);
+        try {
+            const res = await axios.post(`/api/cancel_order?order_id=${order_id}`);
+            set_snackbar_alert({
+                open: true,
+                message: res.data.message,
+                severity: "success",
+            })
+
+        } catch (err) {
+            set_snackbar_alert({
+                open: true,
+                message: err.response.data.message,
+                severity: "error",
+            })
+        } finally {
+            set_is_loading(false);
+        }
+    };
+
+
+    // Get Order API
+    const get_order_api = async (axios, order_id, set_state, set_confirm_state, set_is_loading) => {
+        set_is_loading(true);
+        try {
+            const res = await axios.get(`/api/get_order?order_id=${order_id}`);
+            set_state(res.data);
+            set_confirm_state(res.data);
+        } catch (err) {
+            set_snackbar_alert({
+                open: true,
+                message: err.response.data.message,
+                severity: "error",
+            })
+        } finally {
+            set_is_loading(false);
+
+        }
+    };
+
+
+    // Get All Orders API
+    const get_all_orders_api = async (axios, set_state, set_is_loading) => {
+        set_is_loading(true);
+        try {
+            const res = await axios.get(`/api/get_all_orders`);
+            set_state(res.data);
+        } catch (err) {
+            set_snackbar_alert({
+                open: true,
+                message: err.response.data.message,
+                severity: "error",
+            })
+        } finally {
+            set_is_loading(false);
+
+        }
+    }
 
 
     return (
@@ -536,7 +694,7 @@ export const ContextProvider = ({ children }) => {
                 toggle_drawer, drawer_state,
 
                 cart, set_cart, sum_of_cart, delete_item_from_cart, add_item_to_cart,
-                substract_item_from_cart,
+                substract_item_from_cart, save_cart,
 
                 sidebar, handle_sidebar,
 
@@ -557,6 +715,8 @@ export const ContextProvider = ({ children }) => {
                 login_api,
 
                 upload_image_api,
+
+                confirm_order_api, cancel_order_api, get_order_api, get_all_orders_api,
 
             }}
         >

@@ -19,7 +19,7 @@ const Checkouts_navbar = () => {
                 </div>
 
                 <div>
-                    <button className="active:text-stone-400 text-stone-800 transition-all">
+                    <button className="active:text-stone-100 text-stone-200 transition-all">
                         <FiShoppingCart className="text-[24px]" />
                     </button>
                 </div>

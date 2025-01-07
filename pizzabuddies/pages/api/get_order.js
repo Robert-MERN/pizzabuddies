@@ -16,16 +16,18 @@ export default async function handler(req, res) {
         await connect_mongo();
         console.log("Successfuly conneted with DB");
 
-        const orders = new Orders(req.body);
+        const { order_id } = req.query;
+        const order = await Orders.findById(order_id);
 
-        await orders.save();
+        if (!order) {
+            return res.status(404).json({ success: false, message: "Order couldn't be found with this Order Id" });
+        }
 
         // sending success response to client
-        return res.status(200).json(orders);
+        return res.status(200).json(order);
     } catch (err) {
 
         // if server catches any error
-        return res.status(501).json({ success: false, message: err.message });
+        return res.status(501).json({ success: false, message: "Order couldn't be found with this Order Id" });
     }
-
 }

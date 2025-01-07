@@ -26,10 +26,21 @@ const foodMenuSchema = new Schema(
                         values: [
                             {
                                 option_value: String,
-                                option_price: Number,
+                                option_price: {
+                                    type: Number,
+                                    default: 0,
+                                },
+                                option_compare_price: {
+                                    type: Number,
+                                    default: 0,
+                                },
                                 values_error: String,
                             },
                         ],
+                        options_selectable: {
+                            type: Boolean,
+                            default: false,
+                        },
                         is_added: {
                             type: Boolean,
                             default: false,

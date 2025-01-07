@@ -4,23 +4,114 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Link from "next/link";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import Image from 'next/image';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Radio from '@mui/material/Radio';
 import useStateContext from '@/context/ContextProvider';
 import { useRouter } from 'next/router';
-import menu_image from "@/public/images/menu_image.jpg"
+import CircleIcon from '@mui/icons-material/Circle';
+import Chip from "@mui/material/Chip";
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import { Skeleton } from '@mui/material';
 
-const Food_item_page = ({ product }) => {
+
+const Food_item_page = ({ item, section_id, is_loading }) => {
 
     const { add_item_to_cart } = useStateContext();
 
     const router = useRouter();
 
+    const decide_text_FROM = (options) => {
+        if (options && options.length) {
+            return options.some(op => Boolean(op.values.some(e => Boolean(e.option_price))));
+        }
+        return false
+    };
+
+    const calculate_discount = (item) => {
+        const { price, compare_price } = item;
+
+        if (!compare_price || compare_price <= price) {
+            return false; // No discount if compare_price is not valid or less than/equal to price
+        }
+
+        const discount = ((compare_price - price) / compare_price) * 100;
+        return Math.round(discount) + "% off"; // Round to the nearest whole number
+    };
+
+
+    const [local, set_local] = useState([{ price: 0, compare_price: 0, option_value: "", value_id: "", option_name: "", option_id: "", success: false, }]);
+
+    const total_price = (arr) => {
+        const total = arr.reduce((prev, next) => prev + next.price, 0);
+        return total;
+    }
+
+    const total_compare_price = (arr) => {
+        const total = arr.reduce((prev, next) => prev + next.compare_price, 0);
+        return total
+    }
+
+    const handle_change = (set_options, obj) => {
+        set_options(prev_options => {
+
+            const data_copy = [...prev_options].filter(e => !Object.values(e).every(i => !Boolean(i)));
+            const index = data_copy.findIndex(e => e.option_id === obj.option_id);
+            if (index !== -1) {
+                data_copy.splice(index, 1, obj);
+                return data_copy;
+            }
+            return [...data_copy, obj];
+        });
+    }
+
+    const validate_options = (options) => {
+        if (options && options.length) {
+            const _options = options.filter(e => Boolean(e.options_selectable));
+
+            if (_options.length === local.length && local.every(e => Boolean(e.success))) {
+                return true;
+            }
+            return false;
+        }
+        return true;
+    };
+
+    const required_chip = (id, options) => {
+        return options.some(e => ((e.option_id === id) && Boolean(e.success)));
+    };
+
+    const convert_local_arr_of_options_to_obj = (arr) => {
+        return Object.fromEntries(arr.map(e => [e.option_name.toLowerCase(), e.option_value]));
+    }
+
+    const child_add_to_cart = () => {
+        var object;
+        const { options, ...other } = item;
+        if (item.options.some(e => Boolean(e.options_selectable))) {
+            if (validate_options(item.options)) {
+                object = {
+                    ...other,
+                    ...convert_local_arr_of_options_to_obj(local),
+                    compare_price: total_compare_price(local),
+                    price: total_price(local),
+                    quantity: 1,
+                    value_id: local.map(e => e.value_id),
+                };
+                return add_item_to_cart(object);
+            }
+            return;
+        } else {
+            object = {
+                ...other,
+                quantity: 1,
+            }
+        }
+        return add_item_to_cart(object);
+
+    };
+
+
     return (
-        <div className='w-full px-[20px] pt-[15px] md:pt-[30px] tracking-wider'>
+        <div className='w-full px-[20px] pt-[15px] md:pt-[30px] pb-[80px] tracking-wider'>
             {/* Breadcrumbs */}
             <Breadcrumbs
                 className='text-gray-400 text-[13px] md:text-[15px]'
@@ -36,22 +127,23 @@ const Food_item_page = ({ product }) => {
                     Home
                 </Link>
                 <p>
-                    {product?.title || "Food Item"}
+                    {item?.menu_title || "Food Item"}
                 </p>
             </Breadcrumbs>
 
-            
-            {product ?
+
+            {(item && !is_loading) ?
                 <>
 
-                    <div className='w-full flex flex-col lg:flex-row mt-8 gap-6' >
+                    <div className='w-full flex flex-[2.5] flex-col lg:flex-row mt-8 mb-16 gap-6' >
+
                         {/* Product Image Gallery */}
                         <div className='flex flex-[1] lg:flex-[1.6]' >
-                            <div className='w-full' >
-                                <Image
-                                    src={menu_image}
+                            <div className='w-full flex justify-center items-start lg:pr-[80px] rounded-md overflow-hidden' >
+                                <img
+                                    src={item.menu_image}
                                     alt="Menu Image"
-                                    className='w-full'
+                                    className='w-full object-contain rounded-md'
                                 />
                             </div>
                         </div>
@@ -60,204 +152,265 @@ const Food_item_page = ({ product }) => {
                         <div className='flex flex-[1] flex-col' >
 
                             <div className='w-full text-stone-950'>
-                                <p className='text-[16px] xl:text-[18px] font-bold'>{product.title}</p>
-                                <p className='text-[16px] xl:text-[18px] font-bold'>Rs. {Number(product.price).toLocaleString("en-US")}</p>
+                                {/* Menu Title */}
+                                <p className='text-[15px] xl:text-[18px] font-bold overflow-hidden text-ellipsis line-clamp-1'>
+                                    {item.menu_title}
+                                </p>
+                                {/* Menu Price */}
+                                <p className='text-[15px] xl:text-[18px] text-rose-600 font-bold flex items-center   gap-2 lg:gap-4 overflow-hidden text-ellipsis line-clamp-1'>
+
+                                    {/* Actual Price */}
+                                    {(decide_text_FROM(item.options)) && "from"} Rs. {Number(total_price(local) || item.price).toLocaleString("en-US")}
+
+                                    {/* Compare Price */}
+                                    {Boolean(total_compare_price(local) || item.compare_price) &&
+                                        <span className='text-[13px] xl:text-[15px] text-stone-500 font-medium line-through'>
+                                            Rs. {Number(total_compare_price(local) || item.compare_price).toLocaleString("en-US")}
+                                        </span>
+                                    }
+
+                                    {/* Discount Percentage */}
+                                    {calculate_discount(total_price(local) ?
+                                        {
+                                            price: total_price(local),
+                                            compare_price: total_compare_price(local)
+                                        }
+                                        :
+                                        item)
+                                        &&
+                                        <span className='font-medium'>
+                                            {calculate_discount(total_price(local) ?
+                                                {
+                                                    price: total_price(local),
+                                                    compare_price: total_compare_price(local)
+                                                }
+                                                :
+                                                item)}
+                                        </span>
+                                    }
+                                </p>
                             </div>
 
-                            <div className='py-[14px] xl:py-[16px] border-b border-stone-200 text-stone-700' >
-                                <p className='text-[15px] xl:text-[17px] font-medium capitalize'>Availability: {product.stock ? "In Stock" : "Out Of Stock"}</p>
+                            {/* Description */}
+                            <div className='py-[14px] xl:py-[16px] text-stone-700' >
+                                <p className='text-[14px] xl:text-[17px] font-medium capitalize'>{item.description}</p>
                             </div>
 
-                            <div className='py-[14px] xl:py-[16px] border-b border-stone-200 text-stone-700' >
-                                <p className='text-[15px] xl:text-[17px] font-medium capitalize'>Size: {product.size}</p>
-                            </div>
 
-                            <div className='py-[14px] xl:py-[16px] border-b border-stone-200 text-stone-700' >
-                                <p className='text-[15px] xl:text-[17px] font-medium capitalize'>Condition: {product.condition}</p>
-                            </div>
+                            {/* Options */}
+                            {item.options && item.options.map((option) => (
 
-                            <div className='w-full mt-6 xl:mt-6'>
+                                <div key={option._id}
+                                    className={`py-[10px] border border-stone-300 text-stone-700 rounded-md my-2
+                                         transition-all duration-300 ${option.options_selectable ?
+                                            `${required_chip(option._id, local) ? "bg-stone-50" : "bg-red-50"}`
+                                            :
+                                            "bg-stone-50"}`
+                                    }
+                                >
+
+
+                                    {/* Option Label */}
+                                    <div className='w-full flex items-center justify-between pl-[25px] pr-[15px] my-2'>
+
+                                        <p className='text-[15px] xl:text-[17px] font-bold capitalize overflow-hidden text-ellipsis line-clamp-1'>{option.option_name}
+                                        </p>
+                                        {option.options_selectable &&
+                                            <>
+                                                {required_chip(option._id, local) ?
+                                                    <Chip label="Completed" variant='outlined' className='bg-white' />
+                                                    :
+                                                    <Chip label="Required" className='bg-rose-600 text-white' />
+                                                }
+                                            </>
+                                        }
+                                    </div>
+
+
+                                    {/* Option Value */}
+                                    {option.values.map((value) => (
+                                        <div key={value._id}>
+
+                                            {// If options are in selectable mode
+                                                option.options_selectable ?
+                                                    <button
+                                                        className='w-full flex items-center active:bg-stone-100 py-[2px] rounded px-[15px] select-none justify-between transition-all duration-300 my-2'
+                                                        onClick={() => handle_change(set_local, {
+                                                            price: value.option_price,
+                                                            compare_price: value.option_compare_price,
+                                                            option_value: value.option_value,
+                                                            value_id: value._id,
+                                                            option_name: option.option_name,
+                                                            option_id: option._id,
+                                                            section_id: section_id,
+                                                            success: true,
+                                                        })}
+                                                    >
+                                                        {/* Option Value */}
+                                                        <div className='flex items-center lg:gap-1' >
+                                                            <Radio
+                                                                checked={local.some(e => e.value_id.includes(value._id))}
+                                                                size="small"
+                                                                sx={{ color: "black", '&.Mui-checked': { color: "black", }, }}
+                                                            />
+                                                            <p className='text-[15px] xl:text-[17px] font-medium capitalize my-2'>
+                                                                {value.option_value}
+                                                            </p>
+                                                        </div>
+
+                                                        {/* Option Value Price */}
+                                                        {Boolean(value.option_price) &&
+                                                            <div className='flex flex-col items-center leading-[16px]'>
+                                                                {/* Option Price */}
+                                                                <p className='text-rose-600 text-[14px]  md:text-[15px] font-bold'>
+                                                                    Rs. {Number(value.option_price).toLocaleString("en-US")}
+                                                                </p>
+                                                                {/* Option Compare Price */}
+                                                                {Boolean(value.option_compare_price) &&
+                                                                    <p className='text-[13px] md:text-[14px] text-stone-500 line-through'>
+                                                                        Rs. {Number(value.option_compare_price).toLocaleString("en-US")}
+                                                                    </p>
+                                                                }
+                                                            </div>
+                                                        }
+                                                    </button>
+
+                                                    :
+
+                                                    // If Options are in view mode
+                                                    <div className='flex items-center gap-4 active:bg-stone-100 py-[2px] rounded px-[25px]  select-none duration-300 my-2'>
+                                                        {/* Option Value */}
+                                                        <CircleIcon className='text-[11px]' />
+                                                        <p className='text-[15px] xl:text-[17px] font-medium capitalize my-2 overflow-hidden text-ellipsis line-clamp-1'>
+                                                            {value.option_value}
+                                                        </p>
+                                                    </div>
+                                            }
+                                        </div>
+                                    ))}
+                                </div>
+                            ))}
+
+
+
+
+
+                            <div className='w-full mt-6 xl:mt-12'>
                                 {/* Checkout Button */}
-                                <button onClick={() => add_item_to_cart(product)} className='w-full py-[12px] flex justify-center items-center text-white bg-stone-950 font-black text-[13px] xl:text-[15px] hover:bg-white hover:text-stone-950 border border-stone-500 tracking-widest transition-all duration-300'>
+                                <button
+                                    disabled={!validate_options(item.options)}
+                                    onClick={() => child_add_to_cart()}
+                                    className={`w-full py-[12px] flex justify-center items-center text-white font-black text-[13px] xl:text-[15px]  tracking-widest transition-all active:scale-[.97] duration-300 rounded-md ${validate_options(item.options) ? "bg-rose-600 hover:opacity-80" : "bg-stone-300"}`}
+                                >
                                     ADD TO CART
                                 </button>
                             </div>
 
-                            <div className='w-full my-6 xl:mt-8'>
-                                {/* Checkout Button */}
-                                <button onClick={() => {
-                                    add_item_to_cart(product);
-                                    router.push("/checkouts");
-                                }} className='w-full py-[12px] flex justify-center items-center text-white bg-blue-500 font-black text-[13px] xl:text-[15px] hover:bg-white hover:text-stone-950 border border-transparent hover:border-stone-500 tracking-widest transition-all duration-300'>
-                                    BUY IT NOW
-                                </button>
-                            </div>
 
-                            <div className='w-full my-6 xl:my-8'>
-                                {/* Description*/}
-                                <Accordion
-                                    elevation={0}
-                                    sx={{
-                                        border: 'none',
-                                        borderTop: '1px solid #D1D5DB',
-                                        '&:before': {
-                                            display: 'none',
-                                        },
-                                    }}
-                                    className="shadow-none p-0"
-                                >
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                        aria-controls="panel1-content"
-                                        id="panel1-header"
-                                        className='px-0'
-                                    >
-                                        <p className='hover:underline underline-offset-2 text-[16px] text-stone-800'>Description</p>
-                                    </AccordionSummary>
-                                    <AccordionDetails className='px-0'>
-                                        <p>Shoe Size: {product.size_desc}</p>
 
-                                    </AccordionDetails>
-                                    <AccordionDetails className='px-0'>
-                                        <p>{product.shoes_desc}</p>
-                                    </AccordionDetails>
-                                    <AccordionDetails className='px-0'>
-                                        <ul className="list-disc pl-5">
-                                            <li>
-                                                All products are guaranteed to be 100% authentic and genuine and not a fake, first copy, or replica.
-                                            </li>
-                                        </ul>
-                                    </AccordionDetails>
-                                    <AccordionDetails className='px-0'>
-                                        <ul className="list-disc pl-5">
-                                            <li>
-                                                We inspect each item for originality and provide actual, unedited product pictures for a transparent shopping experience so that you can see exactly what you'll receive.
-                                            </li>
-                                        </ul>
-                                    </AccordionDetails>
-                                </Accordion>
-                                {/* Condition Guide */}
-                                <Accordion
-                                    elevation={0}
-                                    sx={{
-                                        border: 'none',
-                                        borderTop: '1px solid #D1D5DB',
-                                        '&:before': {
-                                            display: 'none',
-                                        },
-                                    }}
-                                    className="shadow-none p-0"
-                                >
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                        aria-controls="panel1-content"
-                                        id="panel1-header"
-                                        className='px-0'
-                                    >
-                                        <p className='hover:underline underline-offset-2 text-[16px] text-stone-800'>Condition Guide</p>
-                                    </AccordionSummary>
-                                    <AccordionDetails className='p-[15px] flex items-center'>
-                                        <p className='w-[130px]'>PREMIUM+</p>
-                                        <ul className="list-disc pl-5">
-                                            <li>Item is brand new and hasn't been worn before.</li>
-                                        </ul>
-                                    </AccordionDetails>
-                                    <AccordionDetails className='p-[15px] flex items-center bg-stone-100'>
-                                        <p className='w-[130px]'>PREMIUM</p>
-                                        <ul className="list-disc pl-5">
-                                            <li>Item is in almost brand-new condition.</li>
-                                        </ul>
-                                    </AccordionDetails>
-                                    <AccordionDetails className='p-[15px] flex items-center'>
-                                        <p className='w-[130px] border'>EXCELLENT</p>
-                                        <ul className="list-disc pl-5">
-                                            <li>Item has very little signs of wear.</li>
-                                        </ul>
-                                    </AccordionDetails>
-                                    <AccordionDetails className='p-[15px] flex items-center bg-stone-100'>
-                                        <p className='w-[130px]'>VERY GOOD</p>
-                                        <ul className="list-disc pl-5">
-                                            <li>Item has visible signs of wear and use.</li>
-                                        </ul>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </div>
                         </div>
 
                     </div>
-                    {/* Related Products */}
-                    <div className='mt-[100px] lg:mt-[140px]'>
-                        <h1 className='text-[20px] text-stone-800 w-full text-center mb-[20px]' >RELATED PRODUCTS</h1>
-                        <Carousel
-                            arrows
-                            autoPlaySpeed={3000}
-                            containerClass="container-with-dots"
-                            draggable
-                            infinite
-                            keyBoardControl
-                            minimumTouchDrag={80}
-                            pauseOnHover
-                            responsive={{
-                                superLargeDesktop: {
-                                    breakpoint: { max: 4000, min: 1536 }, // 2xl
-                                    items: 5,
-                                },
-                                desktop: {
-                                    breakpoint: { max: 1536, min: 1280 }, // xl
-                                    items: 4,
-                                },
-                                laptop: {
-                                    breakpoint: { max: 1280, min: 1024 }, // lg
-                                    items: 3,
-                                },
-                                tablet: {
-                                    breakpoint: { max: 1024, min: 640 }, // md
-                                    items: 3,
-                                },
-                                mobile: {
-                                    breakpoint: { max: 640, min: 0 }, // sm
-                                    items: 2,
-                                },
-                            }}
-                            shouldResetAutoplay
-                            slidesToSlide={1}
-                            swipeable
-                        >
-                            {[...Array(20)].map((_, i) => (
-                                <Link href={"/product"} key={i}>
-                                    <div
-                                        className={`p-4 flex gap-2 cursor-pointer overflow-hidden flex-col`}
-                                    >
-                                        <div className='overflow-hidden'>
-                                            <Image alt="Product" src={menu_image} className={`w-full hover:scale-[1.1] transition-all duration-500 object-contain"} `} />
-                                        </div>
-                                        <div className='flex flex-col gap-1'>
-                                            <p className='text-[16px] font-bold text-stone-600' >Product {i + 1}</p>
-                                            <p className='text-[14px] font-bold text-black mt-2' >Rs. {((i + 1) * 10000).toLocaleString("en-US")}</p>
-                                            <p className='text-[14px] text-black' >Size: {"42"}</p>
-                                            <p className='text-[14px] text-black' >Condition: <span className='capitalize text-stone-700 text-[13px]'>{"Excelllent"}</span></p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            ))}
 
-                        </Carousel>
-                    </div>
                 </>
 
                 :
-                <div className="h-[70vh] flex flex-col justify-center items-center">
-                    <h1 className='text-[20px] md:text-[24px] text-stone-500 tracking-wider uppercase'>
-                        NO FOOD ITEM SELECTED TO SHOW YOU
-                    </h1>
-
-                    <div className='my-[30px] w-full flex justify-center items-center'>
-                        <Link href="/" >
-                            <button className='font-extrabold text-black hover:text-white active:opacity-50 transition-all py-[12px] px-[16px] md:w-[300px] hover:bg-black bg-white border border-stone-400 duration-300' >
-                                CONTINUE ORDERING
-                            </button>
-                        </Link>
+                <div className='w-full flex flex-[2.5] flex-col lg:flex-row mt-8 mb-16 gap-6' >
+                    <div className='flex flex-[1] lg:flex-[1.6]' >
+                        <div className='w-full flex justify-center items-start lg:pr-[80px] rounded-md overflow-hidden' >
+                            <Skeleton
+                                variant="rounded"
+                                animation="wave"
+                                className='w-full h-[35vh] md:h-[50vh] xl:h-[75vh] bg-stone-100'
+                            />
+                        </div>
                     </div>
+
+                    <div className='flex flex-[1] flex-col'>
+                        <Skeleton
+                            variant="text"
+                            animation="wave"
+                            className='w-[100px] md:w-[200px] bg-stone-100'
+                        />
+
+                        <Skeleton
+                            variant="text"
+                            animation="wave"
+                            className='w-[180px] md:w-[280px] md:mt-1 bg-stone-100'
+                        />
+
+                        <Skeleton
+                            variant="text"
+                            animation="wave"
+                            className='w-[250px] md:w-[400px] mt-4 md:mt-8 bg-stone-100'
+                        />
+
+                        <div className='py-[10px] border border-stone-200 text-stone-700 rounded-md my-2 transition-all duration-300 mt-8 px-[20px]' >
+
+
+                            <div className='w-full flex justify-between items-center md:mt-2 mb-2 md:mb-4' >
+                                <Skeleton
+                                    variant="text"
+                                    animation="wave"
+                                    className='w-[90px] md:w-[120px] h-[40px] bg-stone-100'
+                                />
+                                <Skeleton
+                                    variant="text"
+                                    animation="wave"
+                                    className='w-[90px] md:w-[120px] h-[40px] bg-stone-100'
+                                />
+                            </div>
+
+
+                            <div className='w-full flex justify-between items-center md:my-2' >
+                                <Skeleton
+                                    variant="text"
+                                    animation="wave"
+                                    className='w-[70px] md:w-[100px] bg-stone-100'
+                                />
+                                <Skeleton
+                                    variant="text"
+                                    animation="wave"
+                                    className='w-[70px] md:w-[100px] bg-stone-100'
+                                />
+                            </div>
+
+                            <div className='w-full flex justify-between items-center md:my-2' >
+                                <Skeleton
+                                    variant="text"
+                                    animation="wave"
+                                    className='w-[70px] md:w-[100px] bg-stone-100'
+                                />
+                                <Skeleton
+                                    variant="text"
+                                    animation="wave"
+                                    className='w-[70px] md:w-[100px] bg-stone-100'
+                                />
+                            </div>
+
+                            <div className='w-full flex justify-between items-center md:my-2' >
+                                <Skeleton
+                                    variant="text"
+                                    animation="wave"
+                                    className='w-[70px] md:w-[100px] bg-stone-100'
+                                />
+                                <Skeleton
+                                    variant="text"
+                                    animation="wave"
+                                    className='w-[70px] md:w-[100px] bg-stone-100'
+                                />
+                            </div>
+
+
+
+                        </div>
+                        <Skeleton
+                            variant='rounded'
+                            animation="wave"
+                            className='w-full mt-10 md:mt-14 h-[45px] bg-stone-100'
+                        />
+                    </div>
+
                 </div>
             }
         </div>

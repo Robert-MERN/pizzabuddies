@@ -75,7 +75,7 @@ export default async function handler(req, res) {
         }
 
         // sending success response to client
-        return res.status(200).json({ success: true, message: "Section has been updated" });
+        return res.status(200).json({ success: true, message: "Menu has been updated" });
 
 
     } catch (err) {

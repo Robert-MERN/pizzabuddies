@@ -24,7 +24,8 @@ function TransitionDown(props) {
 }
 
 const Layout = ({ children }) => {
-    const router_pathname = useRouter().pathname;
+    const router = useRouter();
+    const ignore_except = ["/", "/food-item"];
 
     const {
         snackbar_alert,
@@ -43,6 +44,7 @@ const Layout = ({ children }) => {
         reset_states,
         API_loading,
         set_API_loading,
+        cart
     } = useStateContext();
 
     // lock scroll when drawer opens
@@ -58,6 +60,12 @@ const Layout = ({ children }) => {
     }, [drawer_state]);
 
 
+    const total_values_of_cart = (_cart, field) => {
+        if (field === "price") {
+            return _cart.reduce((prev, next) => prev + (next.quantity * next.price), 0)
+        }
+        return _cart.reduce((prev, next) => prev + next[field], 0);
+    }
     return (
         <div>
             {/* Loader Component */}
@@ -112,7 +120,7 @@ const Layout = ({ children }) => {
                 set_data={set_data}
             />
             {children}
-            {router_pathname !== "/admin" &&
+            {router.pathname !== "/admin" &&
                 <a
                     target='_blank'
                     href="https://wa.me/923102223511"
@@ -123,6 +131,34 @@ const Layout = ({ children }) => {
 
                 </a>
             }
+
+            <div className={` fixed right-0 left-0 z-[9999] w-[100vw]  flex justify-center ${((cart.length && ignore_except.some(e => e === router.pathname)) && router.pathname.includes("")) ? "bottom-0" : "bottom-[-200px]"} transition-all duration-500`}>
+                <div className=' 2xl:w-[1650px] xl:w-[1400px] lg:w-[1100px] lg:px-[40px] w-full' >
+
+                    <div style={{ boxShadow: "rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em" }} className='w-full p-[12px] md:p-[14px] lg:p-[16px] bg-white rounded-t-3xl h-[120px] px-[20px] flex items-center'>
+
+
+                        <div onClick={() => router.push("/cart")} className='bg-rose-600 w-full rounded-xl flex items-center justify-between text-white px-[20px] py-[8px] active:scale-[.98] transition-all duration-200 select-none cursor-pointer' >
+
+                            <button className='text-center text-[11px]  md:text-[13px] font-bold rounded-full border border-white min-w-[30px] h-[30px] flex justify-center items-center p-[6px] transition-all duration-200' >
+                                {Boolean(total_values_of_cart(cart, "quantity") > 99) ? "99+" : total_values_of_cart(cart, "quantity")}
+                            </button>
+
+
+                            <div className='text-center'>
+                                <p className='font-bold text-[13px] md:text-[16px]'>View you cart</p>
+                                <p className='text-[11px] md:text-[15px]'>Pizza Buddies - Maymar</p>
+                            </div>
+                            <div>
+                                <p className='font-bold text-right text-[13px] md:text-[16px] max-w-[90px] text-nowrap text-ellipsis overflow-hidden'>Rs. {total_values_of_cart(cart, "price").toLocaleString("en-US")}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     )
 }

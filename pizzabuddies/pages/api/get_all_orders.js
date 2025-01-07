@@ -16,9 +16,7 @@ export default async function handler(req, res) {
         await connect_mongo();
         console.log("Successfuly conneted with DB");
 
-        const orders = new Orders(req.body);
-
-        await orders.save();
+        const orders = await Orders.find().sort({ createdAt: -1 });
 
         // sending success response to client
         return res.status(200).json(orders);

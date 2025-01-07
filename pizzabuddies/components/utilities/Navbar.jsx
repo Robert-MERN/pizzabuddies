@@ -16,8 +16,9 @@ const Food_navbar = ({ admin }) => {
     const { toggle_drawer, cart } = useStateContext();
 
     useEffect(() => {
-        document.querySelectorAll(".MuiBadge-colorInfo").forEach((each) => each.style = "background-color: #78716c")
+        document.querySelectorAll(".MuiBadge-colorInfo").forEach((each) => each.style = "background-color: #e11d48")
     }, []);
+
 
     return (
         <div className="pr-[30px] pl-[15px] w-full h-[70px] flex justify-between items-center bg-stone-950 shadow-[0_1px_3px_#0000001a]">
@@ -88,7 +89,7 @@ const Food_navbar = ({ admin }) => {
                         </div>
                         <Link href={"/cart"}>
                             <button className="active:text-stone-400 text-white transition-all">
-                                <Badge badgeContent={cart.length} color="info" className="" showZero>
+                                <Badge badgeContent={cart.reduce((prev, next) => prev + next.quantity, 0)} color="info" className="">
                                     <FiShoppingCart className="text-[24px]" />
                                 </Badge>
                             </button>

@@ -15,6 +15,8 @@ import {
 } from '@/utils/functions/multiple_options_logic';
 import { IoClose } from "react-icons/io5";
 import Autocomplete from '@mui/material/Autocomplete';
+import Switch from '@mui/material/Switch';
+
 
 
 
@@ -102,18 +104,7 @@ const Update_menu = ({
     }
 
     const handle_submit = async (set_options) => {
-        set_options(prev_options => {
-            const copy_options = [...prev_options.options];
-            if (copy_options.length) {
-                for (let i = 0; i < copy_options.length; i++) {
-                    if (!copy_options.at(i).is_added) {
-                        copy_options.splice(i, 1);
-                    }
-                }
-            }
-            return { ...prev_options, options: copy_options };
-        });
-
+        // Step 1: Compute Errors
         const errors = {};
         Object.keys(data).forEach((field_name) => {
             const error = validate_form(field_name, data[field_name]);
@@ -122,32 +113,54 @@ const Update_menu = ({
             }
         });
 
-        set_options((prev_options) => ({
-            ...prev_options,
-            errors,
-        }));
+        // Step 2: Update State with Errors
+        const updatedOptions = await new Promise((resolve) => {
+            set_options((prev_options) => {
+                const updated = { ...prev_options, errors };
+                resolve(updated); // Capture the updated state
+                return updated;
+            });
+        });
 
+        // Step 3: Filter Options and Update State
+        const cleanedOptions = await new Promise((resolve) => {
+            set_options((prev_options) => {
+                const copy_options = [...prev_options.options];
+                if (copy_options.length) {
+                    for (let i = 0; i < copy_options.length; i++) {
+                        if (!copy_options.at(i).is_added) {
+                            copy_options.splice(i, 1);
+                        }
+                    }
+                }
+                const updated = { ...prev_options, options: copy_options };
+                resolve(updated); // Capture the updated state
+                return updated;
+            });
+        });
+
+        // Step 4: Validation and Submission
         if (Object.values(errors).every((error) => !error)) {
-            // Form is valid, submit it
-            const { errors, section_title, banner_image, menu_image, ...other } = data;
+            // Form is valid
+            const { errors, section_title, banner_image, menu_image, ...other } = cleanedOptions;
 
             let updated_body;
             if (menu_image && !menu_image.includes("res.cloudinary.com")) {
                 // Uploading Menu Image
                 const menu_image_url = await upload_image_api(axios, menu_image, set_API_loading);
-                // Adding Menu Image to Body
                 updated_body = { menu_image: menu_image_url, ...other };
             } else {
                 updated_body = { menu_image, ...other };
             }
+
             // Updating Menu
             const response = await update_menu_api(axios, section_id, menu_id, updated_body, set_API_loading, reset_states);
 
             if (response === "success") {
-                image_input_ref.current.value = ""
+                image_input_ref.current.value = "";
             }
         }
-    }
+    };
 
 
 
@@ -302,6 +315,11 @@ const Update_menu = ({
                                 variant="outlined"
                                 type="number"
                                 name="price"
+                                slotProps={{
+                                    inputLabel: {
+                                        shrink: true,
+                                    },
+                                }}
                                 value={data.price}
                                 onChange={(e) => handle_change_options(e, set_data)}
                                 error={Boolean(data.errors.price)}
@@ -318,6 +336,11 @@ const Update_menu = ({
                                 variant="outlined"
                                 type='number'
                                 name="compare_price"
+                                slotProps={{
+                                    inputLabel: {
+                                        shrink: true,
+                                    },
+                                }}
                                 value={data.compare_price}
                                 onChange={(e) => handle_change_options(e, set_data)}
                                 error={Boolean(data.errors.compare_price)}
@@ -380,7 +403,24 @@ const Update_menu = ({
 
                                         <p className='text-[15px] text-stone-400  leading-[18px]'>Even when you're editng option, click on the "DONE" button after you make changes, otherwise hitting "SAVE" button directly will remove that option.</p>
 
-                                        <div className="w-full flex gap-2">
+                                        <div className='w-full flex items-center gap-2 lg:justify-end mb-3' >
+                                            <p className='text-[15px] text-stone-500 font-semibold  leading-[18px]'>Options Selectable</p>
+                                            <Switch
+                                                checked={option.options_selectable}
+                                                onChange={(e) => handle_change_options(
+                                                    {
+                                                        target: {
+                                                            value: e.target.checked,
+                                                            name: "options_selectable"
+                                                        }
+                                                    },
+                                                    set_data,
+                                                    index
+                                                )}
+                                            />
+                                        </div>
+
+                                        <div className="w-full flex gap-2 mb-4">
                                             <TextField
                                                 className='w-full'
                                                 placeholder='Enter Option Name'
@@ -410,6 +450,7 @@ const Update_menu = ({
                                                             label="Option Value"
                                                             variant="outlined"
                                                             name="option_value"
+                                                            size="small"
                                                             value={each.option_value}
                                                             onChange={(e) => handle_change_options(e, set_data, index, index_2)}
                                                             error={Boolean(each.values_error)}
@@ -423,7 +464,30 @@ const Update_menu = ({
                                                             label="Price"
                                                             variant="outlined"
                                                             name="option_price"
+                                                            size="small"
+                                                            slotProps={{
+                                                                inputLabel: {
+                                                                    shrink: true,
+                                                                },
+                                                            }}
                                                             value={each.option_price}
+                                                            onChange={(e) => handle_change_options(e, set_data, index, index_2)}
+                                                        />
+                                                        <TextField
+                                                            className='w-fit'
+                                                            type="number"
+                                                            placeholder='00'
+                                                            id="outlined-basic"
+                                                            label="Compare Price"
+                                                            variant="outlined"
+                                                            name="option_compare_price"
+                                                            size="small"
+                                                            slotProps={{
+                                                                inputLabel: {
+                                                                    shrink: true,
+                                                                },
+                                                            }}
+                                                            value={each.option_compare_price}
                                                             onChange={(e) => handle_change_options(e, set_data, index, index_2)}
                                                         />
                                                     </div>

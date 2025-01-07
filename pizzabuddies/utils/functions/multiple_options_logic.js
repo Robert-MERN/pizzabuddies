@@ -5,10 +5,12 @@ export const add_option = (set_options, index, set_index) => {
         values: [
             {
                 option_value: "",
-                option_price: "",
+                option_price: 0,
+                option_compare_price: 0,
                 values_error: "",
             },
         ],
+        options_selectable: false,
         is_added: false,
         option_error: "",
     }
@@ -151,7 +153,8 @@ export const handle_change_options = (event, set_options, index, index_2) => {
             if (copy_options.at(index).values.at(-1).option_value) {
                 copy_options.at(index).values.push({
                     option_value: "",
-                    option_price: "",
+                    option_price: 0,
+                    option_compare_price: 0,
                     values_error: "",
                 })
             };
@@ -347,7 +350,8 @@ export const edit_option = (set_options, index, set_index) => {
                 ...copy_options.at(real_time_index).values,
                 {
                     option_value: "",
-                    option_price: "",
+                    option_price: 0,
+                    option_compare_price: 0,
                     values_error: "",
                 }
             ]
