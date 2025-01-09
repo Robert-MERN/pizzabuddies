@@ -113,7 +113,7 @@ const Layout = ({ children }) => {
                 reset_states={reset_states}
             />
 
-            {(router.pathname !== "/admin" && router.pathname !== "/checkouts/[order_id]") ?
+            {(router.pathname !== "/admin" && router.pathname !== "/checkouts/[order_id]" && router.pathname !== "/login" ) ?
 
                 <Location_modal
                     modals_state={modals_state}
@@ -136,16 +136,18 @@ const Layout = ({ children }) => {
             />
 
             {children}
-            {(router.pathname !== "/admin" && router.pathname !== "/cart" && router.pathname !== "/checkouts" && router.pathname !== "/checkouts/[order_id]" && !cart.length) &&
+            {(router.pathname !== "/admin" && router.pathname !== "/cart" && router.pathname !== "/checkouts" && router.pathname !== "/checkouts/[order_id]"  && router.pathname !== "/login"  && !cart.length) ?
                 <a
                     target='_blank'
-                    href="https://wa.me/923102223511"
+                    href="https://wa.me/923152825015"
                     className={`p-[12px] md:p-[14px] lg:p-[16px] fixed bottom-[25px] md:bottom-[35px] right-[20px] md:right-[30px] bg-[#25D366] rounded-full ${styles.whatsapp_shaky} z-[9999]`}
                 >
 
                     <WhatsAppIcon className='text-white text-[28px] md:text-[32px] lg:text-[36px]' />
 
                 </a>
+                :
+                <></>
             }
 
 

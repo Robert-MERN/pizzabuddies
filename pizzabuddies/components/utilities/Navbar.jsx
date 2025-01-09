@@ -59,9 +59,9 @@ const Food_navbar = ({ admin }) => {
 
                         </li>
                         <li>
-                            <a className={`font-medium text-[17px] text-stone-200 active:text-stone-600 flex items-center gap-2 border-[1px] border-transparent hover:border-b-stone-400 transition-all duration-100 text-nowrap ${styles.shaky}`} href="tel:+923102223511">
+                            <a className={`font-medium text-[17px] text-stone-200 active:text-stone-600 flex items-center gap-2 border-[1px] border-transparent hover:border-b-stone-400 transition-all duration-100 text-nowrap ${styles.shaky}`} href="tel:+923152825015">
                                 <PhoneIcon className="text-[18px]" />
-                                0310 2223 511
+                                0315 2825 015
                             </a>
                         </li>
 
@@ -82,9 +82,9 @@ const Food_navbar = ({ admin }) => {
                     :
                     <>
                         <div className="lg:hidden">
-                            <a className={`font-semibold text-[15px] text-stone-200 active:text-stone-600 flex items-center gap-2 border-[1px] border-transparent hover:border-b-stone-400 transition-all duration-100 text-nowrap ${styles.shaky}`} href="tel:+923102223511">
+                            <a className={`font-semibold text-[15px] text-stone-200 active:text-stone-600 flex items-center gap-2 border-[1px] border-transparent hover:border-b-stone-400 transition-all duration-100 text-nowrap ${styles.shaky}`} href="tel:+923152825015">
                                 <PhoneIcon className="text-[15px]" />
-                                0310 2223 511
+                                0315 2825 015
                             </a>
                         </div>
                         <Link href={"/cart"}>

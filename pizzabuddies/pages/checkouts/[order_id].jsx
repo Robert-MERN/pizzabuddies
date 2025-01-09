@@ -13,7 +13,7 @@ export default function Checkouts() {
     return (
         <>
             <Head>
-                <title>Kickskraze | Checkouts</title>
+                <title>Pizza Buddies | Checkouts</title>
                 <meta name="description" content="Checkouts Page" />
                 <link rel="icon" href="/images/icon.png" />
             </Head>

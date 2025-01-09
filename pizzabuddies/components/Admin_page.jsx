@@ -44,7 +44,7 @@ const Admin_page = ({ axios }) => {
         <div className='w-full px-[20px] pt-[20px] md:py-[40px]  flex justify-center gap-12'>
 
             <div className='flex-[2] relative hidden lg:block' >
-                <div className='flex flex-col shadow-md rounded-md  text-stone-700 overflow-hidden text-[15px] transition-all sticky top-0'>
+                <div className='flex text-[14px] flex-col shadow-md rounded-md  text-stone-700 overflow-hidden transition-all sticky top-0'>
                     <button
                         onClick={() => handle_sidebar("create-menu")}
                         className={`py-[16px] border-y px-[20px] border-b-stone-300 active:opacity-60 transition-all duration-300 ${sidebar === "create-menu" ? "bg-black text-white" : "bg white text-stone-900"}`}

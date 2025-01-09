@@ -1,5 +1,6 @@
 import Orders from '@/models/order_model';
 import connect_mongo from '@/utils/functions/connect_mongo';
+import send_confirm_mail from '@/utils/functions/send_confirm_mail';
 
 /**
  * 
@@ -20,8 +21,16 @@ export default async function handler(req, res) {
 
         await orders.save();
 
-        // sending success response to client
-        return res.status(200).json(orders);
+        const response = await send_confirm_mail(res, orders);
+
+        if (response.message === "mail-sent") {
+            // sending success response to client
+            return res.status(200).json(orders);
+        }
+
+        await Orders.findByIdAndDelete(orders._id);
+        return res.status(50).json({ success: false, message: "Order couldn't be created!" });
+
     } catch (err) {
 
         // if server catches any error

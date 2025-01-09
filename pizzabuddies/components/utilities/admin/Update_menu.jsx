@@ -283,7 +283,7 @@ const Update_menu = ({
 
                                 <label
                                     htmlFor="menu_image_input"
-                                    className='w-full py-[10px] bg-indigo-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-center cursor-pointer select-none uppercase'>
+                                    className='w-full py-[10px] bg-indigo-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-center cursor-pointer select-none uppercase text-[14px]'>
                                     Select Menu Image
                                 </label>
                             </div>
@@ -391,7 +391,7 @@ const Update_menu = ({
 
                                         <button
                                             onClick={() => edit_option(set_data, index, set_helper_index)}
-                                            className='px-[14px] py-[4px] border-2 border-stone-300 rounded-md font-bold active:bg-stone-200 hover:bg-stone-100 transition-all'
+                                            className='px-[14px] py-[4px] border-2 border-stone-300 rounded-md font-semibold active:bg-stone-200 hover:bg-stone-100 transition-all text-[13px]'
                                         >
                                             Edit
                                         </button>
@@ -508,14 +508,14 @@ const Update_menu = ({
 
                                             <button
                                                 onClick={() => delete_option(set_data, index, set_helper_index)}
-                                                className='w-fit px-[16px] py-[6px] bg-red-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded'
+                                                className='w-fit px-[16px] py-[6px] bg-red-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-[13px]'
                                             >
                                                 Delete
                                             </button>
 
                                             <button
                                                 onClick={() => save_option(set_data, index, set_helper_index)}
-                                                className='w-fit px-[18px] py-[6px] bg-white border border-stone-300 text-black active:opacity-50 transition-all text-nowrap rounded hover:bg-stone-500 hover:text-white'
+                                                className='w-fit px-[18px] py-[6px] bg-white border border-stone-300 text-black active:opacity-50 transition-all text-nowrap rounded hover:bg-stone-500 hover:text-white text-[13px]'
                                             >
                                                 Done
                                             </button>
@@ -551,11 +551,11 @@ const Update_menu = ({
 
 
                     <div className="w-full flex justify-between mb-[30px]">
-                        <button onClick={() => toggle_modal("delete_menu_modal")} className='px-[28px] py-[8px] bg-red-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded '>
+                        <button onClick={() => toggle_modal("delete_menu_modal")} className='px-[28px] py-[8px] bg-red-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-[14px]'>
                             DELETE
                         </button>
 
-                        <button onClick={() => handle_submit(set_data)} className='px-[28px] py-[8px] bg-emerald-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded '>
+                        <button onClick={() => handle_submit(set_data)} className='px-[28px] py-[8px] bg-emerald-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-[14px]'>
                             UPDATE
                         </button>
                     </div>

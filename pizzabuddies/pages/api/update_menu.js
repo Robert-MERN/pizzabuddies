@@ -1,6 +1,7 @@
 import FoodMenu from '@/models/menu_model';
 import connect_mongo from '@/utils/functions/connect_mongo';
 import mongoose from 'mongoose';
+import { deleteImage } from '@/utils/functions/destroy_cloudinary_image';
 
 /**
  * 

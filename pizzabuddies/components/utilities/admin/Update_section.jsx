@@ -155,18 +155,18 @@ const Update_section = ({
 
             {/* Inputs for Section */}
             <div className='w-full shadow-md px-[15px] pb-[30px] py-[10px] flex flex-col gap-6 rounded-md '>
-                <h1 className='text-[18px] md:text-[20px] font-medium text-stone-700 pl-1 mb-3 ' >MANAGE SECTION*</h1>
+                <h1 className='text-[18px] md:text-[20px] font-medium text-stone-700 pl-1 mb-3]' >MANAGE SECTION*</h1>
 
                 <div className='w-full flex flex-col sm:flex-row items-center justify-center sm:gap-0 select-none' >
                     <button
                         onClick={() => handle_change_section(set_data, "update-section")}
-                        className={`w-full text-[16px] py-[10px] md:py-[12px] hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded-t-lg sm:rounded-t-none sm:rounded-tl-lg sm:rounded-bl-lg border uppercase ${section === "update-section" ? "text-white bg-black border-black" : "text-stone-500 bg-white border-stone-400"}`}>
+                        className={`w-full text-[14px] py-[10px] md:py-[12px] hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded-t-lg sm:rounded-t-none sm:rounded-tl-lg sm:rounded-bl-lg border uppercase ${section === "update-section" ? "text-white bg-black border-black" : "text-stone-500 bg-white border-stone-400"}`}>
                         Update Section
                     </button>
 
                     <button
                         onClick={() => handle_change_section(set_data, "create-section")}
-                        className={`w-full text-[16px] py-[10px] md:py-[12px] hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded-b-lg sm:rounded-b-none sm:rounded-tr-lg sm:rounded-br-lg border uppercase ${section === "create-section" ? "text-white bg-black border-black" : "text-stone-500 bg-white border-stone-400"}`}>
+                        className={`w-full text-[14px] py-[10px] md:py-[12px] hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded-b-lg sm:rounded-b-none sm:rounded-tr-lg sm:rounded-br-lg border uppercase ${section === "create-section" ? "text-white bg-black border-black" : "text-stone-500 bg-white border-stone-400"}`}>
                         Create New Section
                     </button>
                 </div>
@@ -254,7 +254,7 @@ const Update_section = ({
 
                                         <label
                                             htmlFor="banner_image_input"
-                                            className='w-full py-[10px] bg-indigo-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-center cursor-pointer select-none uppercase'>
+                                            className='w-full py-[10px] bg-indigo-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-center cursor-pointer select-none uppercase text-[14px]'>
                                             Select Banner Image
                                         </label>
                                     </FormControl>
@@ -320,7 +320,7 @@ const Update_section = ({
 
                                     <label
                                         htmlFor="banner_image_input"
-                                        className='w-full py-[10px] bg-indigo-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-center cursor-pointer select-none uppercase'>
+                                        className='w-full py-[10px] bg-indigo-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-center cursor-pointer select-none uppercase text-[14px]'>
                                         Select Banner Image
                                     </label>
                                 </FormControl>
@@ -344,13 +344,13 @@ const Update_section = ({
             <div className={`w-full flex mb-[30px] ${section === "update-section" && section_id ? "justify-between" : "justify-end"}`}>
                 {(section === "update-section" && section_id) &&
 
-                    <button onClick={() => toggle_modal("delete_section_modal")} className='px-[28px] py-[8px] bg-red-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded '>
+                    <button onClick={() => toggle_modal("delete_section_modal")} className='px-[28px] py-[8px] bg-red-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-[14px]'>
                         DELETE
                     </button>
                 }
                 {((section === "update-section" && section_id) || section === "create-section") &&
 
-                    <button onClick={() => handle_submit(set_data)} className='px-[28px] py-[8px] bg-emerald-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded '>
+                    <button onClick={() => handle_submit(set_data)} className='px-[28px] py-[8px] bg-emerald-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-[14px]'>
                         {section === "update-section" ? "UPDATE" : "SAVE"}
                     </button>
                 }

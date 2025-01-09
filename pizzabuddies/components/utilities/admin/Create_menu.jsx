@@ -202,13 +202,13 @@ const Create_menu = ({
                 <div className='w-full flex flex-col sm:flex-row items-center justify-center sm:gap-0 select-none' >
                     <button
                         onClick={() => handle_change_section(set_data, "use-existing")}
-                        className={`w-full text-[16px] py-[10px] md:py-[12px] hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded-t-lg sm:rounded-t-none sm:rounded-tl-lg sm:rounded-bl-lg border uppercase ${section === "use-existing" ? "text-white bg-black border-black" : "text-stone-500 bg-white border-stone-400"}`}>
+                        className={`w-full text-[14px] py-[10px] md:py-[12px] hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded-t-lg sm:rounded-t-none sm:rounded-tl-lg sm:rounded-bl-lg border uppercase ${section === "use-existing" ? "text-white bg-black border-black" : "text-stone-500 bg-white border-stone-400"}`}>
                         Use Existing Section
                     </button>
 
                     <button
                         onClick={() => handle_change_section(set_data, "create-new")}
-                        className={`w-full text-[16px] py-[10px] md:py-[12px] hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded-b-lg sm:rounded-b-none sm:rounded-tr-lg sm:rounded-br-lg border uppercase ${section === "create-new" ? "text-white bg-black border-black" : "text-stone-500 bg-white border-stone-400"}`}>
+                        className={`w-full text-[14px] py-[10px] md:py-[12px] hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded-b-lg sm:rounded-b-none sm:rounded-tr-lg sm:rounded-br-lg border uppercase ${section === "create-new" ? "text-white bg-black border-black" : "text-stone-500 bg-white border-stone-400"}`}>
                         Create New Section
                     </button>
                 </div>
@@ -290,7 +290,7 @@ const Create_menu = ({
 
                             <label
                                 htmlFor="banner_image_input"
-                                className='w-full py-[10px] bg-indigo-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-center cursor-pointer select-none uppercase'>
+                                className='w-full py-[10px] bg-indigo-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-center cursor-pointer select-none uppercase text-[14px]'>
                                 Select Banner Image
                             </label>
                         </FormControl>
@@ -349,7 +349,7 @@ const Create_menu = ({
 
                                 <label
                                     htmlFor="menu_image_input"
-                                    className='w-full py-[10px] bg-indigo-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-center cursor-pointer select-none uppercase'>
+                                    className='w-full text-[14px] py-[10px] bg-indigo-500 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-center cursor-pointer select-none uppercase'>
                                     Select Menu Image
                                 </label>
                             </div>
@@ -595,7 +595,7 @@ const Create_menu = ({
                         <div className={`w-full p-[20px]  ${Boolean(data.options.length) ? "border-t-2 border-stone-300" : ""}`}>
                             <button
                                 onClick={() => add_option(set_data, ((helper_index !== "") ? helper_index : -1), set_helper_index)}
-                                className='w-full text-blue-500 hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-start font-bold flex items-center gap-2'
+                                className='w-full text-blue-500 hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-start font-bold flex items-center gap-2 text-[16px]'
                             >
                                 {Boolean(data.options.length) ?
                                     <>
@@ -616,7 +616,7 @@ const Create_menu = ({
 
 
                     <div onClick={() => handle_submit(set_data, data)} className="w-full flex justify-end mb-[30px]">
-                        <button className='w-full lg:w-fit lg:px-[28px] py-[8px] bg-emerald-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded '>
+                        <button className='w-full lg:w-fit lg:px-[28px] py-[8px] bg-emerald-600 text-white hover:opacity-75 active:opacity-50 transition-all text-nowrap rounded text-[14px]'>
                             SAVE
                         </button>
                     </div>

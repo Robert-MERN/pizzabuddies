@@ -375,11 +375,11 @@ const Checkouts_page = ({ axios }) => {
                                                 color="info"
                                                 showZero
                                             >
-                                                <div className="w-[65px] h-[65px] border border-stone-300 shadow grid place-items-center rounded-md">
+                                                <div className="w-[65px] h-[65px] overflow-hidden border border-stone-300 shadow grid place-items-center rounded-md">
                                                     <img
                                                         alt="product"
                                                         src={item.menu_image}
-                                                        className="w-full h-full object-contain"
+                                                        className="w-[65px] h-[65px] object-cover"
                                                     />
                                                 </div>
                                             </Badge>
