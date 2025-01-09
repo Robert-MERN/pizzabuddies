@@ -6,51 +6,51 @@ export const mail_html_structure = (order) => {
 
 
 
-  const { _id, email,
-    special_instructions,
-    firstName,
-    lastName,
-    address,
-    phone,
-    delivery_charges,
-    purchase,
-    total_amount,
-    total_items,
-    location,
-    branch,
-    order_method,
-    createdAt,
-  } = order;
+const { _id, email,
+special_instructions,
+firstName,
+lastName,
+address,
+phone,
+delivery_charges,
+purchase,
+total_amount,
+total_items,
+location,
+branch,
+order_method,
+createdAt,
+} = order;
 
 
-  // Calculator
-  const calc_total_amount = (arr) => {
-    return arr.reduce((prev, next) => prev + (next.price * next.quantity), 0);
-  }
+// Calculator
+const calc_total_amount = (arr) => {
+return arr.reduce((prev, next) => prev + (next.price * next.quantity), 0);
+}
 
 
-  const calc_gross_total_amount = (obj) => {
-    if (obj.order_method === "delivery") {
-      return obj.purchase.reduce((prev, next) => prev + (next.price * next.quantity), 0) + Number(obj.delivery_charges);
-    }
-    return obj.purchase.reduce((prev, next) => prev + (next.price * next.quantity), 0);
-  }
+const calc_gross_total_amount = (obj) => {
+if (obj.order_method === "delivery") {
+return obj.purchase.reduce((prev, next) => prev + (next.price * next.quantity), 0) + Number(obj.delivery_charges);
+}
+return obj.purchase.reduce((prev, next) => prev + (next.price * next.quantity), 0);
+}
 
 
-  const date_formatter = (date) => {
-    // Create a Date object
-    const dateObject = new Date(date);
+const date_formatter = (date) => {
+// Create a Date object
+const dateObject = new Date(date);
 
-    // Format the date
-    const options = { year: 'numeric', month: 'short', day: '2-digit' };
-    return dateObject.toLocaleDateString('en-US', options);
-  }
-
-
+// Format the date
+const options = { year: 'numeric', month: 'short', day: '2-digit' };
+return dateObject.toLocaleDateString('en-US', options);
+}
 
 
-  const _html =
-    `
+
+
+const _html =
+`
 <!DOCTYPE html
   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
@@ -819,7 +819,7 @@ export const mail_html_structure = (order) => {
                                     target="_blank" href="https://pizzabuddies.store"
                                     style="mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px"><img
                                       src="https://erxznja.stripocdn.email/content/guids/CABINET_8bb29616ee788f04c4f335df5b20476784d4c98f65083bf02f8e336996932ea3/images/blob_jaeuox.png"
-                                      alt="Logo" width="250" title="Logo" class="img-4512"
+                                      alt="" width="250" title="Logo" class="img-4512"
                                       style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></a>
                                 </td>
                               </tr>
@@ -863,9 +863,9 @@ export const mail_html_structure = (order) => {
                                 <td align="center" style="padding:0;Margin:0">
                                   <h6 class="es-m-txt-c"
                                     style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:16px;font-style:normal;font-weight:normal;line-height:19.2px;color:#333333">
-                                    <strong>ORDER&nbsp;<a target="_blank"
+                                    <strong>Order&nbsp;<a target="_blank"
                                         href="https://pizzabuddies.store?order_id=${_id}"
-                                        style="mso-line-height-rule:exactly;text-decoration:underline;color:#999999;font-size:16px;text-transform: uppercase">${_id}</a></strong>
+                                        style="mso-line-height-rule:exactly;text-decoration:underline;color:#999999;font-size:16px;text-transform: uppercase">#${_id}</a></strong>
                                   </h6>
                                 </td>
                               </tr>
@@ -956,7 +956,7 @@ export const mail_html_structure = (order) => {
 
                   ${special_instructions ?
 
-      `
+                  `
                   <tr>
                     <td align="left"
                       style="Margin:0;padding-right:20px;padding-left:20px;padding-bottom:10px;padding-top:20px"><!--[if mso]>
@@ -975,7 +975,8 @@ export const mail_html_structure = (order) => {
                                 <td align="left" style="padding:0;Margin:0">
                                   <p
                                     style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
-                                    Special Instructions: &nbsp;<strong style="text-transform: capitalize;">${special_instructions}</strong>
+                                    Special Instructions: &nbsp;<strong
+                                      style="text-transform: capitalize;">${special_instructions}</strong>
 
                                 </td>
                               </tr>
@@ -990,11 +991,11 @@ export const mail_html_structure = (order) => {
 
                   `
 
-      :
-      ``
+                  :
+                  ``
 
 
-    }
+                  }
 
 
 
@@ -1022,16 +1023,19 @@ export const mail_html_structure = (order) => {
                                   <p
                                     style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
                                     email: ${email}</p>
+                                     <p
+                                    style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
+                                    Contact: ${phone}</p>
                                   <p
                                     style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
-                                    Order number:&nbsp;<strong style="text-transform: uppercase;">${_id}</strong></p>
+                                    Order no:&nbsp;<strong style="text-transform: uppercase;">#${_id}</strong></p>
                                   <p
                                     style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
                                     Invoice date:&nbsp;<strong>${date_formatter(createdAt)}</strong></p>
                                   <p
                                     style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
                                     Payment method: <strong>${order_method === "delivery" ? "Cash on Delivery (COD)" :
-      "Pay at Pickup (PAP)"}</strong></p>
+                                      "Pay at Pickup (PAP)"}</strong></p>
                                 </td>
                               </tr>
                             </table>
@@ -1058,7 +1062,7 @@ export const mail_html_structure = (order) => {
                                   <p class="es-m-txt-l"
                                     style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
                                     Delivery method: <strong>${order_method === "delivery" ? "Delivery Charges" :
-      "Pickup"}</strong>
+                                      "Pickup"}</strong>
                                   </p>
                                   ${location ? `
                                   <p class="es-m-txt-l"
@@ -1066,9 +1070,9 @@ export const mail_html_structure = (order) => {
                                     Customer location: <strong>${location}</strong>
                                   </p>
                                   `
-      :
-      ``
-    }
+                                  :
+                                  ``
+                                  }
 
                                   <p class="es-m-txt-l"
                                     style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
@@ -1188,18 +1192,20 @@ export const mail_html_structure = (order) => {
                                     Pakistan.</p>
                                 </td>
                               </tr>
+
+                              
                               <tr>
                                 <td style="padding:0;Margin:0">
                                   <table cellpadding="0" cellspacing="0" width="100%" class="es-menu"
                                     role="presentation"
                                     style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                     <tr class="links">
-                                      <td align="center" valign="top" width="1.00%"
-                                        style="Margin:0;border:0;padding-top:5px;padding-bottom:5px;padding-right:5px;padding-left:5px;">
-                                        <div style="vertical-align:middle;">
+                                      <td align="center" valign="top" width="100.00%"
+                                        style="Margin:0;border:0;padding-top:5px;padding-bottom:5px;padding-right:5px;padding-left:5px">
+                                        <div style="vertical-align:middle;display:block">
                                           <a target="_blank" href="https://pizzabuddies.store"
-                                            style="mso-line-height-rule:exactly;text-decoration:none;font-family:arial, 'helvetica neue', helvetica, sans-serif;display:block;color:#999999;font-size:12px;">
-                                            Visit Us
+                                            style="mso-line-height-rule:exactly;text-decoration:none;font-family:arial, 'helvetica neue', helvetica, sans-serif;display:block;color:#999999;font-size:12px">
+                                            Visit Us 
                                           </a>
                                         </div>
                                       </td>
@@ -1207,6 +1213,8 @@ export const mail_html_structure = (order) => {
                                   </table>
                                 </td>
                               </tr>
+
+
                             </table>
                           </td>
                         </tr>
@@ -1226,5 +1234,5 @@ export const mail_html_structure = (order) => {
 </html>`
 
 
-  return _html
+return _html
 }

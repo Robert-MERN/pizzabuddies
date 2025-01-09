@@ -21,7 +21,7 @@ export default async function send_confirm_mail(res, orders) {
         const mailOptions = {
             from: `Pizza Buddies <rackeragency@gmail.com>`,
             to: "rackeragency@gmail.com",
-            subject: `ORDER ${_id} CONFIRMED`,
+            subject: `ORDER CONFIRMED #${_id}`,
             html: mail_html_structure(orders)
         };
 

@@ -70,7 +70,7 @@ const Checkouts_page = ({ axios }) => {
                 }
                 break;
             case 'address':
-                if (!value && order_details.order_details === "delivery") {
+                if (!value && order_method.order_method === "delivery") {
                     error = 'Please enter your address';
                 }
                 break;
