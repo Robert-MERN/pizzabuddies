@@ -108,7 +108,13 @@ const Login_page = ({ axios }) => {
                     <Fade duration={500} >
 
                         <div className='flex h-full' >
-                            <div className='flex-1 grid md:place-items-center bg-slate-100 mt-[100px] md:mt-0'>
+                            <div className='flex-1 flex flex-col md:justify-center items-center  bg-slate-100 mt-[50px] md:mt-0'>
+
+                                <div className='w-full flex justify-center md:hidden mb-4'>
+                                    <div className='w-[280px] relative p-2' >
+                                        <Image className='object-contain w-full h-full' alt="logo Image" src={logo} />
+                                    </div>
+                                </div>
                                 {/* Login Form */}
                                 <Fade>
                                     <form onSubmit={handle_submit} className='flex flex-col gap-8 px-[20px] h-fit' >
@@ -182,7 +188,7 @@ const Login_page = ({ axios }) => {
                                             </div>
                                         </div>
 
-                                        <button className='bg-[#6CBE45] text-slate-100 text-[15px] md:text-[17px] w-full py-[8px] rounded-md mt-6 hover:opacity-80 transition-all' >Sign in</button>
+                                        <button className='bg-[#6CBE45] text-slate-100 text-[15px] md:text-[17px] w-full py-[8px] rounded-md my-6 hover:opacity-80 transition-all ' >Sign in</button>
 
                                         {/* <div>
                                             <p className='text-[13px] text-stone-500 text-center' >Don't have an account?<span onClick={() => router.push("/signup")} className='font-bold cursor-pointer hover:underline ' > Sign up</span> </p>
