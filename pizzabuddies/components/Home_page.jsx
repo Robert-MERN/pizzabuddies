@@ -97,16 +97,18 @@ const Resturant_page = ({ catalog, is_loading }) => {
                         className='w-full px-[20px] mt-[40px] mb-[100px] flex flex-col items-center'
                     >
                         {/* Section Title */}
-                        <h1 className='w-full text-center uppercase text-[22px] md:text-[24px] lg:text-[26px] font-semibold text-stone-700'>
+                        <h1 className='w-full mb-[20px] lg:mb-[30px] text-center uppercase text-[22px] md:text-[24px] lg:text-[26px] font-semibold text-stone-700'>
                             {section.section_title}
                         </h1>
 
                         {/* Banner Image */}
-                        <img
-                            className='w-full object-contain mt-[20px] lg:mt-[30px] mb-[20px] rounded-xl'
-                            src={section.banner_image}
-                            alt="Section Banner"
-                        />
+                        {section.banner_image &&
+                            <img
+                                className='w-full object-contain mb-[20px] rounded-xl'
+                                src={section.banner_image}
+                                alt="Section Banner"
+                            />
+                        }
 
                         {/* Menu Catalog */}
                         <div className='w-full grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 relative'>

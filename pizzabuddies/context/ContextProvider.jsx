@@ -569,7 +569,7 @@ export const ContextProvider = ({ children }) => {
                 const compressedFile = await imageCompression(file, options);
                 formData.append('file', compressedFile); // The image file
                 if (banner === "banner") {
-                    formData.append('upload_preset', 'myUpload');
+                    formData.append('upload_preset', 'bannerUpload');
                 } else {
                     formData.append('upload_preset', 'myCloud');
                 }
