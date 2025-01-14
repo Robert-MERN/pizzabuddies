@@ -41,6 +41,10 @@ const foodMenuSchema = new Schema(
                             type: Boolean,
                             default: false,
                         },
+                        options_optional: {
+                            type: Boolean,
+                            default: false,
+                        },
                         is_added: {
                             type: Boolean,
                             default: false,

@@ -7,7 +7,7 @@ import useStateContext from '@/context/ContextProvider';
 import { useRouter } from 'next/router';
 import CircleIcon from '@mui/icons-material/Circle';
 import Chip from "@mui/material/Chip";
-import { Skeleton } from '@mui/material';
+import { Checkbox, Skeleton } from '@mui/material';
 
 
 const Food_item_page = ({ item, section_id, is_loading }) => {
@@ -25,17 +25,18 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
 
     const calculate_discount = (item) => {
         const { price, compare_price } = item;
+        console.log(item)
 
         if (!compare_price || compare_price <= price) {
             return false; // No discount if compare_price is not valid or less than/equal to price
         }
 
         const discount = ((compare_price - price) / compare_price) * 100;
-        return Math.round(discount) + "% off"; // Round to the nearest whole number
+        return `${Math.floor(discount)}% off`; // Round to the nearest whole number
     };
 
 
-    const [local, set_local] = useState([{ price: 0, compare_price: 0, option_value: "", value_id: "", option_name: "", option_id: "", section_id: "", success: false, }]);
+    const [local, set_local] = useState([{ price: 0, compare_price: 0, option_value: "", value_id: "", option_name: "", option_id: "", section_id: "", optional: false, success: false, }]);
 
     const total_price = (arr) => {
         const total = arr.reduce((prev, next) => prev + next.price, 0);
@@ -47,24 +48,54 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
         return total
     }
 
-    const handle_change = (set_options, obj) => {
-        set_options(prev_options => {
+    const calculate_optional_price = (arr) => {
+        if (arr.some(e => !Boolean(e.optional))) {
+            return 0
+        }
+        const optional_arr = arr.filter(e => Boolean(e.optional));
+        if (optional_arr.length) {
+            const total = optional_arr.reduce((prev, next) => prev + next.price, 0);
+            return total;
+        };
+        return 0
+    }
 
-            const data_copy = [...prev_options].filter(e => !Object.values(e).every(i => !Boolean(i)));
-            const index = data_copy.findIndex(e => e.option_id === obj.option_id);
-            if (index !== -1) {
-                data_copy.splice(index, 1, obj);
+    const calculate_optional_compare_price = (arr) => {
+        if (arr.some(e => !Boolean(e.optional))) {
+            return 0
+        }
+        const optional_arr = arr.filter(e => Boolean(e.optional));
+        if (optional_arr.length) {
+            const total = optional_arr.reduce((prev, next) => prev + next.compare_price, 0);
+            return total;
+        };
+        return 0
+    }
+    const handle_change = (set_options, obj) => {
+        if (typeof obj === "string") {
+            set_options(prev_options => {
+                const data_copy = [...prev_options].filter(e => e.option_id !== obj);
                 return data_copy;
-            }
-            return [...data_copy, obj];
-        });
+            });
+        } else {
+            set_options(prev_options => {
+
+                const data_copy = [...prev_options].filter(e => !Object.values(e).every(i => !Boolean(i)));
+                const index = data_copy.findIndex(e => e.option_id === obj.option_id);
+                if (index !== -1) {
+                    data_copy.splice(index, 1, obj);
+                    return data_copy;
+                }
+                return [...data_copy, obj];
+            });
+        }
     }
 
     const validate_options = (options) => {
         if (options && options.length) {
-            const _options = options.filter(e => Boolean(e.options_selectable));
-
-            if (_options.length === local.length && local.every(e => Boolean(e.success))) {
+            const _options = options.filter(e => (Boolean(e.options_selectable) && !Boolean(e.options_optional)));
+            const _local = local.filter(e => !Boolean(e.optional));
+            if (_options.length === _local.length && _local.every(e => Boolean(e.success))) {
                 return true;
             }
             return false;
@@ -79,6 +110,8 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
     const convert_local_arr_of_options_to_obj = (arr) => {
         return Object.fromEntries(arr.map(e => [e.option_name.toLowerCase(), e.option_value]));
     }
+
+    console.log(local)
 
     const child_add_to_cart = () => {
         var object;
@@ -158,12 +191,20 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                                 <p className='text-[15px] xl:text-[18px] text-rose-600 font-medium flex items-center   gap-2 lg:gap-4 overflow-hidden text-ellipsis line-clamp-1'>
 
                                     {/* Actual Price */}
-                                    {(decide_text_FROM(item.options)) && "from"} Rs. {Number(total_price(local) || item.price).toLocaleString("en-US")}
+                                    {(decide_text_FROM(item.options)) && "from"} Rs. {calculate_optional_price(local) ?
+                                        (Number(calculate_optional_price(local) + item.price)).toLocaleString("en-US")
+                                        :
+                                        (Number(total_price(local) || item.price).toLocaleString("en-US"))
+                                    }
 
                                     {/* Compare Price */}
                                     {Boolean(total_compare_price(local) || item.compare_price) &&
                                         <span className='text-[13px] xl:text-[15px] text-stone-500 font-medium line-through'>
-                                            Rs. {Number(total_compare_price(local) || item.compare_price).toLocaleString("en-US")}
+                                            Rs. {calculate_optional_compare_price(local) ?
+                                                Math.floor(Number(calculate_optional_compare_price(local) + item.compare_price)).toLocaleString("en-US")
+                                                :
+                                                Math.floor(Number(total_compare_price(local) || item.compare_price)).toLocaleString("en-US")
+                                            }
                                         </span>
                                     }
 
@@ -200,8 +241,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
 
                                 <div key={option._id}
                                     className={`py-[10px] border border-stone-300 text-stone-700 rounded-md my-2
-                                         transition-all duration-300 ${option.options_selectable ?
-                                            `${required_chip(option._id, local) ? "bg-stone-50" : "bg-red-50"}`
+                                         transition-all duration-300 ${option.options_selectable ? `${option.options_optional ? "bg-stone-50" : `${required_chip(option._id, local) ? "bg-stone-50" : "bg-red-50"}`}`
                                             :
                                             "bg-stone-50"}`
                                     }
@@ -215,10 +255,16 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                                         </p>
                                         {option.options_selectable &&
                                             <>
-                                                {required_chip(option._id, local) ?
-                                                    <Chip label="Completed" variant='outlined' className='bg-white' />
+                                                {option.options_optional ?
+                                                    <Chip label="Optional" variant='outlined' className='bg-white' />
                                                     :
-                                                    <Chip label="Required" className='bg-rose-600 text-white' />
+                                                    <>
+                                                        {required_chip(option._id, local) ?
+                                                            <Chip label="Completed" variant='outlined' className='bg-white' />
+                                                            :
+                                                            <Chip label="Required" className='bg-rose-600 text-white' />
+                                                        }
+                                                    </>
                                                 }
                                             </>
                                         }
@@ -233,24 +279,69 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                                                 option.options_selectable ?
                                                     <button
                                                         className='w-full flex items-center active:bg-stone-100 py-[2px] rounded px-[15px] select-none justify-between transition-all duration-300 my-2'
-                                                        onClick={() => handle_change(set_local, {
-                                                            price: value.option_price,
-                                                            compare_price: value.option_compare_price,
-                                                            option_value: value.option_value,
-                                                            value_id: value._id,
-                                                            option_name: option.option_name,
-                                                            option_id: option._id,
-                                                            section_id: section_id,
-                                                            success: true,
-                                                        })}
+                                                        onClick={async () => {
+                                                            if (local.some(e => e.value_id.includes(value._id)) && option.options_optional) {
+                                                                handle_change(set_local, option._id)
+
+                                                            } else if ((local.some(e => e.option_id.includes(option._id)) && option.options_optional) || option.options_optional) {
+
+                                                                const _local = await new Promise((resolve) => {
+                                                                    set_local(prev => {
+                                                                        const _copy = [...prev].filter(f => !f.option_id.includes(option._id));
+                                                                        resolve(_copy);
+                                                                        return _copy
+                                                                    });
+                                                                });
+
+
+                                                                handle_change(set_local, {
+                                                                    price: Number(value.option_price),
+                                                                    compare_price: Math.floor(Number(value.option_price) / (1 - (calculate_discount(Boolean(total_price(_local)) ?
+                                                                        {
+                                                                            price: total_price(_local),
+                                                                            compare_price: total_compare_price(_local)
+                                                                        }
+                                                                        :
+                                                                        item).split("%")[0]) / 100)),
+                                                                    option_value: value.option_value,
+                                                                    value_id: value._id,
+                                                                    option_name: option.option_name,
+                                                                    option_id: option._id,
+                                                                    section_id: section_id,
+                                                                    success: true,
+                                                                    optional: true,
+                                                                })
+                                                            } else {
+
+                                                                handle_change(set_local, {
+                                                                    price: value.option_price,
+                                                                    compare_price: value.option_compare_price,
+                                                                    option_value: value.option_value,
+                                                                    value_id: value._id,
+                                                                    option_name: option.option_name,
+                                                                    option_id: option._id,
+                                                                    section_id: section_id,
+                                                                    success: true,
+                                                                    optional: false,
+                                                                })
+                                                            }
+                                                        }}
                                                     >
                                                         {/* Option Value */}
                                                         <div className='flex items-center lg:gap-1' >
-                                                            <Radio
-                                                                checked={local.some(e => e.value_id.includes(value._id))}
-                                                                size="small"
-                                                                sx={{ color: "black", '&.Mui-checked': { color: "black", }, }}
-                                                            />
+                                                            {option.options_optional ?
+                                                                <Checkbox
+                                                                    checked={local.some(e => e.value_id.includes(value._id))}
+                                                                    size="small"
+                                                                    sx={{ color: "black", '&.Mui-checked': { color: "black", }, }}
+                                                                />
+                                                                :
+                                                                <Radio
+                                                                    checked={local.some(e => e.value_id.includes(value._id))}
+                                                                    size="small"
+                                                                    sx={{ color: "black", '&.Mui-checked': { color: "black", }, }}
+                                                                />
+                                                            }
                                                             <p className='text-[15px] xl:text-[17px] font-medium capitalize my-2'>
                                                                 {value.option_value}
                                                             </p>
@@ -411,7 +502,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
 
                 </div>
             }
-        </div>
+        </div >
     )
 }
 

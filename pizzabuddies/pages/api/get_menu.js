@@ -24,7 +24,6 @@ export default async function handler(req, res) {
             {
                 $match: {
                     _id: new mongoose.Types.ObjectId(section_id),
-                    "menu_catalog._id": new mongoose.Types.ObjectId(menu_id),
                 },
             },
             {

@@ -11,6 +11,7 @@ export const add_option = (set_options, index, set_index) => {
             },
         ],
         options_selectable: false,
+        options_optional: false,
         is_added: false,
         option_error: "",
     }

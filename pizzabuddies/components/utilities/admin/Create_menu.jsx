@@ -485,6 +485,26 @@ const Create_menu = ({
                                             />
                                         </div>
 
+                                        {option.options_selectable &&
+                                            <div className='w-full flex items-center gap-2 lg:justify-end mb-3' >
+                                                <p className='text-[15px] text-stone-500 font-semibold  leading-[18px]'>Make Optional</p>
+                                                <Switch
+                                                    checked={option.options_optional}
+                                                    onChange={(e) => handle_change_options(
+                                                        {
+                                                            target: {
+                                                                value: e.target.checked,
+                                                                name: "options_optional"
+                                                            }
+                                                        },
+                                                        set_data,
+                                                        index
+                                                    )}
+                                                />
+                                            </div>
+                                        }
+
+
                                         <div className="w-full flex gap-2 mb-4">
                                             <TextField
                                                 className='w-full'
