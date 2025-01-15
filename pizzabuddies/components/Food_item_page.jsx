@@ -38,7 +38,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
     const [local, set_local] = useState([{ price: 0, compare_price: 0, option_value: "", value_id: "", option_name: "", option_id: "", section_id: "", optional: false, success: false, }]);
 
     useEffect(() => {
-        if (item) {
+        if (item && item.options.length && local.length === 1 && Object.values(local[0]).every(e => !e)) {
             // Find the option with the smallest price value
             const smallestOption = item.options.reduce((smallest, currentOption) => {
                 // Find the smallest value within the current option's values array
@@ -68,7 +68,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                 optional: Boolean(smallestOption.options_optional),
             };
 
-            set_local(prev => ([...prev, result]));
+            set_local([result]);
         }
     }, [item]);
 
