@@ -25,7 +25,6 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
 
     const calculate_discount = (item) => {
         const { price, compare_price } = item;
-        console.log(item)
 
         if (!compare_price || compare_price <= price) {
             return false; // No discount if compare_price is not valid or less than/equal to price
@@ -38,6 +37,42 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
 
     const [local, set_local] = useState([{ price: 0, compare_price: 0, option_value: "", value_id: "", option_name: "", option_id: "", section_id: "", optional: false, success: false, }]);
 
+    useEffect(() => {
+        if (item) {
+            // Find the option with the smallest price value
+            const smallestOption = item.options.reduce((smallest, currentOption) => {
+                // Find the smallest value within the current option's values array
+                const smallestValueInCurrent = currentOption.values.reduce((min, currentValue) =>
+                    currentValue.price < min.price ? currentValue : min
+                );
+
+                // Compare it with the smallest value found so far
+                if (!smallest || smallestValueInCurrent.price < smallest.value.price) {
+                    return { ...currentOption, value: smallestValueInCurrent };
+                }
+
+                return smallest;
+            }, null);
+
+            // Build the desired object with relevant fields
+            const result = {
+                price: Number(smallestOption.value.option_price),
+                compare_price: Number(smallestOption.value.option_compare_price) ||
+                    (check_existing_compare_price(local) ? Number(smallestOption.value.option_price) : ""),
+                option_value: smallestOption.value.option_value,
+                value_id: "",
+                option_name: smallestOption.option_name,
+                option_id: smallestOption._id,
+                section_id: section_id,
+                success: false,
+                optional: Boolean(smallestOption.options_optional),
+            };
+
+            set_local(prev => ([...prev, result]));
+        }
+    }, [item]);
+
+
     const total_price = (arr) => {
         const total = arr.reduce((prev, next) => prev + next.price, 0);
         return total;
@@ -45,32 +80,13 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
 
     const total_compare_price = (arr) => {
         const total = arr.reduce((prev, next) => prev + next.compare_price, 0);
-        return total
+        return total;
     }
 
-    const calculate_optional_price = (arr) => {
-        if (arr.some(e => !Boolean(e.optional))) {
-            return 0
-        }
-        const optional_arr = arr.filter(e => Boolean(e.optional));
-        if (optional_arr.length) {
-            const total = optional_arr.reduce((prev, next) => prev + next.price, 0);
-            return total;
-        };
-        return 0
+    const check_existing_compare_price = (arr) => {
+        return arr.some(e => e.compare_price)
     }
 
-    const calculate_optional_compare_price = (arr) => {
-        if (arr.some(e => !Boolean(e.optional))) {
-            return 0
-        }
-        const optional_arr = arr.filter(e => Boolean(e.optional));
-        if (optional_arr.length) {
-            const total = optional_arr.reduce((prev, next) => prev + next.compare_price, 0);
-            return total;
-        };
-        return 0
-    }
     const handle_change = (set_options, obj) => {
         if (typeof obj === "string") {
             set_options(prev_options => {
@@ -80,7 +96,11 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
         } else {
             set_options(prev_options => {
 
-                const data_copy = [...prev_options].filter(e => !Object.values(e).every(i => !Boolean(i)));
+                const data_copy = [...prev_options].filter(e => {
+                    const { optional, compare_price, ...other } = e;
+                    return !Object.values(other).every(i => !Boolean(i))
+                });
+
                 const index = data_copy.findIndex(e => e.option_id === obj.option_id);
                 if (index !== -1) {
                     data_copy.splice(index, 1, obj);
@@ -111,7 +131,6 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
         return Object.fromEntries(arr.map(e => [e.option_name.toLowerCase(), e.option_value]));
     }
 
-    console.log(local)
 
     const child_add_to_cart = () => {
         var object;
@@ -140,6 +159,8 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
 
     };
 
+
+    // console.log(local)
 
     return (
         <div className='w-full px-[20px] pt-[15px] md:pt-[30px] pb-[80px]'>
@@ -191,31 +212,24 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                                 <p className='text-[15px] xl:text-[18px] text-rose-600 font-medium flex items-center   gap-2 lg:gap-4 overflow-hidden text-ellipsis line-clamp-1'>
 
                                     {/* Actual Price */}
-                                    {(decide_text_FROM(item.options)) && "from"} Rs. {calculate_optional_price(local) ?
-                                        (Number(calculate_optional_price(local) + item.price)).toLocaleString("en-US")
-                                        :
-                                        (Number(total_price(local) || item.price).toLocaleString("en-US"))
+                                    {(decide_text_FROM(item.options)) && "from"} Rs. {(Number(total_price(local) || item.price).toLocaleString("en-US"))
                                     }
 
                                     {/* Compare Price */}
-                                    {Boolean(total_compare_price(local) || item.compare_price) &&
+                                    {(Boolean(total_compare_price(local) || item.compare_price)) &&
                                         <span className='text-[13px] xl:text-[15px] text-stone-500 font-medium line-through'>
-                                            Rs. {calculate_optional_compare_price(local) ?
-                                                Math.floor(Number(calculate_optional_compare_price(local) + item.compare_price)).toLocaleString("en-US")
-                                                :
-                                                Math.floor(Number(total_compare_price(local) || item.compare_price)).toLocaleString("en-US")
-                                            }
+                                            Rs. {Number(total_compare_price(local) || item.compare_price).toLocaleString("en-US")}
                                         </span>
                                     }
 
                                     {/* Discount Percentage */}
-                                    {calculate_discount(total_price(local) ?
+                                    {(calculate_discount(total_price(local) ?
                                         {
                                             price: total_price(local),
                                             compare_price: total_compare_price(local)
                                         }
                                         :
-                                        item)
+                                        item))
                                         &&
                                         <span className='font-medium'>
                                             {calculate_discount(total_price(local) ?
@@ -283,46 +297,19 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                                                             if (local.some(e => e.value_id.includes(value._id)) && option.options_optional) {
                                                                 handle_change(set_local, option._id)
 
-                                                            } else if ((local.some(e => e.option_id.includes(option._id)) && option.options_optional) || option.options_optional) {
-
-                                                                const _local = await new Promise((resolve) => {
-                                                                    set_local(prev => {
-                                                                        const _copy = [...prev].filter(f => !f.option_id.includes(option._id));
-                                                                        resolve(_copy);
-                                                                        return _copy
-                                                                    });
-                                                                });
-
-
+                                                            } else {
                                                                 handle_change(set_local, {
                                                                     price: Number(value.option_price),
-                                                                    compare_price: Math.floor(Number(value.option_price) / (1 - (calculate_discount(Boolean(total_price(_local)) ?
-                                                                        {
-                                                                            price: total_price(_local),
-                                                                            compare_price: total_compare_price(_local)
-                                                                        }
-                                                                        :
-                                                                        item).split("%")[0]) / 100)),
+                                                                    compare_price: Number(value.option_compare_price)
+                                                                        ||
+                                                                        (check_existing_compare_price(local) ? Number(value.option_price) : ""),
                                                                     option_value: value.option_value,
                                                                     value_id: value._id,
                                                                     option_name: option.option_name,
                                                                     option_id: option._id,
                                                                     section_id: section_id,
                                                                     success: true,
-                                                                    optional: true,
-                                                                })
-                                                            } else {
-
-                                                                handle_change(set_local, {
-                                                                    price: value.option_price,
-                                                                    compare_price: value.option_compare_price,
-                                                                    option_value: value.option_value,
-                                                                    value_id: value._id,
-                                                                    option_name: option.option_name,
-                                                                    option_id: option._id,
-                                                                    section_id: section_id,
-                                                                    success: true,
-                                                                    optional: false,
+                                                                    optional: Boolean(option.options_optional),
                                                                 })
                                                             }
                                                         }}
@@ -352,7 +339,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                                                             <div className='flex flex-col items-center leading-[16px]'>
                                                                 {/* Option Price */}
                                                                 <p className='text-rose-600 text-[14px]  md:text-[15px] font-bold'>
-                                                                    Rs. {Number(value.option_price).toLocaleString("en-US")}
+                                                                    {option.options_optional && "+ "}  Rs. {Number(value.option_price).toLocaleString("en-US")}
                                                                 </p>
                                                                 {/* Option Compare Price */}
                                                                 {Boolean(value.option_compare_price) &&

@@ -29,7 +29,7 @@ const food_item = () => {
     return (
         <>
             <Head>
-                <title>Kickskraze | Food</title>
+                <title>Pizza Buddies | Food</title>
                 <meta name="description" content="Food Page" />
                 <link rel="icon" href="/images/icon.png" />
             </Head>

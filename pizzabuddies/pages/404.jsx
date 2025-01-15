@@ -5,7 +5,7 @@ export default function FourOhFour() {
     return (
         <div className={`w-screen h-[95vh] text-stone-800 justify-center flex items-center flex-col gap-16`} >
             <Head>
-                <title>Kickskraze | 404</title>
+                <title>Pizza Buddies | 404</title>
                 <meta name="description" content="You have entered in the wrong page" />
                 <link rel="icon" href="/images/icon.png" />
             </Head>
