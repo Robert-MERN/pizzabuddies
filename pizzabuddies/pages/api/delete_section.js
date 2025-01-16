@@ -1,6 +1,7 @@
 import FoodMenu from '@/models/menu_model';
 import connect_mongo from '@/utils/functions/connect_mongo';
 import { deleteImage, deleteImages } from '@/utils/functions/destroy_cloudinary_image';
+import mongoose from 'mongoose';
 
 
 /**
@@ -26,6 +27,7 @@ export default async function handler(req, res) {
         }
 
         const menuImages = await FoodMenu.aggregate([
+            { $match: { _id: new mongoose.Types.ObjectId(section_id) } },
             { $unwind: "$menu_catalog" },
             { $match: { $and: [{ "menu_catalog.menu_image": { $ne: "" } }, { "menu_catalog.menu_image": { $ne: null } }] } },
             {

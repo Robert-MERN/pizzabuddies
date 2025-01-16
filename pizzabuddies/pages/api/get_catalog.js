@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
 
         // finding in Catalog
-        const food_menu = await FoodMenu.find().sort({ createdAt: -1 });
+        const food_menu = await FoodMenu.find().sort({ createdAt: 1 });
 
         // sending success response to client
         return res.status(200).json(food_menu);

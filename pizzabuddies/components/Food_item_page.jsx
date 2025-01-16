@@ -14,8 +14,6 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
 
     const { add_item_to_cart } = useStateContext();
 
-    const router = useRouter();
-
     // Find the option with the smallest price value
     const find_smallest_option = (_item) =>
         _item.options.reduce((smallest, currentOption) => {
