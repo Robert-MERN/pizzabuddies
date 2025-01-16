@@ -16,9 +16,26 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
 
     const router = useRouter();
 
+    // Find the option with the smallest price value
+    const find_smallest_option = (_item) =>
+        _item.options.reduce((smallest, currentOption) => {
+            // Find the smallest value within the current option's values array
+            const smallestValueInCurrent = currentOption.values.reduce((min, currentValue) =>
+                currentValue.price < min.price ? currentValue : min
+            );
+
+            // Compare it with the smallest value found so far
+            if (!smallest || smallestValueInCurrent.price < smallest.value.price) {
+                return { ...currentOption, value: smallestValueInCurrent };
+            }
+
+            return smallest;
+        }, null);
+
     const decide_text_FROM = (options) => {
-        if (options && options.length) {
-            return options.some(op => Boolean(op.values.some(e => Boolean(e.option_price))));
+        const smallest_option = find_smallest_option(item);
+        if (smallest_option && options && options.length) {
+            return options.some(op => Boolean(smallest_option.value._id.includes(op.value_id)));
         }
         return false
     };
@@ -37,22 +54,12 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
 
     const [local, set_local] = useState([{ price: 0, compare_price: 0, option_value: "", value_id: "", option_name: "", option_id: "", section_id: "", optional: false, success: false, }]);
 
+
+
     useEffect(() => {
         if (item && item.options.length && local.length === 1 && Object.values(local[0]).every(e => !e)) {
             // Find the option with the smallest price value
-            const smallestOption = item.options.reduce((smallest, currentOption) => {
-                // Find the smallest value within the current option's values array
-                const smallestValueInCurrent = currentOption.values.reduce((min, currentValue) =>
-                    currentValue.price < min.price ? currentValue : min
-                );
-
-                // Compare it with the smallest value found so far
-                if (!smallest || smallestValueInCurrent.price < smallest.value.price) {
-                    return { ...currentOption, value: smallestValueInCurrent };
-                }
-
-                return smallest;
-            }, null);
+            const smallestOption = find_smallest_option(item)
 
             // Build the desired object with relevant fields
             const result = {
@@ -160,8 +167,6 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
     };
 
 
-    // console.log(local)
-
     return (
         <div className='w-full px-[20px] pt-[15px] md:pt-[30px] pb-[80px]'>
             {/* Breadcrumbs */}
@@ -212,13 +217,13 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                                 <p className='text-[15px] xl:text-[18px] text-rose-600 font-medium flex items-center   gap-2 lg:gap-4 overflow-hidden text-ellipsis line-clamp-1'>
 
                                     {/* Actual Price */}
-                                    {(decide_text_FROM(item.options)) && "from"} Rs. {(Number(total_price(local) || item.price).toLocaleString("en-US"))
+                                    {(decide_text_FROM(local)) && "from"} Rs. {(Number(total_price(local)).toLocaleString("en-US"))
                                     }
 
                                     {/* Compare Price */}
-                                    {(Boolean(total_compare_price(local) || item.compare_price)) &&
+                                    {Boolean(Number(total_compare_price(local))) &&
                                         <span className='text-[13px] xl:text-[15px] text-stone-500 font-medium line-through'>
-                                            Rs. {Number(total_compare_price(local) || item.compare_price).toLocaleString("en-US")}
+                                            Rs. {Number(total_compare_price(local)).toLocaleString("en-US")}
                                         </span>
                                     }
 
