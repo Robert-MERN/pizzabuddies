@@ -403,33 +403,18 @@ const Update_menu = ({
 
                                         <p className='text-[15px] text-stone-400  leading-[18px]'>Even when you're editng option, click on the "DONE" button after you make changes, otherwise hitting "SAVE" button directly will remove that option.</p>
 
-                                        <div className='w-full flex items-center gap-2 lg:justify-end mb-3' >
-                                            <p className='text-[15px] text-stone-500 font-semibold  leading-[18px]'>Options Selectable</p>
-                                            <Switch
-                                                checked={option.options_selectable}
-                                                onChange={(e) => handle_change_options(
-                                                    {
-                                                        target: {
-                                                            value: e.target.checked,
-                                                            name: "options_selectable"
-                                                        }
-                                                    },
-                                                    set_data,
-                                                    index
-                                                )}
-                                            />
-                                        </div>
+                                        {/* Switch options */}
+                                        <div className={`w-full mb-3`}>
 
-                                        {option.options_selectable &&
-                                            <div className='w-full flex items-center gap-2 lg:justify-end mb-3' >
-                                                <p className='text-[15px] text-stone-500 font-semibold  leading-[18px]'>Make Optional</p>
+                                            <div className={`w-full flex items-center gap-2 lg:justify-end`} >
+                                                <p className='text-[15px] text-stone-500 font-semibold  leading-[18px]'>Options Selectable</p>
                                                 <Switch
-                                                    checked={option.options_optional}
+                                                    checked={option.options_selectable}
                                                     onChange={(e) => handle_change_options(
                                                         {
                                                             target: {
                                                                 value: e.target.checked,
-                                                                name: "options_optional"
+                                                                name: "options_selectable"
                                                             }
                                                         },
                                                         set_data,
@@ -437,8 +422,30 @@ const Update_menu = ({
                                                     )}
                                                 />
                                             </div>
-                                        }
 
+                                            {option.options_selectable &&
+                                                <div className='w-full flex items-center gap-2 lg:justify-end' >
+                                                    <p className='text-[15px] text-stone-500 font-semibold  leading-[18px]'>Make Optional</p>
+                                                    <Switch
+                                                        checked={option.options_optional}
+                                                        onChange={(e) => handle_change_options(
+                                                            {
+                                                                target: {
+                                                                    value: e.target.checked,
+                                                                    name: "options_optional"
+                                                                }
+                                                            },
+                                                            set_data,
+                                                            index
+                                                        )}
+                                                    />
+                                                </div>
+                                            }
+                                        </div>
+
+
+
+                                        
                                         <div className="w-full flex gap-2 mb-4">
                                             <TextField
                                                 className='w-full'
