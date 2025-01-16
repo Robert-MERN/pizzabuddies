@@ -19,16 +19,17 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
         _item.options.reduce((smallest, currentOption) => {
             // Find the smallest value within the current option's values array
             const smallestValueInCurrent = currentOption.values.reduce((min, currentValue) =>
-                currentValue.price < min.price ? currentValue : min
+                currentValue.option_price < min.option_price ? currentValue : min
             );
 
             // Compare it with the smallest value found so far
-            if (!smallest || smallestValueInCurrent.price < smallest.value.price) {
+            if (!smallest || smallestValueInCurrent.price < smallest.value.option_price) {
                 return { ...currentOption, value: smallestValueInCurrent };
             }
 
             return smallest;
         }, null);
+
 
     const decide_text_FROM = (options) => {
         const smallest_option = find_smallest_option(item);
@@ -215,13 +216,20 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                                 <p className='text-[15px] xl:text-[18px] text-rose-600 font-medium flex items-center   gap-2 lg:gap-4 overflow-hidden text-ellipsis line-clamp-1'>
 
                                     {/* Actual Price */}
-                                    {(decide_text_FROM(local)) && "from"} Rs. {(Number(total_price(local)).toLocaleString("en-US"))
+                                    {(decide_text_FROM(local)) && "from"} Rs. {Boolean(Number(total_price(local))) ?
+                                        Number(total_price(local)).toLocaleString("en-US")
+                                        :
+                                        Number(item.price).toLocaleString("en-US")
                                     }
 
                                     {/* Compare Price */}
                                     {Boolean(Number(total_compare_price(local))) &&
                                         <span className='text-[13px] xl:text-[15px] text-stone-500 font-medium line-through'>
-                                            Rs. {Number(total_compare_price(local)).toLocaleString("en-US")}
+                                            Rs. {Boolean(Number(total_compare_price(local))) ?
+                                                Number(total_compare_price(local)).toLocaleString("en-US")
+                                                :
+                                                Number(item.compare_price).toLocaleString("en-US")
+                                            }
                                         </span>
                                     }
 

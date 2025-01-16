@@ -133,12 +133,12 @@ const Resturant_page = ({ catalog, is_loading }) => {
                                             <span className="text-rose-600">
                                                 {decide_text_FROM(menu.options) && "from"} {`Rs. ${Number(menu.price).toLocaleString("en-US")} `}
                                             </span>
-                                            {menu.compare_price && (
+                                            {Boolean(menu.compare_price) && (
                                                 <>
                                                     <span className="line-through px-2">
                                                         Rs. {Number(menu.compare_price).toLocaleString("en-US")}
                                                     </span>
-                                                    {calculate_discount({ price: menu.price, compare_price: menu.compare_price }) && (
+                                                    {Boolean(calculate_discount({ price: menu.price, compare_price: menu.compare_price })) && (
                                                         <span className="text-rose-600 font-medium">
                                                             {(calculate_discount({ price: menu.price, compare_price: menu.compare_price })).toLocaleString("en-US")}
                                                         </span>
