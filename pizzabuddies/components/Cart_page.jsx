@@ -99,8 +99,8 @@ const Cart_page = () => {
                                     {/* Product info */}
                                     <div className='flex w-full h-full gap-4' >
                                         <Link href={`/food-item?section_id=${item.section_id}&menu_id=${item._id}`}>
-                                            <div className='w-[80px] sm:w-[120px] h-full object-contain rounded-md overflow-hidden'>
-                                                <img src={item.menu_image} alt="product" className='w-[80px] sm:w-[120px] h-full object-cover rounded-md' />
+                                            <div className='w-[80px] sm:w-[120px] h-[80px] sm:h-[120px] rounded-md overflow-hidden'>
+                                                <img src={item.menu_image} alt="product" className='w-[80px] sm:w-[120px] h-[80px] sm:h-[120px] object-cover rounded-md' />
                                             </div>
                                         </Link>
                                         <div className='flex flex-col gap-1 text-[12px] sm:text-[14px] md:text-[17px]' >

@@ -27,8 +27,8 @@ export const purchase_items_displayer = (orders) => {
                                     <tr>
                                         <td align="center" style="padding:0;Margin:0;font-size:0px">
                                         <img src=${item.menu_image}
-                                            alt="" width="70" class="adapt-img"
-                                            style="display:block;font-size:14px;border:0;outline:none;text-decoration:none">
+                                            alt="" width="70" height="70" class="adapt-img"
+                                            style="display:block;font-size:14px;border:0;outline:none;text-decoration:none;object-fit:cover;">
                                         </td>
                                     </tr>
                                 </table>

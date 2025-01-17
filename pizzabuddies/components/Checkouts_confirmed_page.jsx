@@ -413,7 +413,7 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
                                                             <img
                                                                 alt="product"
                                                                 src={item.menu_image}
-                                                                className="w-full h-full object-contain"
+                                                                className="w-[65px] h-[65px] object-cover"
                                                             />
                                                         </div>
                                                     </Badge>
