@@ -164,6 +164,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
         return add_item_to_cart(object);
 
     };
+    console.log(Boolean(Number(total_compare_price(local))))
 
 
     return (
@@ -223,7 +224,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                                     }
 
                                     {/* Compare Price */}
-                                    {Boolean(Number(total_compare_price(local))) &&
+                                    {(Boolean(Number(total_compare_price(local))) || Number(item.compare_price)) &&
                                         <span className='text-[13px] xl:text-[15px] text-stone-500 font-medium line-through'>
                                             Rs. {Boolean(Number(total_compare_price(local))) ?
                                                 Number(total_compare_price(local)).toLocaleString("en-US")
