@@ -409,7 +409,7 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
                                                         color="info"
                                                         showZero
                                                     >
-                                                        <div className="w-[65px] h-[65px] border border-stone-300 shadow grid place-items-center rounded-md">
+                                                        <div className="w-[65px] h-[65px] border border-stone-300 shadow grid place-items-center rounded-md overflow-hidden">
                                                             <img
                                                                 alt="product"
                                                                 src={item.menu_image}
