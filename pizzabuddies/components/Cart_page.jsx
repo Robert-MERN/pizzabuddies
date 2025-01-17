@@ -68,7 +68,7 @@ const Cart_page = () => {
 
             <h1 className='text-[19px] md:text-[24px] mt-2'>YOUR CART</h1>
 
-            {Boolean(cart.length) ?
+            {Boolean(cart && cart.length) ?
 
                 <>
                     <div className='w-full flex flex-col xl:flex-row gap-6 mt-[15px] md:mt-[25px]' >

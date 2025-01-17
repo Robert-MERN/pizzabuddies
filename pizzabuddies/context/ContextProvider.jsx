@@ -18,6 +18,7 @@ export const ContextProvider = ({ children }) => {
         set_snackbar_alert(prev => ({ ...prev, open: false }));
     };
 
+    
     // Modal Logic
     const default_modals_state = {
         delete_menu_modal: false,
