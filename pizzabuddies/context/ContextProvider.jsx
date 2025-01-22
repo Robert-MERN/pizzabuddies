@@ -18,7 +18,7 @@ export const ContextProvider = ({ children }) => {
         set_snackbar_alert(prev => ({ ...prev, open: false }));
     };
 
-    
+
     // Modal Logic
     const default_modals_state = {
         delete_menu_modal: false,
@@ -94,7 +94,7 @@ export const ContextProvider = ({ children }) => {
 
             if (index !== -1) {
 
-                if (item.value_id.length) {
+                if (item.value_id && item.value_id.length) {
                     const index_again = updated_cart.findIndex(e => e.value_id.every(v => item.value_id.includes(v)));
                     if (index_again !== -1) {
                         const new_item = { ...item, quantity: updated_cart.at(index_again).quantity + 1 }
@@ -136,7 +136,7 @@ export const ContextProvider = ({ children }) => {
             const index = updated_cart.findIndex((each) => each._id === item._id);
 
             if (index !== -1) {
-                if (item.value_id.length) {
+                if (item.value_id && item.value_id.length) {
                     const index_again = updated_cart.findIndex(e => e.value_id.every(v => item.value_id.includes(v)));
                     if (index_again !== -1) {
                         if (Number(item.quantity - 1) < 1) {

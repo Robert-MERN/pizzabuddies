@@ -19,7 +19,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
         _item.options.reduce((smallest, currentOption) => {
             // Find the smallest value within the current option's values array
             const smallestValueInCurrent = currentOption.values.reduce((min, currentValue) =>
-                currentValue.option_price < min.option_price ? currentValue : min
+                currentValue.option_price <= min.option_price ? currentValue : min
             );
 
             // Compare it with the smallest value found so far
@@ -34,7 +34,11 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
     const decide_text_FROM = (options) => {
         const smallest_option = find_smallest_option(item);
         if (smallest_option && options && options.length) {
-            return options.some(op => Boolean(smallest_option.value._id.includes(op.value_id)));
+            if (Number(smallest_option.value.option_price)) {
+                return options.some(op => Boolean(smallest_option.value._id.includes(op.value_id)));
+            } else {
+                return true
+            }
         }
         return false
     };
@@ -53,18 +57,16 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
 
     const [local, set_local] = useState([{ price: 0, compare_price: 0, option_value: "", value_id: "", option_name: "", option_id: "", section_id: "", optional: false, success: false, }]);
 
-
-
     useEffect(() => {
-        if (item && item.options.length && local.length === 1 && Object.values(local[0]).every(e => !e)) {
+        if (item && Object.keys(item).length !== 0 && item.options.length && local.length === 1 && Object.values(local[0]).every(e => !e)) {
             // Find the option with the smallest price value
             const smallestOption = find_smallest_option(item)
 
             // Build the desired object with relevant fields
             const result = {
-                price: Number(smallestOption.value.option_price),
+                price: Number(smallestOption.value.option_price) || item.price,
                 compare_price: Number(smallestOption.value.option_compare_price) ||
-                    (check_existing_compare_price(local) ? Number(smallestOption.value.option_price) : ""),
+                    (check_existing_compare_price(local) ? Number(smallestOption.value.option_price) : item.compare_price),
                 option_value: smallestOption.value.option_value,
                 value_id: "",
                 option_name: smallestOption.option_name,
@@ -164,7 +166,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
         return add_item_to_cart(object);
 
     };
-    console.log(Boolean(Number(total_compare_price(local))))
+
 
 
     return (
@@ -189,7 +191,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
             </Breadcrumbs>
 
 
-            {(item && !is_loading) ?
+            {(item && Boolean(Object.keys(item).length) && !is_loading) ?
                 <>
 
                     <div className='w-full flex flex-[2.5] flex-col lg:flex-row mt-8 mb-16 gap-6' >
@@ -224,7 +226,7 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
                                     }
 
                                     {/* Compare Price */}
-                                    {(Boolean(Number(total_compare_price(local))) || Boolean(Number(item.compare_price))) &&
+                                    {(Boolean(Number(total_compare_price(local))) || !Boolean(item.options.length)) &&
                                         <span className='text-[13px] xl:text-[15px] text-stone-500 font-medium line-through'>
                                             Rs. {Boolean(Number(total_compare_price(local))) ?
                                                 Number(total_compare_price(local)).toLocaleString("en-US")
@@ -311,10 +313,10 @@ const Food_item_page = ({ item, section_id, is_loading }) => {
 
                                                             } else {
                                                                 handle_change(set_local, {
-                                                                    price: Number(value.option_price),
+                                                                    price: Number(value.option_price) || Number(item.price),
                                                                     compare_price: Number(value.option_compare_price)
                                                                         ||
-                                                                        (check_existing_compare_price(local) ? Number(value.option_price) : ""),
+                                                                        (check_existing_compare_price(local) ? Number(value.option_price) || Number(item.compare_price) : Number(item.compare_price) || ""),
                                                                     option_value: value.option_value,
                                                                     value_id: value._id,
                                                                     option_name: option.option_name,

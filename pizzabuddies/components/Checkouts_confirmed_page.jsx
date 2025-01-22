@@ -401,7 +401,7 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
                                             key={item._id}
                                             className="w-full border-stone-300 flex items-center justify-between  my-1"
                                         >
-                                            <div className="flex gap-4">
+                                            <div className="flex gap-5">
                                                 <div className='mt-2'>
 
                                                     <Badge
@@ -436,7 +436,7 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
                                     {/* Subtotal of Order */}
                                     <div className="w-full mt-6 border-stone-300 flex items-center justify-between ">
                                         <p className="text-[14px] md:text-[16px] font-medium text-black">
-                                            Subtotal {(confirmed_order.purchase.length > 1) && `• ${calc_total_items(confirmed_order.purchase)}  items`}
+                                            Subtotal {(calc_total_items(confirmed_order.purchase)> 1) && `• ${calc_total_items(confirmed_order.purchase)}  items`}
                                         </p>
                                         <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
                                             Rs. {calc_total_amount(confirmed_order.purchase).toLocaleString("en-US")}

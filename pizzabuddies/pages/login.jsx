@@ -11,7 +11,7 @@ const login = () => {
             <Head>
                 <title>Pizza Buddies - Login</title>
                 <meta name="description" content="Pizza Buddies - Login Page" />
-                <link rel="icon" href="/images/ogo.png" />
+                <link rel="icon" href="/images/logo.png" />
             </Head>
             <Login_page axios={axios} />
         </div>

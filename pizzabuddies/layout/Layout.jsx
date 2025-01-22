@@ -113,7 +113,7 @@ const Layout = ({ children }) => {
                 reset_states={reset_states}
             />
 
-            {(router.pathname !== "/admin" && router.pathname !== "/checkouts/[order_id]" && router.pathname !== "/login" ) ?
+            {(router.pathname !== "/admin" && router.pathname !== "/checkouts/[order_id]" && router.pathname !== "/login") ?
 
                 <Location_modal
                     modals_state={modals_state}
@@ -136,7 +136,7 @@ const Layout = ({ children }) => {
             />
 
             {children}
-            {(router.pathname !== "/admin" && router.pathname !== "/cart" && router.pathname !== "/checkouts" && router.pathname !== "/checkouts/[order_id]"  && router.pathname !== "/login"  && !cart.length) ?
+            {(router.pathname !== "/admin" && router.pathname !== "/cart" && router.pathname !== "/checkouts" && router.pathname !== "/checkouts/[order_id]" && router.pathname !== "/login" && !cart.length) ?
                 <a
                     target='_blank'
                     href="https://wa.me/923152825015"
