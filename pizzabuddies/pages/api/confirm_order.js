@@ -1,5 +1,6 @@
 import Orders from '@/models/order_model';
 import connect_mongo from '@/utils/functions/connect_mongo';
+import send_print_job from '@/utils/functions/print_order_receipt';
 import send_confirm_mail from '@/utils/functions/send_confirm_mail';
 
 /**
@@ -23,13 +24,21 @@ export default async function handler(req, res) {
 
         const response = await send_confirm_mail(res, orders);
 
+        // const print_response = send_print_job(res, req.body);
+
+        // if (print_response.message === "receipt_printed_successfully") {
+        //     console.log("Printed successfully");
+        // } else if (print_response.message === "receipt_printing_failed") {
+        //     console.log("Printing failed");
+        // }
+
         if (response.message === "mail-sent") {
             // sending success response to client
             return res.status(200).json(orders);
         }
 
         await Orders.findByIdAndDelete(orders._id);
-        return res.status(50).json({ success: false, message: "Order couldn't be created!" });
+        return res.status(500).json({ success: false, message: "Order couldn't be created!", print_response });
 
     } catch (err) {
 

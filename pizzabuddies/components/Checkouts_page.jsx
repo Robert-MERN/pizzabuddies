@@ -205,6 +205,7 @@ const Checkouts_page = ({ axios }) => {
 
     const style_textfield_2 = {
         '& .MuiOutlinedInput-root': {
+            cursor: "default",
             '& fieldset': {
                 borderColor: 'rgb(68 64 60)', // Default border color
                 borderWidth: "2px",
@@ -331,11 +332,12 @@ const Checkouts_page = ({ axios }) => {
                             variant="outlined"
                             className='w-full cursor-pointer'
                             sx={style_textfield_2}
-                            slotProps={{
-                                input: {
-                                    readOnly: true,
-                                    endAdornment: order_method.order_method === "delivery" ? <InputAdornment position="end" className='text-stone-800'>Rs. 200.00</InputAdornment> : <></>,
-                                },
+                            inputProps={{
+                                readOnly: true, // Read-only input
+                                style: { cursor: "default" }, // Ensure pointer style is applied to the input element
+                            }}
+                            InputProps={{
+                                endAdornment: order_method.order_method === "delivery" ? <InputAdornment position="end" className='text-stone-800'>Rs. 200.00</InputAdornment> : <></>,
                             }}
                         />
 
@@ -345,10 +347,9 @@ const Checkouts_page = ({ axios }) => {
                             variant="outlined"
                             className='w-full cursor-pointer'
                             sx={style_textfield_2}
-                            slotProps={{
-                                input: {
-                                    readOnly: true,
-                                },
+                            inputProps={{
+                                readOnly: true, // Read-only input
+                                style: { cursor: "default" }, // Ensure pointer style is applied to the input element
                             }}
                         />
 

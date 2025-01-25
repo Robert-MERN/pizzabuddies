@@ -5,28 +5,27 @@ import { mail_html_structure } from "./mail_html_structure";
 
 export default async function send_confirm_mail(res, orders) {
 
-    const { _id, email } = orders;
+
     try {
 
-
-
-
         const transport = nodemailer.createTransport({
-            service: "gmail",
+            host: "smtpout.secureserver.net",
+            port: 465,
+            secure: true,
             auth: {
-                user: 'rackeragency@gmail.com',
-                pass: 'phtspmtkanwfyhkc'
+                user: 'info@pizzabuddies.shop',
+                pass: 'pizzabuddies@123'
             },
         });
         const mailOptions = {
-            from: `Pizza Buddies <rackeragency@gmail.com>`,
-            to: "rackeragency@gmail.com",
-            subject: `ORDER CONFIRMED #${_id}`,
+            from: `Pizza Buddies <info@pizzabuddies.shop>`,
+            to: "info@pizzabuddies.shop",
+            subject: `ORDER CONFIRMED #${orders._id}`,
             html: mail_html_structure(orders)
         };
 
         await transport.sendMail(mailOptions);
-        await transport.sendMail({ ...mailOptions, to: email });
+        await transport.sendMail({ ...mailOptions, to: orders.email });
 
         return { success: true, message: "mail-sent" };
     } catch (err) {

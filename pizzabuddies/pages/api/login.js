@@ -26,7 +26,7 @@ export default async function handler(req, res) {
 
 
         // finding user
-        const user = await Users.findOne({ email });
+        const user = await Users.findOne({ email: email.trim() });
 
         if (user) {
 
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
             const bytes = cryptojs.AES.decrypt(user.password, process.env.CJS_KEY);
             const decrypted = bytes.toString(cryptojs.enc.Utf8);
             // verifying password
-            if (decrypted === password) {
+            if (decrypted === password.trim()) {
                 // creating plain payload to convert user obj into token
                 const plain_payload = plain_payload_maker(user);
                 // converting user object in token 

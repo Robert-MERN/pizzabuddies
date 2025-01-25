@@ -24,6 +24,7 @@
     "next": "^15.1.1",
     "nextjs-progressbar": "^0.0.16",
     "nodemailer": "^6.9.16",
+    "puppeteer": "^24.1.1",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.3.0",
