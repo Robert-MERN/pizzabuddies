@@ -25,7 +25,9 @@ const PRINTER_ID = 74040508; // Retrieve this from the PrintNode dashboard
  */
 // PDF Converter Function
 export const generatePdfBuffer = async (htmlContent) => {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox'], // Add these flags
+    });
     const page = await browser.newPage();
 
     // Manually define mobile device metrics (e.g., iPhone X)
