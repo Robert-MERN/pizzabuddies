@@ -24,20 +24,21 @@ export default async function handler(req, res) {
 
         const response = await send_confirm_mail(res, orders);
 
-        // const print_response = send_print_job(res, req.body);
+        const print_response = await send_print_job(res, orders);
 
-        // if (print_response.message === "receipt_printed_successfully") {
-        //     console.log("Printed successfully");
-        // } else if (print_response.message === "receipt_printing_failed") {
-        //     console.log("Printing failed");
-        // }
+        if (print_response.message === "receipt_printed_successfully") {
+            console.log("Printed successfully");
+        } else if (print_response.message === "receipt_printing_failed") {
+            console.log("Printing failed");
+        }
 
         if (response.message === "mail-sent") {
             // sending success response to client
             return res.status(200).json(orders);
         }
-
+        // console.log("Print Response:", print_response)
         await Orders.findByIdAndDelete(orders._id);
+        // return res.status(500).json(print_response);
         return res.status(500).json({ success: false, message: "Order couldn't be created!", print_response });
 
     } catch (err) {

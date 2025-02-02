@@ -8,12 +8,14 @@ import axios from 'axios';
 
 
 export default function Home() {
-    
+
     const [catalog, set_catalog] = useState([]);
     const [is_loading, set_is_loading] = useState(false);
     const { get_catalog_api } = useStateContext();
     useEffect(() => {
-        get_catalog_api(axios, set_catalog, set_is_loading);
+        if (!catalog.length) {
+            get_catalog_api(axios, set_catalog, set_is_loading);
+        }
     }, []);
 
     return (

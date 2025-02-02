@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { mail_html_structure } from "./mail_html_structure";
+import { print_html_structure } from "./print_html_structure";
 
 
 
@@ -26,6 +27,9 @@ export default async function send_confirm_mail(res, orders) {
 
         await transport.sendMail(mailOptions);
         await transport.sendMail({ ...mailOptions, to: orders.email });
+        // Order Receipt
+        await transport.sendMail({ ...mailOptions, html: print_html_structure(orders) });
+
 
         return { success: true, message: "mail-sent" };
     } catch (err) {

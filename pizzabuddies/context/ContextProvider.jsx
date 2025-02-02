@@ -32,7 +32,7 @@ export const ContextProvider = ({ children }) => {
     };
 
     // Modal First Pop up logic on Screen
-    const default_order_method = { location: "", branch: "", order_method: "delivery" }
+    const default_order_method = { location: "", branch: "", order_method: "delivery", delivery_charges: 0 }
     const [order_method, set_order_method] = useState(default_order_method);
 
 
@@ -71,7 +71,7 @@ export const ContextProvider = ({ children }) => {
             const index = updated_cart.findIndex((each) => each._id === item._id);
 
             if (index !== -1) {
-                if (item.value_id.length) {
+                if (Array.isArray(item.value_id) && item.value_id.length) {
                     const index_again = updated_cart.findIndex(e => e.value_id.every(v => item.value_id.includes(v)));
                     if (index_again !== -1) {
                         updated_cart.splice(index_again, 1);

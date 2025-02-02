@@ -2,9 +2,6 @@ import { purchase_items_displayer } from "./display_products_in_mail";
 
 export const mail_html_structure = (order) => {
 
-  console.log(order._id);
-
-
 
   const {
     _id,
@@ -1118,7 +1115,7 @@ export const mail_html_structure = (order) => {
                                       style="mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">info@pizzabuddies.com</a>
                                     or give us a call at <a target="_blank" href="tel:923152825015"
                                       style="mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">+92
-                                      315 2825 015</a>..</p>
+                                      315 2825 015</a></p>
                                 </td>
                               </tr>
                             </table>

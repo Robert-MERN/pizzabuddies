@@ -26,7 +26,6 @@ const ordersSchema = new Schema(
         },
         delivery_charges: {
             type: Number,
-            default: 200,
         },
         coupon_code: {
             type: String,

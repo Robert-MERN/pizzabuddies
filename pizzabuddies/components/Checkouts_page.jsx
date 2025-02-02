@@ -114,7 +114,8 @@ const Checkouts_page = ({ axios }) => {
             set_order_details(prev => ({ ...prev, purchase: cart }));
         }
         if (location) {
-            set_order_details(prev => ({ ...prev, location }));
+            const { delivery_charges, ...others } = location;
+            set_order_details(prev => ({ ...prev, location: others, delivery_charges }));
         }
     }, []);
 
@@ -130,7 +131,7 @@ const Checkouts_page = ({ axios }) => {
 
     const calc_gross_total_amount = (arr) => {
         if (order_method.order_method === "delivery") {
-            return arr.reduce((prev, next) => prev + (next.price * next.quantity), 0) + Number(order_details.delivery_charges);
+            return arr.reduce((prev, next) => prev + (next.price * next.quantity), 0) + Number(order_method.delivery_charges);
         }
         return arr.reduce((prev, next) => prev + (next.price * next.quantity), 0);
     }
@@ -337,7 +338,7 @@ const Checkouts_page = ({ axios }) => {
                                 style: { cursor: "default" }, // Ensure pointer style is applied to the input element
                             }}
                             InputProps={{
-                                endAdornment: order_method.order_method === "delivery" ? <InputAdornment position="end" className='text-stone-800'>Rs. 200.00</InputAdornment> : <></>,
+                                endAdornment: order_method.order_method === "delivery" ? <InputAdornment position="end" className='text-stone-800'>Rs. {order_method.delivery_charges}.00</InputAdornment> : <></>,
                             }}
                         />
 
@@ -416,9 +417,15 @@ const Checkouts_page = ({ axios }) => {
                                     <p className="text-[14px] md:text-[16px] font-medium text-black">
                                         Delivery Charges
                                     </p>
-                                    <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
-                                        Rs. {(order_details.delivery_charges.toLocaleString("en-US"))}
-                                    </p>
+                                    {Boolean(order_method.delivery_charges) ?
+                                        <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
+                                            Rs. {(order_method.delivery_charges.toLocaleString("en-US"))}
+                                        </p>
+                                        :
+                                        <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
+                                            Free
+                                        </p>
+                                    }
                                 </div>
                             }
 

@@ -436,7 +436,7 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
                                     {/* Subtotal of Order */}
                                     <div className="w-full mt-6 border-stone-300 flex items-center justify-between ">
                                         <p className="text-[14px] md:text-[16px] font-medium text-black">
-                                            Subtotal {(calc_total_items(confirmed_order.purchase)> 1) && `• ${calc_total_items(confirmed_order.purchase)}  items`}
+                                            Subtotal {(calc_total_items(confirmed_order.purchase) > 1) && `• ${calc_total_items(confirmed_order.purchase)}  items`}
                                         </p>
                                         <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
                                             Rs. {calc_total_amount(confirmed_order.purchase).toLocaleString("en-US")}
@@ -449,9 +449,15 @@ const Checkouts_confirmed_page = ({ axios, order_id }) => {
                                             <p className="text-[14px] md:text-[16px] font-medium text-black">
                                                 Delivery Charges
                                             </p>
-                                            <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
-                                                Rs. {(confirmed_order.delivery_charges.toLocaleString("en-US"))}
-                                            </p>
+                                            {Boolean(confirmed_order.delivery_charges) ?
+                                                <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
+                                                    Rs. {(confirmed_order.delivery_charges.toLocaleString("en-US"))}
+                                                </p>
+                                                :
+                                                <p className="text-[15px] md:text-[17px] font-medium text-stone-950">
+                                                    Free
+                                                </p>
+                                            }
                                         </div>
                                     }
 

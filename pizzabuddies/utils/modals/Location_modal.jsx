@@ -16,7 +16,54 @@ const Location_modal = ({ modals_state, toggle_modal, default_order_method,
         }
     })
     // Location List 
-    const location_list = ['Gulshan-e-Maymar Sector Z', 'Gulshan-e-Maymar Sector Y', 'Gulshan-e-Maymar Sector X', 'Gulshan-e-Maymar Sector W', 'Gulshan-e-Maymar Sector V', 'Gulshan-e-Maymar Sector U', 'Gulshan-e-Maymar Sector T', 'Gulshan-e-Maymar Sector S', 'Square Appartment', 'Gulshan-e-Maymar Sector Q', 'Gulshan-e-Maymar Sector R', 'Toyota Highway', 'Wasi Country', 'Global Goth', 'Dhani Bux Goth', 'Custom Society', 'AL MANZAR TOWN', 'Roti Corporation', 'M Poor', 'Abu Zar Ghaffari', 'Business Professional C.H.S', 'ABV Goth', 'Faqeera Goth', 'Cotton Society', 'Lakhani Tower', 'S I T E Area & Industrial', 'Ahsanabad', 'Al Noor Society', 'Heaven City Society', 'Al Habib Society', 'Shahnawaz Society', 'GARDEN CITY BLOCK A,B', 'SPARCO SOCIETY', 'MERUTH SOCIETY', 'Rainbow Sweet Home', 'Rainbow Tower', 'Hadiabad', 'Khayaban-e-shareef', 'Diamond City', 'Ali Garh Society', 'Dream World Resort Only Gate', 'MASHRIQI SOCITY', 'AHSAN DREAM LAND', 'PTV Society', 'Etawa Society'];
+    const location_list = [
+        { location: 'Gulshan-e-Maymar Sector Z', delivery_charges: 150 },
+        { location: 'Gulshan-e-Maymar Sector Y', delivery_charges: 150 },
+        { location: 'Gulshan-e-Maymar Sector X', delivery_charges: 150 },
+        { location: 'Gulshan-e-Maymar Sector W', delivery_charges: 150 },
+        { location: 'Gulshan-e-Maymar Sector V', delivery_charges: 150 },
+        { location: 'Gulshan-e-Maymar Sector U', delivery_charges: 150 },
+        { location: 'Gulshan-e-Maymar Sector T', delivery_charges: 150 },
+        { location: 'Gulshan-e-Maymar Sector S', delivery_charges: 150 },
+        { location: 'Gulshan-e-Maymar Sector Q', delivery_charges: 150 },
+        { location: 'Gulshan-e-Maymar Sector R', delivery_charges: 150 },
+        { location: 'Square Appartment', delivery_charges: 150 },
+        { location: 'Toyota Highway', delivery_charges: 100 },
+        { location: 'Wasi Country', delivery_charges: 200 },
+        { location: 'Global Goth', delivery_charges: 100 },
+        { location: 'Dhani Bux Goth', delivery_charges: 50 },
+        { location: 'Custom Society', delivery_charges: 50 },
+        { location: 'AL MANZAR TOWN', delivery_charges: 150 },
+        { location: 'Roti Corporation', delivery_charges: 50 },
+        { location: 'M Poor', delivery_charges: 100 },
+        { location: 'Abu Zar Ghaffari', delivery_charges: 150 },
+        { location: 'Business Professional C.H.S', delivery_charges: 50 },
+        { location: 'ABV Goth', delivery_charges: 50 },
+        { location: 'Faqeera Goth', delivery_charges: 100 },
+        { location: 'Cotton Society', delivery_charges: 50 },
+        { location: 'Lakhani Tower', delivery_charges: 0 },
+        { location: 'S I T E Area & Industrial', delivery_charges: 150 },
+        { location: 'Ahsanabad', delivery_charges: 50 },
+        { location: 'Al Noor Society', delivery_charges: 150 },
+        { location: 'Heaven City Society', delivery_charges: 150 },
+        { location: 'Al Habib Society', delivery_charges: 50 },
+        { location: 'Shahnawaz Society', delivery_charges: 50 },
+        { location: 'GARDEN CITY BLOCK A,B', delivery_charges: 150 },
+        { location: 'SPARCO SOCIETY', delivery_charges: 50 },
+        { location: 'MERUTH SOCIETY', delivery_charges: 50 },
+        { location: 'Rainbow Sweet Home', delivery_charges: 50 },
+        { location: 'Rainbow Tower', delivery_charges: 50 },
+        { location: 'Hadiabad', delivery_charges: 50 },
+        { location: 'Khayaban-e-shareef', delivery_charges: 50 },
+        { location: 'Diamond City', delivery_charges: 150 },
+        { location: 'Ali Garh Society', delivery_charges: 100 },
+        { location: 'Dream World Resort Only Gate', delivery_charges: 200 },
+        { location: 'MASHRIQI SOCITY', delivery_charges: 50 },
+        { location: 'AHSAN DREAM LAND', delivery_charges: 150 },
+        { location: 'PTV Society', delivery_charges: 50 },
+        { location: 'Etawa Society', delivery_charges: 50 }
+
+    ]
 
     // Branch List
     const branch_list = ["Shop no.25 Lakhani Towers Ahsanabad, Gulshan-e-Maymar"]
@@ -41,6 +88,7 @@ const Location_modal = ({ modals_state, toggle_modal, default_order_method,
     const default_errors = {
         branch: "",
         location: "",
+        delivery_charges: 0,
     }
     const [errors, set_errors] = useState(default_errors);
 
@@ -106,15 +154,15 @@ const Location_modal = ({ modals_state, toggle_modal, default_order_method,
                             defaultValue='Gulshan-e-Maymar Sector Z'
                             value={location_list.find((option) => option === order_method.location) || null}
                             onChange={(event, new_value) => {
-                                set_order_method(prev => ({ ...prev, location: new_value || "" })); // Handle cases where new_value is null
-                                set_errors(prev => ({ ...prev, location: new_value ? "" : "Please select your location." }));
+                                set_order_method(prev => ({ ...prev, location: new_value.location || "", delivery_charges: new_value.delivery_charges || 0 })); // Handle cases where new_value is null
+                                set_errors(prev => ({ ...prev, location: new_value.location ? "" : "Please select your location." }));
                             }}
-                            getOptionLabel={(option) => option} // Display title in the input
+                            getOptionLabel={(option) => option.location} // Display title in the input
                             options={location_list}
                             renderOption={(props, option) => {
                                 const { key, ...optionProps } = props;
                                 return (
-                                    <li key={option} {...optionProps}>{option}</li>
+                                    <li key={option} {...optionProps}>{option.location}</li>
                                 )
                             }}
                             renderInput={(params) => <TextField error={Boolean(errors.location)} helperText={errors.location} sx={style_textfield} {...params} label="Select Location" />}
