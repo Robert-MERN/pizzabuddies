@@ -24,7 +24,7 @@ const PRINTER_ID = 74040508; // Retrieve this from the PrintNode dashboard
  * @returns {Promise<string>} Base64-encoded PDF
  */
 // PDF Converter Function
-const generatePdfBuffer = async (htmlContent) => {
+export const generatePdfBuffer = async (htmlContent) => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 

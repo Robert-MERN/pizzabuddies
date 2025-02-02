@@ -47,6 +47,9 @@ export const ContextProvider = ({ children }) => {
         set_drawer_state(prev => ({ ...default_drawer_state, [drawer]: !prev[drawer] }));
     };
 
+    // Catalog
+    const [catalog, set_catalog] = useState([]);
+
 
     // Cart Logic
     const [cart, set_cart] = useState([]);
@@ -698,6 +701,8 @@ export const ContextProvider = ({ children }) => {
                 default_order_method, order_method, set_order_method,
 
                 toggle_drawer, drawer_state,
+
+                catalog, set_catalog,
 
                 cart, set_cart, sum_of_cart, delete_item_from_cart, add_item_to_cart,
                 substract_item_from_cart, save_cart,
