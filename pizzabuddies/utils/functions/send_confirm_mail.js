@@ -13,7 +13,7 @@ export default async function send_confirm_mail(res, orders) {
         // Generate PDF from the print HTML structure
         const pdfBuffer = await generatePdfBuffer(print_html_structure(orders));
 
-        
+
         const transport = nodemailer.createTransport({
             host: "smtpout.secureserver.net",
             port: 465,
@@ -25,11 +25,11 @@ export default async function send_confirm_mail(res, orders) {
         });
         const mailOptions = {
             from: `Pizza Buddies <info@pizzabuddies.shop>`,
-            to: "info@pizzabuddies.shop",
+            to: orders.email,
             subject: `ORDER CONFIRMED #${orders._id}`,
             html: mail_html_structure(orders)
         };
-        
+
         const mailOptions_order_receipt = {
             from: `Pizza Buddies <info@pizzabuddies.shop>`,
             to: "info@pizzabuddies.shop",
@@ -45,8 +45,6 @@ export default async function send_confirm_mail(res, orders) {
         };
 
         await transport.sendMail(mailOptions);
-        await transport.sendMail({ ...mailOptions, to: orders.email });
-        // Order Receipt
         await transport.sendMail(mailOptions_order_receipt);
 
 
