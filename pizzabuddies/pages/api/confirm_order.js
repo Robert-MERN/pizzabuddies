@@ -10,7 +10,7 @@ import send_confirm_mail from '@/utils/functions/send_confirm_mail';
  */
 
 export default async function handler(req, res) {
-
+    let orders;
     console.log("Connecting with DB")
     try {
 
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
         await connect_mongo();
         console.log("Successfuly conneted with DB");
 
-        const orders = new Orders(req.body);
+        orders = new Orders(req.body);
 
         await orders.save();
 
@@ -36,13 +36,14 @@ export default async function handler(req, res) {
             // sending success response to client
             return res.status(200).json(orders);
         }
-        // console.log("Print Response:", print_response)
+
         await Orders.findByIdAndDelete(orders._id);
-        // return res.status(500).json(print_response);
+
         return res.status(500).json({ success: false, message: "Order couldn't be created!", print_response });
 
     } catch (err) {
 
+        await Orders.findByIdAndDelete(orders._id);
         // if server catches any error
         return res.status(501).json({ success: false, message: err.message });
     }

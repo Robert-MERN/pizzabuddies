@@ -50,35 +50,14 @@ export const generatePdfBuffer = async (htmlContent) => {
     // Load HTML into the page
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
-    // Calculate the height of the body content, including margins and padding
-    const height = await page.evaluate(() => {
-        const body = document.body;
-        const html = document.documentElement;
+    // Get actual content height
+    const contentHeight = await page.evaluate(() => document.body.scrollHeight);
 
-        // Get the full height of the body, including margins and padding
-        const bodyHeight = Math.max(
-            body.scrollHeight,
-            body.offsetHeight,
-            html.clientHeight,
-            html.scrollHeight,
-            html.offsetHeight
-        );
-
-        // Get computed styles to include margins and padding
-        const styles = window.getComputedStyle(body);
-        const marginTop = parseFloat(styles.marginTop);
-        const marginBottom = parseFloat(styles.marginBottom);
-        const paddingTop = parseFloat(styles.paddingTop);
-        const paddingBottom = parseFloat(styles.paddingBottom);
-
-        // Add margins and padding to the body height
-        return bodyHeight + marginTop + marginBottom + paddingTop + paddingBottom;
-    });
 
     // Generate PDF with dynamic height
     const pdfBuffer = await page.pdf({
-        width: '227px', // Fixed width (as per your requirement)
-        height: `${height}px`, // Dynamic height based on the content
+        width: '80mm', // Fixed width (as per your requirement)
+        height: `${contentHeight}px`, // Dynamic height based on the content
         printBackground: true,
         margin: {
             top: '0px',

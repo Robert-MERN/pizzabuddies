@@ -59,6 +59,8 @@ export const print_html_structure = (order) => {
             width: 80mm; /* Standard receipt width */
             margin: 0;
             padding: 10px;
+            max-height: fit-content; /* Ensures content does not stretch */
+            overflow: hidden;
             font-family: Arial, sans-serif;
             font-size: 12px;
         }
