@@ -5,6 +5,7 @@ import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import logo from "@/public/images/logo.png";
 import Image from "next/image";
 
+
 const Location_modal = ({ modals_state, toggle_modal, default_order_method,
     order_method,
     set_order_method, }) => {
@@ -162,7 +163,7 @@ const Location_modal = ({ modals_state, toggle_modal, default_order_method,
                             renderOption={(props, option) => {
                                 const { key, ...optionProps } = props;
                                 return (
-                                    <li key={option} {...optionProps}>{option.location}</li>
+                                    <li key={option + Math.random()} {...optionProps}>{option.location}</li>
                                 )
                             }}
                             renderInput={(params) => <TextField error={Boolean(errors.location)} helperText={errors.location} sx={style_textfield} {...params} label="Select Location" />}

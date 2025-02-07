@@ -364,9 +364,9 @@ const Checkouts_page = ({ axios }) => {
                     <div className="flex-[1]">
                         <div className="sticky top-0 md:px-[40px] py-[40px] flex flex-col gap-2">
                             {/* Product price */}
-                            {order_details.purchase.map((item) => (
+                            {order_details.purchase.map((item, index) => (
                                 <div
-                                    key={item._id}
+                                    key={index}
                                     className="w-full border-stone-300 flex items-center justify-between my-1"
                                 >
                                     <div className="flex gap-5">

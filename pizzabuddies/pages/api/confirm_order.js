@@ -22,8 +22,8 @@ export default async function handler(req, res) {
 
         await orders.save();
 
-        const response = await send_confirm_mail(res, orders);
 
+        // Printing Action
         const print_response = await send_print_job(res, orders);
 
         if (print_response.message === "receipt_printed_successfully") {
@@ -32,11 +32,15 @@ export default async function handler(req, res) {
             console.log("Printing failed");
         }
 
+        // Sending Confirmation Mail Action and Ending Response
+        const response = await send_confirm_mail(res, orders);
         if (response.message === "mail-sent") {
             // sending success response to client
             return res.status(200).json(orders);
         }
 
+        // What if Mail is failed to be sent then delete the created order & return the Error Response.
+        // return res.status(500).json({ success: false, message: "Fake Error" }); //Fake error was testing purpose only.
         await Orders.findByIdAndDelete(orders._id);
 
         return res.status(500).json({ success: false, message: "Order couldn't be created!", print_response });

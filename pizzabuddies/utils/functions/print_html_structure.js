@@ -1,5 +1,3 @@
-import { purchase_items_displayer } from "./display_products_in_mail";
-
 export const print_html_structure = (order) => {
 
   const {
@@ -44,6 +42,13 @@ export const print_html_structure = (order) => {
     return dateObject.toLocaleDateString('en-US', options);
   }
 
+  const collect_neccessary_obj = (obj) => {
+    const { _id, menu_title, section_id, price, compare_price, description, quantity, menu_image, value_id, ...other } =
+        obj;
+
+    return Object.entries(other);
+};
+
 
 
 
@@ -56,9 +61,10 @@ export const print_html_structure = (order) => {
     <title>Order Receipt</title>
     <style>
         body {
-            width: 80mm; /* Standard receipt width */
             margin: 0;
-            padding: 10px;
+            padding: 30px 10px 0px 10px;
+            width: 80mm; /* Standard receipt width */
+            min-height: 210mm;
             max-height: fit-content; /* Ensures content does not stretch */
             overflow: hidden;
             font-family: Arial, sans-serif;
@@ -74,6 +80,7 @@ export const print_html_structure = (order) => {
         }
         .receipt p {
             margin: 5px 0;
+            text-transform: capitalize;
         }
         .receipt .divider {
             border-top: 1px dashed #000;
@@ -108,12 +115,20 @@ export const print_html_structure = (order) => {
         <br/>
 
         <div class="divider"></div>
-        ${purchase.map(item => {
+        ${Boolean(purchase.length) ? purchase.map(item => {
     return `<p><strong>Item:</strong> ${item.menu_title}</p>
-        <p><strong>Quantity:</strong> ${item.quantity}</p>
-        <p><strong>Price:</strong> Rs. ${item.price}.00</p>
+            ${Boolean(collect_neccessary_obj(item).length) ? 
+               collect_neccessary_obj(item).map((each, ind) => (
+                `<p><strong>${each.at(0)}</strong>: ${each.at(1)}</p>`
+                )).join("")
+               : 
+                ``
+              }
+            <p><strong>Quantity:</strong> ${item.quantity}</p>
+            <p><strong>Price:</strong> Rs. ${item.price}.00</p>
+
         <div class="divider"></div>`
-  }).join(" ")}
+  }).join(" ") : ""}
       
 
         ${special_instructions ? `<p><em><strong>Special instructions:</strong> ${special_instructions}</em></p>
@@ -130,6 +145,8 @@ export const print_html_structure = (order) => {
 
         <p class="total"><strong>Total:</strong> Rs. ${calc_gross_total_amount(order).toLocaleString("en-US")}.00</p>
     </div>
+
+    <p style="font-size: 0;">&#x1D564;</p> <!-- ESC/POS cut command -->
 </body>
 </html>
 `

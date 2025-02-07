@@ -60,23 +60,26 @@ export const generatePdfBuffer = async (htmlContent) => {
         height: `${contentHeight}px`, // Dynamic height based on the content
         printBackground: true,
         margin: {
-            top: '0px',
-            right: '0px',
-            bottom: '0px',
-            left: '0px',
+            top: '0mm',
+            right: '0mm',
+            bottom: '0mm',
+            left: '0mm',
         },
+        preferCSSPageSize: true, // Ensures content fits the page
     });
 
     await browser.close();
 
     // Ensure the 'output' folder exists
-    const outputDir = path.resolve(__dirname, "output");
+    const outputDir = path.resolve(process.cwd(), "public/receipts");
+
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true }); // Create directory if it doesn't exist
     }
 
     // Save PDF locally for verification
-    const outputPath = path.resolve(outputDir, "OrderReceipt.pdf");
+    const outputPath = path.resolve(outputDir, "order_receipt.pdf");
+
     fs.writeFileSync(outputPath, pdfBuffer);
 
     // Return the PDF
@@ -108,14 +111,9 @@ const uploadPDFToCloudinary = async (pdfBuffer) => {
  * @returns {Object} Result of the print job submission
  */
 const sendPrintJob = async (res, orders) => {
-    let pdf_secure_url;
     try {
         // Generate PDF content in Base64 format
         const pdfBufferContent = await generatePdfBuffer(print_html_structure(orders));
-        pdf_secure_url = await uploadPDFToCloudinary(pdfBufferContent);
-
-        console.log("url", pdf_secure_url);
-
 
         // Send print job to PrintNode
         const response = await axios.post(
@@ -124,7 +122,8 @@ const sendPrintJob = async (res, orders) => {
                 printer: PRINTER_ID,
                 title: "Order Receipt",
                 contentType: "pdf_uri",
-                content: pdf_secure_url,
+                paperSize: "Paper(80 x 210mm)", // Use the correct paper size
+                content: "https://pizzabuddies.shop/receipts/order_receipt.pdf",
             },
             {
                 auth: {
@@ -135,14 +134,6 @@ const sendPrintJob = async (res, orders) => {
         );
         console.log("Print job submitted successfully:", response.data);
 
-        const publicId = pdf_secure_url
-            .split('/upload/')[1] // Get everything after "upload/"
-            .replace(/^v\d+\//, '') // Remove version identifiers like "v1735781118/"
-            .split('.')[0] // Remove the file extension
-            .replace(/%20/g, ' '); // Decode any URL-encoded spaces
-
-        // Call the Cloudinary API to delete the image
-        await cloudinary.v2.uploader.destroy(publicId, { resource_type: "raw" });
 
         // Return success response
         return {
@@ -151,15 +142,6 @@ const sendPrintJob = async (res, orders) => {
         };
     } catch (err) {
         console.error("Error submitting print job:", err.response?.data?.message || err.message);
-
-        const publicId = pdf_secure_url
-            .split('/upload/')[1] // Get everything after "upload/"
-            .replace(/^v\d+\//, '') // Remove version identifiers like "v1735781118/"
-            .split('.')[0] // Remove the file extension
-            .replace(/%20/g, ' '); // Decode any URL-encoded spaces
-
-        // Call the Cloudinary API to delete the image
-        await cloudinary.v2.uploader.destroy(publicId, { resource_type: "raw" });
 
         // Return failure response
         return {
