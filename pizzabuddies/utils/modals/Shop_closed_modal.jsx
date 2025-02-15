@@ -34,7 +34,7 @@ const Shop_closed_modal = ({
         const interval = setInterval(() => setTimeLeft(checkShopStatus().timeLeft), 1000);
         return () => clearInterval(interval);
     }, [browse_menu, router.isReady]);
-    
+
 
 
     return (
@@ -69,7 +69,7 @@ const Shop_closed_modal = ({
                     </p>
 
 
-                    <button onClick={() => set_browse_menu("browse")} className='w-full mt-4 py-[12px] text-white bg-rose-600 font-medium text-[13px] md:text-[15px]  transition-all duration-300 rounded-md hover:opacity-70 active:scale-[.97] px-[50px] flex gap-3 items-center justify-center'>
+                    <button onClick={() => {set_browse_menu("browse"); router.push("/");}} className='w-full mt-4 py-[12px] text-white bg-rose-600 font-medium text-[13px] md:text-[15px]  transition-all duration-300 rounded-md hover:opacity-70 active:scale-[.97] px-[50px] flex gap-3 items-center justify-center'>
                         Browse Menu
                     </button>
 
