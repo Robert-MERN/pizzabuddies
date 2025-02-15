@@ -24,11 +24,25 @@ export const ContextProvider = ({ children }) => {
         delete_menu_modal: false,
         delete_section_modal: false,
         location_modal: false,
+        shop_closed_modal: false,
     };
     const [modals_state, set_modals_state] = useState(default_modals_state);
 
     const toggle_modal = (modal) => {
-        set_modals_state(prev => ({ ...default_modals_state, [modal]: !prev[modal] }));
+        set_modals_state(prev => {
+            return { ...default_modals_state, [modal]: !prev[modal] }
+        });
+    };
+
+    const openModal = (modal) => {
+        set_modals_state(prev => {
+            return { ...default_modals_state, [modal]: true }
+        });
+    };
+    const closeModal = (modal) => {
+        set_modals_state(prev => {
+            return { ...default_modals_state, [modal]: false }
+        });
     };
 
     // Modal First Pop up logic on Screen
@@ -211,12 +225,16 @@ export const ContextProvider = ({ children }) => {
         set_menu_list([]);
         set_helper_index("");
     }
-    // Chnaging Sidbar options
+    // Changing Sidbar options
     const [sidebar, set_sidebar] = useState("create-menu");
     const handle_sidebar = (value) => {
         set_sidebar(value);
         reset_states();
-    }
+    };
+
+
+    // Shop Closed [Browse Menu Permission State]
+    const [browse_menu, set_browse_menu] = useState("default");
 
     //<----------------------- API Calls and Handlers [Back-end] ----------------------->
     // API loader
@@ -578,7 +596,7 @@ export const ContextProvider = ({ children }) => {
                     formData.append('upload_preset', 'myCloud');
                 }
 
-                const res = await axios.post(`https://api.cloudinary.com/v1_1/dceqyrfhu/image/upload`, formData);
+                const res = await axios.post(`https://api.cloudinary.com/v1_1/dsr8jxsq6/image/upload`, formData);
 
                 // Revoking Blob URL
                 URL.revokeObjectURL(objectURL);
@@ -696,7 +714,7 @@ export const ContextProvider = ({ children }) => {
             value={{
                 snackbar_alert, set_snackbar_alert, close_snackbar,
 
-                toggle_modal, modals_state,
+                toggle_modal, modals_state, openModal, closeModal,
 
                 default_order_method, order_method, set_order_method,
 
@@ -718,6 +736,8 @@ export const ContextProvider = ({ children }) => {
                 helper_index, set_helper_index,
 
                 reset_states,
+
+                browse_menu, set_browse_menu,
 
                 API_loading, set_API_loading,
 

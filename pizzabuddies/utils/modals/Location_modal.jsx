@@ -4,15 +4,21 @@ import { Autocomplete, TextField } from '@mui/material';
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import logo from "@/public/images/logo.png";
 import Image from "next/image";
+import { checkShopStatus } from '../functions/shop_time';
 
 
-const Location_modal = ({ modals_state, toggle_modal, default_order_method,
+const Location_modal = ({
+    modals_state,
+    toggle_modal,
+    default_order_method,
     order_method,
-    set_order_method, }) => {
+    set_order_method,
+}) => {
 
 
     useEffect(() => {
-        if (!order_method.location && !order_method.branch && !modals_state.location_modal) {
+        const { isClosed } = checkShopStatus();
+        if (!isClosed && !order_method.location && !order_method.branch && !modals_state.location_modal) {
             toggle_modal("location_modal")
         }
     })

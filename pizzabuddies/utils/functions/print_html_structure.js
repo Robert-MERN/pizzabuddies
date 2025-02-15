@@ -44,12 +44,10 @@ export const print_html_structure = (order) => {
 
   const collect_neccessary_obj = (obj) => {
     const { _id, menu_title, section_id, price, compare_price, description, quantity, menu_image, value_id, ...other } =
-        obj;
+      obj;
 
     return Object.entries(other);
-};
-
-
+  };
 
 
   const _html = `
@@ -62,11 +60,11 @@ export const print_html_structure = (order) => {
     <style>
         body {
             margin: 0;
-            padding: 30px 10px 0px 10px;
+            padding: 0;
             width: 80mm; /* Standard receipt width */
             min-height: 210mm;
-            max-height: fit-content; /* Ensures content does not stretch */
-            overflow: hidden;
+            padding: 30px 10px 0px 10px;
+            max-height: fit-content;
             font-family: Arial, sans-serif;
             font-size: 12px;
         }
@@ -117,13 +115,13 @@ export const print_html_structure = (order) => {
         <div class="divider"></div>
         ${Boolean(purchase.length) ? purchase.map(item => {
     return `<p><strong>Item:</strong> ${item.menu_title}</p>
-            ${Boolean(collect_neccessary_obj(item).length) ? 
-               collect_neccessary_obj(item).map((each, ind) => (
-                `<p><strong>${each.at(0)}</strong>: ${each.at(1)}</p>`
-                )).join("")
-               : 
-                ``
-              }
+            ${Boolean(collect_neccessary_obj(item).length) ?
+        collect_neccessary_obj(item).map((each, ind) => (
+          `<p><strong>${each.at(0)}</strong>: ${each.at(1)}</p>`
+        )).join("")
+        :
+        ``
+      }
             <p><strong>Quantity:</strong> ${item.quantity}</p>
             <p><strong>Price:</strong> Rs. ${item.price}.00</p>
 

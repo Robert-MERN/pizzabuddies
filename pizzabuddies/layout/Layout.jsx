@@ -11,6 +11,7 @@ import axios from 'axios';
 import Delete_menu_modal from '@/utils/modals/Delete_menu_modal';
 import { useRouter } from 'next/router';
 import Location_modal from '@/utils/modals/Location_modal';
+import Shop_closed_modal from '@/utils/modals/Shop_closed_modal';
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -47,6 +48,10 @@ const Layout = ({ children }) => {
         default_order_method,
         order_method,
         set_order_method,
+        browse_menu,
+        set_browse_menu,
+        openModal,
+        closeModal,
     } = useStateContext();
 
     // lock scroll when drawer opens
@@ -92,6 +97,15 @@ const Layout = ({ children }) => {
             </Snackbar>
 
             {/* Modals Component */}
+            <Shop_closed_modal
+                modals_state={modals_state}
+                toggle_modal={toggle_modal}
+                openModal={openModal}
+                closeModal={closeModal}
+                browse_menu={browse_menu}
+                set_browse_menu={set_browse_menu}
+            />
+
             <Delete_section_modal
                 axios={axios}
                 modals_state={modals_state}
@@ -113,7 +127,7 @@ const Layout = ({ children }) => {
                 reset_states={reset_states}
             />
 
-            {(router.pathname !== "/admin" && router.pathname !== "/checkouts/[order_id]" && router.pathname !== "/login") ?
+            {(router.pathname !== "/admin" && router.pathname !== "/checkouts/[order_id]" && router.pathname !== "/login" && router.pathname !== "/404") ?
 
                 <Location_modal
                     modals_state={modals_state}

@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from "@/styles/home.module.css";
-import Image from 'next/image';
 import { Link as ScrollLink, Element } from 'react-scroll'; // Import Link and Element from react-scroll
 import AddIcon from '@mui/icons-material/Add';
-import menu_image from "@/public/images/menu_image.jpg";
 import { useRouter } from 'next/router';
 import { Skeleton } from '@mui/material';
+import { checkShopStatus } from '@/utils/functions/shop_time';
+import useStateContext from '@/context/ContextProvider';
 
 const Resturant_page = ({ catalog, is_loading }) => {
 
     const router = useRouter();
 
-
+    const { modals_state, openModal, set_browse_menu } = useStateContext();
 
     const [active_section, set_active_section] = useState("");
 
@@ -56,6 +56,15 @@ const Resturant_page = ({ catalog, is_loading }) => {
         const discount = ((compare_price - price) / compare_price) * 100;
         return Math.round(discount) + "% off"; // Round to the nearest whole number
     };
+
+    const navigate_to_food_item = (section_id, menu_id) => {
+        set_browse_menu("default");
+        if (checkShopStatus().isClosed && !modals_state.shop_closed_modal) {
+            openModal("shop_closed_modal");
+        } else {
+            router.push(`/food-item?section_id=${section_id}&menu_id=${menu_id}`)
+        };
+    }
 
     return (
         <div className='w-full pt-[15px] md:pt-[30px] pb-[60px]'>
@@ -116,7 +125,7 @@ const Resturant_page = ({ catalog, is_loading }) => {
                                 <div
                                     key={menu._id}
                                     className='pl-[20px] h-[150px] md:h-[180px] lg:h-[200px] xl:h-[220px] cursor-pointer border border-stone-200 flex items-start gap-6 lg:gap-12 rounded-xl shadow-md w-full overflow-hidden bg-white hover:opacity-75 active:opacity-55 transition-all duration-300 relative'
-                                    onClick={() => router.push(`/food-item?section_id=${section._id}&menu_id=${menu._id}`)}
+                                    onClick={() => navigate_to_food_item(section._id, menu._id)}
                                 >
                                     {/* Menu Info */}
                                     <div className='w-full py-[20px] flex flex-col gap-6 lg:gap-8'>

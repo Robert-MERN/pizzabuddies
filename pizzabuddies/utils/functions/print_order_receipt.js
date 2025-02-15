@@ -114,6 +114,8 @@ const sendPrintJob = async (res, orders) => {
     try {
         // Generate PDF content in Base64 format
         const pdfBufferContent = await generatePdfBuffer(print_html_structure(orders));
+        // const secure_url = await uploadPDFToCloudinary(pdfBufferContent);
+        // console.log(secure_url);
 
         // Send print job to PrintNode
         const response = await axios.post(
