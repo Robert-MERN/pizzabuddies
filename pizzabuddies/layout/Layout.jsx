@@ -97,14 +97,16 @@ const Layout = ({ children }) => {
             </Snackbar>
 
             {/* Modals Component */}
-            <Shop_closed_modal
-                modals_state={modals_state}
-                toggle_modal={toggle_modal}
-                openModal={openModal}
-                closeModal={closeModal}
-                browse_menu={browse_menu}
-                set_browse_menu={set_browse_menu}
-            />
+            {(router.pathname !== "/admin" && router.pathname !== "/login" && router.pathname !== "/404") &&
+                <Shop_closed_modal
+                    modals_state={modals_state}
+                    toggle_modal={toggle_modal}
+                    openModal={openModal}
+                    closeModal={closeModal}
+                    browse_menu={browse_menu}
+                    set_browse_menu={set_browse_menu}
+                />
+            }
 
             <Delete_section_modal
                 axios={axios}

@@ -20,7 +20,7 @@ export function checkShopStatus() {
   let timeLeft = "";
   if (isClosed) {
     const diff = openTime.diff(now, ["hours", "minutes", "seconds"]);
-    timeLeft = `${diff.hours}h ${diff.minutes}m ${Math.round(diff.seconds)}s`;
+    timeLeft = `${Boolean(diff.hours) ? `${diff.hours}h` : ""} ${Boolean(diff.minutes) ? `${diff.minutes}m` : ""} ${Math.round(diff.seconds)}s`;
   }
 
   return { isClosed, timeLeft };
