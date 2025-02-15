@@ -33,12 +33,8 @@ const Shop_closed_modal = ({
 
         const interval = setInterval(() => setTimeLeft(checkShopStatus().timeLeft), 1000);
         return () => clearInterval(interval);
-    }, [browse_menu, router.isReady])
-
-
-    useEffect(() => {
-        console.log("Modal State: ", modals_state.shop_closed_modal);
-    }, [modals_state.shop_closed_modal])
+    }, [browse_menu, router.isReady]);
+    
 
 
     return (
