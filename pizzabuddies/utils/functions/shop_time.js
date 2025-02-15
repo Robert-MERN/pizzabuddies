@@ -15,7 +15,7 @@ export function checkShopStatus() {
   const closeTime = now.set({ hour: SHOP_CLOSE_HOUR, minute: SHOP_CLOSE_MINUTE, second: 0 });
 
   // Determine if the shop is closed
-  const isClosed = !Boolean(now < openTime && now > closeTime);
+  const isClosed = Boolean(now < openTime && now > closeTime);
 
   let timeLeft = "";
   if (isClosed) {
